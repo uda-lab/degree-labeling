@@ -14,6 +14,32 @@ noncomputable def swapVertices
   classical
   exact (Equiv.swap v w).trans f
 
+open scoped Classical in
+theorem respectsDegreeOrder_swapVertices
+    (G : SimpleGraph V)
+    (f : Labeling V)
+    {v w : V}
+    (hf : RespectsDegreeOrder G f)
+    (hdeg : G.degree v = G.degree w) :
+    RespectsDegreeOrder G (swapVertices f v w) := by
+  classical
+  intro x y hxy
+  have hdegree_swap (z : V) : G.degree (Equiv.swap v w z) = G.degree z := by
+    by_cases hzv : z = v
+    · subst z
+      rw [Equiv.swap_apply_left]
+      exact hdeg.symm
+    · by_cases hzw : z = w
+      · subst z
+        rw [Equiv.swap_apply_right]
+        exact hdeg
+      · rw [Equiv.swap_apply_of_ne_of_ne hzv hzw]
+  have hxy' : G.degree (Equiv.swap v w x) < G.degree (Equiv.swap v w y) := by
+    rw [hdegree_swap, hdegree_swap]
+    exact hxy
+  have h := hf (Equiv.swap v w x) (Equiv.swap v w y) hxy'
+  simpa [sourceLabel, swapVertices] using h
+
 noncomputable def neighborSumExcept
     (G : SimpleGraph V)
     (c : Fin (Fintype.card V) → ℝ)
