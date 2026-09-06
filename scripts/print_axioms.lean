@@ -12,3 +12,4 @@ import DegreeLabeling
 #print axioms DegreeLabeling.edgePotential_swapVertices_sub
 #print axioms DegreeLabeling.respectsDegreeOrder_swapVertices
 #print axioms DegreeLabeling.admissibleLabeling_nonempty
+#print axioms DegreeLabeling.minimizer_respectsEqualDegreeNeighborSums
