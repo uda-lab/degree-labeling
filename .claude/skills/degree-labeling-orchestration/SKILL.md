@@ -30,7 +30,7 @@ Model tiers resolved for this repository from `docs/orchestration.md`:
 |---|---|---|---|
 | orchestrator and driver | current Codex session | reasoning for rulings; routine worker jobs | one Issue at a time |
 | worker | `codex exec` | routine | one foreground job, at most 400 Lean lines |
-| reviewer (local) | `codex review` | reasoning | read-only adversarial review |
+| reviewer (local) | `read-only codex exec` | reasoning | read-only adversarial review |
 | reviewer (PR) | Hermes broker, kind `codex` | — | independent review evidence |
 | judge | read-only `codex exec` | reasoning | source-fidelity judgement |
 
@@ -40,7 +40,7 @@ Fan-out cap: one lane; one driver per lane, no fleets, and no parallel review pa
 
 - Worker: `codex exec -C <worktree-or-repo> --sandbox danger-full-access -m gpt-5.6-luna -c model_reasoning_effort='"xhigh"' "<brief>"`.
 - PR review: `python3 "$REVIEW_ACQUIRE_SCRIPT" uda-lab/lean-dogfood-codex <PR> codex`; with `REVIEW_ACQUIRE_SCRIPT=/workspaces/hermes-engineering/scripts/request-review.py`, invoke verbatim, and observe the expected 300 s cooldown between requests on one PR.
-- Local review: `codex --sandbox read-only review --base main -c model='"gpt-5.6-sol"' -c model_reasoning_effort='"high"'`.
+- Local review: `codex exec -C <worktree-or-repo> --sandbox read-only -m gpt-5.6-sol -c model_reasoning_effort='"high"' - < .claude/scratch/local-review-issue-{N}.md`. The prompt names numbered falsifiable risks and explicitly directs inspection of `git diff main...HEAD`.
 - Reasoning read-only judge: `codex exec -C <worktree-or-repo> --sandbox read-only -m gpt-5.6-sol -c model_reasoning_effort='"high"' "<bounded judgement brief>"`.
 - Kill switch: `echo "<reason>" > /tmp/codex-stop`; remove `/tmp/codex-stop` to lift it.
 
