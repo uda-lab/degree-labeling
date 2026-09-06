@@ -10,3 +10,4 @@ import DegreeLabeling
 #print axioms DegreeLabeling.placeholder_add_zero
 #print axioms DegreeLabeling.exists_minimal_edgePotential
 #print axioms DegreeLabeling.edgePotential_swapVertices_sub
+#print axioms DegreeLabeling.admissibleLabeling_nonempty
