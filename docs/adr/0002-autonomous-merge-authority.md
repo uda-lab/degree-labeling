@@ -1,9 +1,5 @@
 # 0002 — Autonomous merge authority on verified gates
 
-<!-- TEMPLATE. The Init phase keeps this ADR only if the initial prompt or a charter-Issue
-comment from the owner grants the mandate below; otherwise it files a `needs-decision` Issue
-quoting this text and leaves the loop stopped at "PR open, review complete". -->
-
 ## Context
 
 The flow is Issue → branch → PR → independent review → CI job `check` → squash merge, with no
