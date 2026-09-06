@@ -37,7 +37,7 @@ scripts/check.sh       # full integrity, build, axiom and coverage gate
 - `DegreeLabeling/` is the module tree and `DegreeLabeling.lean` is its root aggregator; mathlib pins stay fixed.
 - Flow is Issue → `issue-<n>-<slug>` branch → PR (`Closes #n`) → independent review → CI `check` → squash merge.
 - One Issue runs per lane; `agent:ready` requires owner or trusted-maintainer audit, while `blocked`, `needs-decision` and `do-not-merge` stop work.
-- Durable decisions live in `docs/adr/`, mathematical statements in `docs/math/`, and orchestration policy in the generated project skill.
+- Durable decisions live in `docs/adr/`, mathematical statements in `docs/math/`, and every orchestration session, including Codex, must read `.claude/skills/degree-labeling-orchestration/SKILL.md` first.
 - GitHub Issues and PRs are the queue and evidence surface; no local orchestration runtime or state machine is tracked.
 
 ## Maintenance Notes
