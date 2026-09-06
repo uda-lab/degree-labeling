@@ -4,3 +4,4 @@
 import DegreeLabeling.Basic
 import DegreeLabeling.Contract
 import DegreeLabeling.EdgePotential
+import DegreeLabeling.SwapPotential

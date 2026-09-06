@@ -9,3 +9,4 @@ import DegreeLabeling
 -- Permanent smoke test of the audit path (DegreeLabeling/Basic.lean). Never remove.
 #print axioms DegreeLabeling.placeholder_add_zero
 #print axioms DegreeLabeling.exists_minimal_edgePotential
+#print axioms DegreeLabeling.edgePotential_swapVertices_sub
