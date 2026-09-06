@@ -40,7 +40,7 @@ Fan-out cap: one lane; one driver per lane, no fleets, and no parallel review pa
 
 - Worker: `codex exec -C <worktree-or-repo> --sandbox danger-full-access -m gpt-5.6-luna -c model_reasoning_effort='"xhigh"' "<brief>"`.
 - PR review: `python3 "$REVIEW_ACQUIRE_SCRIPT" uda-lab/lean-dogfood-codex <PR> codex`; with `REVIEW_ACQUIRE_SCRIPT=/workspaces/hermes-engineering/scripts/request-review.py`, invoke verbatim, and observe the expected 300 s cooldown between requests on one PR.
-- Local review: `codex review --base main -m gpt-5.6-sol -c model_reasoning_effort='"high"' "<numbered falsifiable risks>"`.
+- Local review: `codex review --base main -c model='"gpt-5.6-sol"' -c model_reasoning_effort='"high"' "<numbered falsifiable risks>"`.
 - Reasoning read-only judge: `codex exec -C <worktree-or-repo> --sandbox read-only -m gpt-5.6-sol -c model_reasoning_effort='"high"' "<bounded judgement brief>"`.
 - Kill switch: `echo "<reason>" > /tmp/codex-stop`; remove `/tmp/codex-stop` to lift it.
 
