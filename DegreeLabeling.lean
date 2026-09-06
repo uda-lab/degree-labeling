@@ -3,3 +3,4 @@
 -- reaches all of them. A module missing here fails scripts/check-axiom-coverage.sh.
 import DegreeLabeling.Basic
 import DegreeLabeling.Contract
+import DegreeLabeling.EdgePotential
