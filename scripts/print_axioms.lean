@@ -13,3 +13,5 @@ import DegreeLabeling
 #print axioms DegreeLabeling.respectsDegreeOrder_swapVertices
 #print axioms DegreeLabeling.admissibleLabeling_nonempty
 #print axioms DegreeLabeling.minimizer_respectsEqualDegreeNeighborSums
+#print axioms DegreeLabeling.exists_degreeOrdered_labeling_strictMonoWeights
+#print axioms DegreeLabeling.exists_degreeOrdered_labeling_powersOfTwo
