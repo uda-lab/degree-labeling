@@ -22,6 +22,20 @@ in `sources/problem.md`; its digest and the decided `Fin n` label shift are in
 | `docs/adr/` | founding decisions: harness-driven, no state machine (0001); autonomous merge authority (0002) |
 | `docs/math/` | references and the source-grounded mathematical digest |
 
+## Results
+
+The public theorems are `DegreeLabeling.exists_degreeOrdered_labeling_strictMonoWeights`
+and `DegreeLabeling.exists_degreeOrdered_labeling_powersOfTwo`. T1 allows arbitrary
+strictly increasing real weights, with no positivity assumption; T2 is the literal
+real-valued, one-based powers-of-two specialization.
+
+See [`DegreeLabeling.lean`](DegreeLabeling.lean),
+[`DegreeLabeling/Contract.lean`](DegreeLabeling/Contract.lean), and
+[`docs/math/degree_labeling.md`](docs/math/degree_labeling.md). Release evidence:
+`CHECK OK`; 8 pinned public theorems; axiom closure within
+`{propext, Classical.choice, Quot.sound}`; final source↔Lean fidelity verdict `PASS`
+on charter Issue #1.
+
 ## Build
 
 ```sh
