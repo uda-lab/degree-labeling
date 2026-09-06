@@ -1,68 +1,52 @@
-# lean-formalization-scaffold
+# DegreeLabeling
 
-A **template repository** for Lean 4 + mathlib formalisation programmes that existing agent
-harnesses (Claude Code, Codex) can drive from one initial prompt to a finished, audited
-development. It ships the integrity gates, CI, hooks, Issue/PR contracts and orchestration
-skills that carried [`uda-lab/mobius-cpt`](https://github.com/uda-lab/mobius-cpt) from an
-empty repository to a published formalisation — and nothing that would need a bespoke
-orchestration runtime.
-
-The orchestration guide is **`docs/orchestration.md`** (one page: roles, the two
-configurations, lifecycle, entry commands). The procedure is
-`.claude/skills/loop-orchestration-scaffold/SKILL.md`.
-
-## Quick start
-
-1. Create a repository from this template (`gh repo create <owner>/<name> --template
-   uda-lab/lean-formalization-scaffold --private`) and clone it.
-2. Open your harness in the clone (`claude` or `codex`). `AGENTS.md` / `CLAUDE.md` route the
-   session into preflight; it will not start mathematics.
-3. Paste the initial prompt — papers, target theorem, configuration, authority — following
-   `.claude/skills/loop-orchestration-scaffold/references/initial-prompt.md`.
-
-The session measures the machine, sets up GitHub, writes the charter Issue, renames the
-library, digests the sources, rewrites `AGENTS.md` and generates the repo-specific
-orchestration skill, then decomposes the target into Issues and runs the Issue → PR → review →
-merge loop until the charter's definition of done is met.
+DegreeLabeling formalises the source problem's two labelling results for finite simple
+undirected graphs. T1 says that, for any strictly increasing real weights with no positivity
+assumption, some degree-respecting bijective labelling orders equal-degree vertices so their
+weighted neighbour sums are non-decreasing in the reverse label order. T2 is the original
+powers-of-two corollary, using the source expression \(2^{f(u)}\). The primary source is [P]
+in `sources/problem.md`; its digest and the decided `Fin n` label shift are in
+`docs/math/degree_labeling.md`.
 
 ## Layout
 
 | Path | Role |
 |---|---|
-| `LeanScaffold/`, `LeanScaffold.lean` | placeholder library and root aggregator (renamed by `scripts/rename-project.sh`) |
+| `DegreeLabeling/`, `DegreeLabeling.lean` | Lean module tree and root aggregator |
 | `scripts/` | preflight, bootstrap, the canonical gate `check.sh`, integrity guards, GitHub setup, git hooks |
 | `scripts/print_axioms.lean` | append-only list of pinned public theorems for the live axiom audit |
-| `.claude/skills/` | `loop-orchestration-scaffold` (init → submission, with templates), `lean-issue-decomposition`, `lean-review-routing` |
+| `.claude/skills/` | scaffold procedure, project orchestration contract, decomposition and review-routing skills |
 | `.claude/hooks/`, `.claude/settings.json` | SessionStart brief; PreToolUse guard that serialises Lean builds and enforces the codex kill switch |
 | `.github/` | CI job `check`, Issue templates (formalization / infrastructure), PR template |
-| `docs/orchestration.md` | the minimal orchestration guide |
-| `docs/adr/` | founding decisions: harness-driven, no state machine (0001); autonomous merge authority (0002, owner ratifies) |
-| `docs/math/` | the mathematical source of truth, written during Init |
+| `docs/orchestration.md` | the minimal role, configuration and lifecycle guide |
+| `docs/adr/` | founding decisions: harness-driven, no state machine (0001); autonomous merge authority (0002) |
+| `docs/math/` | references and the source-grounded mathematical digest |
 
 ## Build
 
 ```sh
-scripts/bootstrap.sh   # once per clone: mathlib oleans via `lake exe cache get`, git hooks path
+scripts/bootstrap.sh   # shared mathlib oleans and git hooks
 scripts/check.sh       # guards → lake build → live #print axioms audit → coverage guard
 ```
 
-The toolchain is `lean-toolchain`; mathlib is pinned by tag in `lakefile.toml` and by commit
-in `lake-manifest.json`. CI runs the textual guards on every pull request and the full gate
-whenever Lean sources, build configuration, scripts or workflows change.
+The toolchain is `lean-toolchain`; mathlib remains pinned by tag in `lakefile.toml` and by
+commit in `lake-manifest.json`. CI runs the textual guards and the full gate under the
+repository's pull-request rules.
 
 ## Trust footprint
 
 Accepted theorems are `sorry`-free and their axiom closure is contained in
 `{propext, Classical.choice, Quot.sound}`; `scripts/check-axioms.sh` verifies this live for
-every declaration listed in `scripts/print_axioms.lean`, and
-`scripts/check_axiom_coverage.lean` fails the gate if a public theorem is not listed.
+every declaration listed in `scripts/print_axioms.lean`; the coverage guard fails the gate if
+a public theorem is not listed.
 
 ## Workflow
 
 GitHub Issues and pull requests are the only work queue and evidence record:
-Issue → branch → PR → independent review → CI → squash merge. No status, roadmap or progress
-files are tracked; agent scratch lives in `.claude/scratch/` (gitignored).
+Issue → branch → PR → independent review → CI → squash merge. See
+[docs/orchestration.md](docs/orchestration.md) for roles, configurations and lifecycle.
+No status, roadmap or progress files are tracked; agent scratch lives in `.claude/scratch/`.
 
 ## License
 
-Apache-2.0, see `LICENSE`. Replace the copyright line when instantiating the template.
+Apache-2.0, see `LICENSE`.
