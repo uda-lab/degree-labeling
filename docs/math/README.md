@@ -1,18 +1,16 @@
 # docs/math — mathematical source of truth
 
-This directory holds the **working digest** of the source papers and nothing else: exact
+This directory holds the **working digest** of the source `[P]` and nothing else: exact
 statements to be formalised, the conventions the Lean development commits to, and the
-bibliography. It is written during the Init phase (see
-`.claude/skills/loop-orchestration-scaffold/SKILL.md`) from the papers named in the initial
-prompt, and amended only through PRs that cite the source.
+bibliography. It is amended only through PRs that cite the source; the primary source wins on
+any conflict with a digest.
 
-- `references.md` — every primary source with a stable identifier (DOI, arXiv id) and the
-  short key used in Issues and docstrings (`[T26]`, `[CRTT25]`, …). The papers themselves
-  are **not** tracked; keep local copies under `sources/` (gitignored).
-- `<digest>.md` — one file per programme: definitions, the target theorem(s) verbatim in the
-  source's vocabulary, the dependency route (lemma chain), and every convention choice the
-  Lean encoding makes (sign, normalisation, quantifier order, domain).
+- `references.md` — the primary sources with their citation keys used in Issues and
+  docstrings: `[P]` (the owner's note, the primary source for T1 and T2), `[SP24]` (the
+  problem's origin), `[M65]` (context only, not a source of statements). The papers/notes
+  themselves are **not** tracked; local copies live under `sources/` (gitignored).
+- `degree_labeling.md` — the digest: T1 and T2 verbatim in `[P]`'s vocabulary, the
+  definitions, the S1–S7 proof route, the conventions the Lean encoding commits to.
 
-The primary papers win on any conflict with a digest. A digest is not a status document: it
-records what the mathematics *is*, never which Issue landed what — that lives in Issues, PRs
-and Git history.
+A digest is not a status document: it records what the mathematics *is*, never which Issue
+landed what — that lives in Issues, PRs and Git history.

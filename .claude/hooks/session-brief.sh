@@ -30,7 +30,18 @@ libname="$(sed -n 's/^name = "\(.*\)"$/\1/p' "$ROOT/lakefile.toml" 2>/dev/null |
 if [ "$libname" = "LeanScaffold" ]; then
   init_state="NOT INITIALISED — this is a fresh scaffold. Do not start mathematical work; run the Init phase of .claude/skills/loop-orchestration-scaffold/SKILL.md first."
 else
-  init_state="initialised as ${libname}; the container contract is .claude/skills/${libname,,}-orchestration/SKILL.md if present."
+  contract=""
+  for f in "$ROOT"/.claude/skills/*-orchestration/SKILL.md; do
+    if [ -f "$f" ]; then
+      contract="${f#"$ROOT"/}"
+      break
+    fi
+  done
+  if [ -n "$contract" ]; then
+    init_state="initialised as ${libname}; the container contract is ${contract}."
+  else
+    init_state="initialised as ${libname}; no container contract found."
+  fi
 fi
 
 cat <<EOF
