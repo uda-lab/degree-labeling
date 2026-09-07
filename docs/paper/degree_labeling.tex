@@ -1,6 +1,14 @@
 \documentclass{amsart}
 
 \usepackage{amsmath,amsthm,amssymb,tikz,hyperref,cleveref,CJKutf8}
+\hypersetup{hidelinks}
+
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{figure}{Figure}{Figures}
+\crefname{equation}{Equation}{Equations}
+\crefname{remark}{Remark}{Remarks}
+\crefname{section}{Section}{Sections}
 
 \definecolor{oi-orange}{HTML}{E69F00}
 \definecolor{oi-sky}{HTML}{56B4E9}
@@ -31,8 +39,8 @@ For a finite simple graph on \(n\) vertices, a zero-based labelling is a
 bijection to the integers from \(0\) to \(n-1\). For every strictly increasing
 real sequence \(c_0<\cdots<c_{n-1}\), there is a
 zero-based labelling \(f\) that orders vertices by non-increasing degree and,
-within each degree class, gives the larger label to the vertex with no larger
-neighbour sum. The neighbour sum at a vertex is the sum of \(c_{f(u)}\) over
+within each degree class the vertex with the larger label has the smaller or
+equal neighbour sum. The neighbour sum at a vertex is the sum of \(c_{f(u)}\) over
 all neighbours \(u\). The weights may be
 arbitrary real numbers; only strict increase is required. Choosing \(c_i=2^i\)
 yields the powers-of-two case, in which the neighbour sums are natural numbers.
@@ -46,9 +54,10 @@ weights.
 \section{Introduction}
 
 The motivating setting is the enumeration of hydrocarbon graphs. A
-hydrocarbon graph is a connected graph whose vertices represent carbon or
-hydrogen atoms and whose maximum degree is at most four. In the convention with
-labels \(1,\ldots,n\), a labelling is a bijection
+hydrocarbon graph is a connected graph whose vertices represent carbon atoms;
+hydrogen atoms are omitted, and edges represent single carbon--carbon bonds.
+Its maximum degree is at most four. In the convention with labels
+\(1,\ldots,n\), a labelling is a bijection
 \(V\to\{1,\ldots,n\}\). The theorem below uses labels \(0,\ldots,n-1\).
 Vertices of equal degree are compared by the sum of \(2^k\) over neighbours
 carrying label \(k\). We seek a labelling that orders vertices by degree and,
@@ -87,7 +96,7 @@ when \(n=0\). A labelling \(f\) respects the degree order if
   d(v)<d(w)\quad\Longrightarrow\quad f(w)<f(v).
 \tag{2.1}\label{eq:degree-order}
 \]
-We call a labelling satisfying \eqref{eq:degree-order} degree-respecting.
+We call a labelling satisfying \cref{eq:degree-order} degree-respecting.
 
 Let \(c:\{0,1,\ldots,n-1\}\to\R\) be strictly increasing, and write
 \(c_i=c(i)\). Thus
@@ -146,7 +155,7 @@ and
   \sum_{u\in N(w)}2^{f(u)}.
   \tag{3.4}\label{eq:corollary-sum}
 \]
-The sums in \eqref{eq:corollary-sum} are sums of natural numbers.
+The sums in \cref{eq:corollary-sum} are sums of natural numbers.
 \end{corollary}
 
 \begin{remark}[The two labelling conventions]
@@ -196,7 +205,7 @@ satisfy the required order.
 A degree-respecting labelling can fail the equal-degree neighbour-sum order.
 In \cref{fig:bad-labelling}, the labels of the central
 vertices are exchanged relative to \cref{fig:good-labelling}. The red mark
-identifies a pair violating \eqref{eq:equal-degree-order}, and the arrow shows
+identifies a pair violating \cref{eq:equal-degree-order}, and the arrow shows
 the label swap used in the proof.
 
 \begin{figure}[ht]
@@ -205,26 +214,25 @@ the label swap used in the proof.
     \draw[very thick] (0,0) -- (2,1) -- (4,1) -- (6,0);
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
       inner sep=1pt, align=center] (bad-a) at (0,0) {$a$\\[-1pt]$f(a)=2$\\[-1pt]$S=1$};
-    \node[circle, draw=black, very thick, fill=oi-blue, minimum size=15mm,
+    \node[circle, draw=oi-vermillion, very thick, fill=oi-blue, minimum size=15mm,
       inner sep=1pt, align=center] (bad-b) at (2,1) {$b$\\[-1pt]$f(b)=0$\\[-1pt]$S=6$};
-    \node[circle, draw=black, very thick, fill=oi-blue, minimum size=15mm,
+    \node[circle, draw=oi-vermillion, very thick, fill=oi-blue, minimum size=15mm,
       inner sep=1pt, align=center] (bad-x) at (4,1) {$x$\\[-1pt]$f(x)=1$\\[-1pt]$S=9$};
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
       inner sep=1pt, align=center] (bad-y) at (6,0) {$y$\\[-1pt]$f(y)=3$\\[-1pt]$S=2$};
     \draw[->, very thick, oi-vermillion] (2,2.15) to[bend left=18]
       node[above, font=\small, text=black] {swap} (4,2.15);
-    \draw[very thick, oi-vermillion] (2.65,1.27) -- (3.35,1.27);
     \node[font=\small, text=oi-vermillion, align=center] at (3,3.0)
       {the displayed sum at $x$ exceeds that at $b$};
   \end{tikzpicture}
-  \caption{The same graph has a degree-respecting labelling for which \eqref{eq:equal-degree-order} fails at the marked central pair; the red arrow shows the exchange of their labels.}
+  \caption{The same graph has a degree-respecting labelling for which \cref{eq:equal-degree-order} fails at the central pair marked by red borders; the red arrow shows the exchange of their labels.}
   \label{fig:bad-labelling}
 \end{figure}
 
 \section{Proof of Theorem~\ref{thm:strict-weights}}
 
 Let \(\mathcal A\) be the set of all zero-based labellings that respect
-\eqref{eq:degree-order}. This set is nonempty. Order the vertices by
+\cref{eq:degree-order}. This set is nonempty. Order the vertices by
 non-increasing degree, choose any order inside each degree class, and assign
 the labels \(0,1,\ldots,n-1\) in that order. The set \(\mathcal A\) is finite
 because it is a subset of the finite set of all bijective labellings.
@@ -244,11 +252,11 @@ Take \(v,w\in V\) with \(d(v)=d(w)\) and \(f(w)<f(v)\). Put
 \]
 and
 \[
-  A_v=\sum_{\substack{u\in N(v)\\u\ne w}}c_{f(u)},qquad
+  A_v=\sum_{\substack{u\in N(v)\\u\ne w}}c_{f(u)},\qquad
   A_w=\sum_{\substack{u\in N(w)\\u\ne v}}c_{f(u)}.
   \tag{4.3}\label{eq:AvAw}
 \]
-Strict increase in \eqref{eq:strict-weights} gives \(b<a\). Let \(f'\) be
+Strict increase in \cref{eq:strict-weights} gives \(b<a\). Let \(f'\) be
 obtained from \(f\) by exchanging the labels of \(v\) and \(w\). Since
 \(d(v)=d(w)\), the exchanged labelling still belongs to \(\mathcal A\).
 
@@ -263,24 +271,24 @@ disjoint and cover \(E\).
 \begin{figure}[ht]
   \centering
   \begin{tikzpicture}[line cap=round, line join=round]
-    \draw[very thick, oi-orange] (-1,2) -- (0,1) -- (-1,0);
-    \draw[very thick, oi-sky] (4,1) -- (5,2);
-    \draw[very thick, oi-sky] (4,1) -- (5,0);
-    \draw[very thick, oi-yellow] (0,1) -- (4,1);
-    \draw[very thick, oi-green] (1.8,3) -- (2.8,3);
+    \draw[very thick, oi-vermillion] (-1,2) -- (0,1) -- (-1,0);
+    \draw[very thick, oi-blue] (4,1) -- (5,2);
+    \draw[very thick, oi-blue] (4,1) -- (5,0);
+    \draw[very thick, oi-green] (0,1) -- (4,1);
+    \draw[very thick, black!65] (1.8,3) -- (2.8,3);
     \node[circle, draw=black, fill=oi-purple, minimum size=8mm] at (0,1) {$v$};
     \node[circle, draw=black, fill=oi-purple, minimum size=8mm] at (4,1) {$w$};
     \node[circle, draw=black, fill=white, minimum size=7mm] at (-1,2) {};
     \node[circle, draw=black, fill=white, minimum size=7mm] at (-1,0) {};
     \node[circle, draw=black, fill=white, minimum size=7mm] at (5,2) {};
     \node[circle, draw=black, fill=white, minimum size=7mm] at (5,0) {};
-    \node[circle, draw=black, fill=white, minimum size=7mm] at (1.8,3) {};
-    \node[circle, draw=black, fill=white, minimum size=7mm] at (2.8,3) {};
-    \node[font=\small, align=left] at (1.0,-0.75)
-      {\textcolor{oi-orange}{$E_v$: incident with $v$ only}\\
-       \textcolor{oi-sky}{$E_w$: incident with $w$ only}\\
-       \textcolor{oi-yellow}{$E_{vw}$: incident with both}\\
-       \textcolor{oi-green}{$E_0$: incident with neither}};
+    \node[circle, draw=black!65, fill=white, minimum size=7mm] at (1.8,3) {};
+    \node[circle, draw=black!65, fill=white, minimum size=7mm] at (2.8,3) {};
+    \node[font=\small, align=left, anchor=north west] at (-1.0,-0.45)
+      {\textcolor{oi-vermillion}{$E_v$: incident with $v$ only}\\
+       \textcolor{oi-blue}{$E_w$: incident with $w$ only}\\
+       \textcolor{oi-green}{$E_{vw}$: incident with both}\\
+       \textcolor{black!65}{$E_0$: incident with neither}};
   \end{tikzpicture}
   \caption{The four colours identify the four disjoint edge classes in the edge-potential comparison for the vertices \(v\) and \(w\).}
   \label{fig:edge-classes}
@@ -299,21 +307,21 @@ nonempty, its sole edge contributes \(ab\) before and after the exchange. Hence
   \tag{4.4}\label{eq:swap-identity}
 \]
 Minimality of \(f\) gives \(\Phi(f')-\Phi(f)\geq0\). Since \(a-b>0\),
-\eqref{eq:swap-identity} implies
+\cref{eq:swap-identity} implies
 \[
   A_v\leq A_w.
   \tag{4.5}\label{eq:Av-le-Aw}
 \]
 
-With the notation \(S_v^{(c)}(f)\) from \eqref{eq:neighbour-sum}, if \(v\sim w\), then
+With the notation \(S_v^{(c)}(f)\) from \cref{eq:neighbour-sum}, if \(v\sim w\), then
 \[
-  S_v^{(c)}(f)=A_v+b,qquad S_w^{(c)}(f)=A_w+a.
+  S_v^{(c)}(f)=A_v+b,\qquad S_w^{(c)}(f)=A_w+a.
 \]
-Equation \eqref{eq:Av-le-Aw} and \(b<a\) imply
+\cref{eq:Av-le-Aw} and \(b<a\) imply
 \(S_v^{(c)}(f)\leq S_w^{(c)}(f)\). If \(v\not\sim w\), then
 \(S_v^{(c)}(f)=A_v\) and \(S_w^{(c)}(f)=A_w\), so the same inequality follows
-from \eqref{eq:Av-le-Aw}. Therefore \(f\) satisfies
-\eqref{eq:equal-degree-order}, which proves \cref{thm:strict-weights}.
+from \cref{eq:Av-le-Aw}. Therefore \(f\) satisfies
+\cref{eq:equal-degree-order}, which proves \cref{thm:strict-weights}.
 
 \section{Proof of Corollary~\ref{cor:powers-of-two}}
 
@@ -323,14 +331,14 @@ Apply \cref{thm:strict-weights} to the function
   \tag{5.1}\label{eq:powers-function}
 \]
 This function is strictly increasing. The resulting inequalities are exactly
-\eqref{eq:corollary-degree} and \eqref{eq:corollary-sum}; the displayed sums
+\cref{eq:corollary-degree} and \cref{eq:corollary-sum}; the displayed sums
 are natural numbers.
 
 \section{Scope and limitations}
 
 The argument includes the empty graph and graphs with vertices but no edges.
 The conclusions assert existence and do not assert uniqueness. The minimiser
-of the edge potential \(\Phi\) defined in \eqref{eq:potential} is one
+of the edge potential \(\Phi\) defined in \cref{eq:potential} is one
 construction among possibly many labellings satisfying the degree order and the
 equal-degree neighbour-sum order. In the swap argument, \(a=c_{f(v)}\) and \(b=c_{f(w)}\) with
 \(f(w)<f(v)\), so strict increase gives \(b<a\). This is the step requiring
@@ -341,15 +349,10 @@ scope of the stated theorem.
 \section{Formal verification}
 
 The companion Lean 4 development formalises the definitions and proves the two
-theorems, including the finite-minimisation and label-swap lemmas. This source
-assigns the following names to the two theorem declarations. The general theorem is named
-\begin{quote}\small\ttfamily
-exists\_degreeOrdered\_labeling\_strictMonoWeights
-\end{quote}
-and the powers-of-two theorem is named
-\begin{quote}\small\ttfamily
-exists\_degreeOrdered\_labeling\_powersOfTwo
-\end{quote}
+theorems, including the finite-minimisation and label-swap lemmas. In the Lean
+development the two theorems are named
+\texttt{\small exists\_\allowbreak degreeOrdered\_\allowbreak labeling\_\allowbreak strictMonoWeights} and
+\texttt{\small exists\_\allowbreak degreeOrdered\_\allowbreak labeling\_\allowbreak powersOfTwo}.
 The formal representation treats the finite vertex set as a finite type, which is a set
 equipped with a finite enumeration, and uses an ordered set of \(n\) positions
 for labels. The weights are represented by a strictly increasing real-valued
@@ -359,12 +362,8 @@ dependencies; they are not hypotheses on the graph or on the weights.
 Propositional extensionality identifies logically equivalent propositions,
 choice selects an element from a nonempty collection, and quotient soundness
 supplies equality for equivalent representatives. The Lean names of these
-principles are:
-\begin{quote}\small\ttfamily
-propext\\
-Classical.choice\\
-Quot.sound
-\end{quote}
+principles are \texttt{propext}, \texttt{Classical.choice}, and
+\texttt{Quot.sound}.
 
 Each vertex is represented by one position in the finite
 ordered type, and a labelling is a bijection to that type. The edge potential is
