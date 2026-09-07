@@ -261,11 +261,16 @@ on vertex degree: Theorem 1 imposes neither hypothesis, so neither does its coro
 **No positivity assumption.** The weight sequence \(c_1 < \cdots < c_n\) in Theorem 1 is an
 arbitrary strictly increasing sequence of real numbers; the proof in Section 4 uses only that
 \(c\) is strictly increasing (to get \(a > b\) whenever \(f(v) > f(w)\)) and ordinary
-arithmetic of an ordered field. No step requires any \(c_k\) to be positive, and the theorem is
-false for merely non-decreasing (as opposed to strictly increasing) weights, since then the
-argument that \(a > b\) in Section 4.3 breaks down and equal-degree ties can no longer be
-resolved. Positivity is not needed even to make sense of the powers-of-two case, Theorem 2,
-where each \(c_k = 2^k\) happens to be positive but the proof does not use this.
+arithmetic of an ordered field. No step requires any \(c_k\) to be positive. Positivity is not
+needed even to make sense of the powers-of-two case, Theorem 2, where each \(c_k = 2^k\) happens
+to be positive but the proof does not use this.
+
+Strict monotonicity, by contrast, is used essentially: for a merely non-decreasing weight
+sequence, the step deriving \(a > b\) in Section 4.3 fails whenever \(c_{f(v)} = c_{f(w)}\), and
+the swap argument no longer forces \(S^{(c)}_v \le S^{(c)}_w\) for the minimiser. This shows only
+that the proof method of Section 4 does not extend to non-decreasing weights as it stands; it is
+not a demonstration that the labelling fails to exist for such weights, and this paper makes no
+claim either way about that case — see the Scope remark below.
 
 **Empty and edgeless graphs.** Theorem 1 and Theorem 2 make no standing assumption that \(G\)
 has any vertices or edges. When \(V = \varnothing\) (\(n = 0\)), the unique labelling of the
@@ -286,10 +291,11 @@ conditions; the proof produces one such labelling without claiming it is canonic
 **Scope.** The results above are the full content of what is proved. They do not address
 questions that arise naturally alongside the original hydrocarbon-graph motivation, such as
 enumeration of hydrocarbon graphs, canonical or unique molecular numbering, or the algorithmic
-complexity of computing the labelling; nor do they establish any strengthening beyond Theorem 1,
-such as extending the tie-order condition to a merely non-decreasing (rather than strictly
-increasing) weight sequence, which the remark on positivity above shows the proof method does
-not support.
+complexity of computing the labelling. Nor do they establish any strengthening beyond Theorem 1,
+such as an analogue of the tie-order condition for a merely non-decreasing (rather than strictly
+increasing) weight sequence: as the remark above explains, the proof method of Section 4 does
+not go through unchanged in that case, so whether such a strengthening is true is left open by
+this paper.
 
 ## 7. Formal verification
 
