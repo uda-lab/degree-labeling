@@ -15,10 +15,14 @@ list *are* the plan.
 The first Issue (M1) fixes the target's Lean statements before any proof: a `Contract.lean`
 (or equivalently named module) holding the main theorem(s) and the interface they quantify
 over, stated in the source's vocabulary, with proofs and data holes marked
-`sorry -- ALLOW_SORRY: #<M1> statement contract` and every convention choice written in the
-docstring (sign, normalisation, quantifier order, domain, topology). Its acceptance criteria:
-a judge distinct from the implementer records a source ↔ Lean audit on the Issue; the file
-compiles; the coverage guard pins every declaration. From then on **the statement text is
+`sorry -- ALLOW_SORRY: #<M1> statement contract`. When the repository's audit rejects
+`sorryAx` on pinned names and its coverage guard pins every public theorem (as
+`lean-formalization-scaffold` does), state the contract holes as `private theorem` so they are
+neither pinned nor public; the proving PR removes `private` and pins. Every convention choice
+is written in the docstring (sign, normalisation, quantifier order, domain, topology). Its
+acceptance criteria: a judge distinct from the implementer records a source ↔ Lean audit on the
+Issue; the file compiles; the coverage guard is unaffected (private holes are neither pinned nor
+public; the proving PR removes `private` and pins). From then on **the statement text is
 frozen**: a PR that changes it is statement-changing and needs the same audit again.
 
 ## 2. Block Issues
