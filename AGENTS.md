@@ -10,7 +10,7 @@
 ## Project Overview
 
 <!-- Managed section: update with apply input, or omit/pass [] to remove. -->
-- `DegreeLabeling` formalises `[P]` (`docs/math/references.md`): for every finite simple graph there exists a degree-respecting labelling (smaller degree gets the larger label) that among same-degree vertices orders labels by a weighted neighbour-sum tie-break — T1 for a general strictly increasing weight, T2 (the original problem) for the source's `2^f(u)` weight. The mathematical source of truth is `docs/math/degree_labeling.md`; its conventions are frozen by the statement-contract history, not amended here.
+- `DegreeLabeling` proves the two zero-based labelling theorems in `docs/math/degree_labeling.md`: arbitrary strictly increasing real weights and the natural-number powers-of-two case. Bibliographic data is in `docs/references.bib`.
 - Charter Issue #1 tracks scope, milestones and the definition of done; `docs/orchestration.md` maps the orchestrator/driver/worker/reviewer/judge roles, and `.claude/skills/degree-labeling-orchestration/SKILL.md` is this machine's container contract.
 
 ## Commands
@@ -29,7 +29,7 @@ scripts/github-setup.sh   # idempotent labels, squash-only, `main` ruleset
 - Accepted code has no `sorry`/`admit`; `-- ALLOW_SORRY: #<issue> …` on the same line is the only escape, for work an Issue authorises to land incomplete, and it never reaches a pinned theorem's closure.
 - No `axiom`/`constant`/`opaque`/`unsafe`; `-- ALLOW_AXIOM: #<issue> …` passes the textual guard, but `scripts/check-axioms.sh` still rejects it if it reaches the closure of a theorem pinned in `scripts/print_axioms.lean` (allowlist: propext, Classical.choice, Quot.sound; changing it is `needs-decision`). An authorised axiom unreachable from any pinned theorem is not caught by either guard — do not rely on `ALLOW_AXIOM:` alone to keep an unused axiom out of the codebase.
 - Never weaken, specialise or trivialise a statement to close a proof; statement-changing PRs need a source ↔ Lean review by an agent distinct from the implementer.
-- Every public theorem a PR claims is appended to `scripts/print_axioms.lean` (append-only; enforced by the coverage guard).
+- Every public theorem a PR claims is appended to `scripts/print_axioms.lean` (append-only by default; an owner-authorized migration may remove obsolete pins when its Issue explicitly requires it; enforced by the coverage guard).
 - Proof experiments, logs, plans and notes stay untracked (`.claude/scratch/`); the transient-artefact guard rejects status/roadmap/handoff-style documents.
 
 ## Architecture

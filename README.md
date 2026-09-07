@@ -1,66 +1,51 @@
 # DegreeLabeling
 
-DegreeLabeling formalises the source problem's two labelling results for finite simple
-undirected graphs. T1 says that, for any strictly increasing real weights with no positivity
-assumption, some degree-respecting bijective labelling orders equal-degree vertices so their
-weighted neighbour sums are non-decreasing in the reverse label order. T2 is the original
-powers-of-two corollary, using the source expression \(2^{f(u)}\). The primary source is [P]
-in `sources/problem.md`; its digest and the decided `Fin n` label shift are in
-`docs/math/degree_labeling.md`.
+For every finite simple graph, the development proves that a bijection from its
+vertices to \(0,\ldots,n-1\) can order vertices by decreasing degree and, within
+each degree class, order weighted neighbour sums for every strictly increasing real
+weight sequence. It also proves the powers-of-two case with natural-number sums,
+using \(2^k\) for the zero-based label \(k\).
 
-## Layout
+## Public results
 
-| Path | Role |
+| Mathematical statement | Lean declaration |
 |---|---|
-| `DegreeLabeling/`, `DegreeLabeling.lean` | Lean module tree and root aggregator |
-| `scripts/` | preflight, bootstrap, the canonical gate `check.sh`, integrity guards, GitHub setup, git hooks |
-| `scripts/print_axioms.lean` | append-only list of pinned public theorems for the live axiom audit |
-| `.claude/skills/` | scaffold procedure, project orchestration contract, decomposition and review-routing skills |
-| `.claude/hooks/`, `.claude/settings.json` | SessionStart brief; PreToolUse guard that serialises Lean builds and enforces the codex kill switch |
-| `.github/` | CI job `check`, Issue templates (formalization / infrastructure), PR template |
-| `docs/orchestration.md` | the minimal role, configuration and lifecycle guide |
-| `docs/adr/` | founding decisions: harness-driven, no state machine (0001); autonomous merge authority (0002) |
-| `docs/math/` | references and the source-grounded mathematical digest |
-
-## Results
-
-The public theorems are `DegreeLabeling.exists_degreeOrdered_labeling_strictMonoWeights`
-and `DegreeLabeling.exists_degreeOrdered_labeling_powersOfTwo`. T1 allows arbitrary
-strictly increasing real weights, with no positivity assumption; T2 is the literal
-real-valued, one-based powers-of-two specialization.
-
-See [`DegreeLabeling.lean`](DegreeLabeling.lean),
-[`DegreeLabeling/Contract.lean`](DegreeLabeling/Contract.lean), and
-[`docs/math/degree_labeling.md`](docs/math/degree_labeling.md). Release evidence:
-`CHECK OK`; 8 pinned public theorems; axiom closure within
-`{propext, Classical.choice, Quot.sound}`; final source↔Lean fidelity verdict `PASS`
-on charter Issue #1.
+| A finite simple graph has a degree-respecting labelling that orders weighted neighbour sums for every strictly increasing real weight function. | DegreeLabeling.exists_degreeOrdered_labeling_strictMonoWeights |
+| A finite simple graph has a zero-based degree-respecting labelling whose powers-of-two neighbour sums are ordered within each degree class. | DegreeLabeling.exists_degreeOrdered_labeling_powersOfTwo |
+| A degree-respecting labelling exists. | DegreeLabeling.admissibleLabeling_nonempty |
+| The edge potential attains a minimum on the finite admissible type. | DegreeLabeling.exists_minimal_edgePotential |
+| Exchanging equal-degree vertices preserves the degree-order condition. | DegreeLabeling.respectsDegreeOrder_swapVertices |
+| The edge-potential change under a label exchange equals the two omitted-neighbour sums formula. | DegreeLabeling.edgePotential_swapVertices_sub |
+| A potential-minimising admissible labelling orders equal-degree neighbour sums. | DegreeLabeling.minimizer_respectsEqualDegreeNeighborSums |
 
 ## Build
 
-```sh
-scripts/bootstrap.sh   # shared mathlib oleans and git hooks
-scripts/check.sh       # guards → lake build → live #print axioms audit → coverage guard
-```
+~~~sh
+scripts/bootstrap.sh
+scripts/check.sh
+~~~
 
-The toolchain is `lean-toolchain`; mathlib remains pinned by tag in `lakefile.toml` and by
-commit in `lake-manifest.json`. CI runs the textual guards and the full gate under the
-repository's pull-request rules.
+The check runs the repository guards, builds the library, audits the pinned
+declarations with #print axioms, and checks theorem coverage.
 
 ## Trust footprint
 
-Accepted theorems are `sorry`-free and their axiom closure is contained in
-`{propext, Classical.choice, Quot.sound}`; `scripts/check-axioms.sh` verifies this live for
-every declaration listed in `scripts/print_axioms.lean`; the coverage guard fails the gate if
-a public theorem is not listed.
+The accepted declarations contain no sorry. Their axiom closures are contained
+in {propext, Classical.choice, Quot.sound}. The live audit reads
+scripts/print_axioms.lean; the coverage check fails if a public theorem is not
+pinned there.
 
-## Workflow
+## Repository layout
 
-GitHub Issues and pull requests are the only work queue and evidence record:
-Issue → branch → PR → independent review → CI → squash merge. See
-[docs/orchestration.md](docs/orchestration.md) for roles, configurations and lifecycle.
-No status, roadmap or progress files are tracked; agent scratch lives in `.claude/scratch/`.
+- DegreeLabeling/ contains the definitions and proof modules.
+- DegreeLabeling.lean is the library root.
+- scripts/ contains the gate and its supporting checks.
+- docs/math/degree_labeling.md contains the mathematical exposition.
+- docs/references.bib contains the bibliography.
+- .claude/skills/ and .claude/hooks/ contain the repository workflow guidance.
+
+The workflow is described in [docs/orchestration.md](docs/orchestration.md).
 
 ## License
 
-Apache-2.0, see `LICENSE`.
+Apache-2.0; see [LICENSE](LICENSE).

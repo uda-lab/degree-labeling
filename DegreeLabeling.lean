@@ -1,12 +1,15 @@
--- DegreeLabeling: library root. Every library module is imported here so that
--- `import DegreeLabeling` (as used by scripts/print_axioms.lean and the coverage guard)
--- reaches all of them. A module missing here fails scripts/check-axiom-coverage.sh.
-import DegreeLabeling.Basic
-import DegreeLabeling.Contract
+import DegreeLabeling.Defs
 import DegreeLabeling.EdgePotential
 import DegreeLabeling.SwapPotential
 import DegreeLabeling.Minimizer
 import DegreeLabeling.Admissible
+
+/-!
+# Degree-respecting labellings
+
+This root module collects the definitions and lemmas proving the existence of
+degree-respecting labellings with ordered weighted neighbour sums.
+-/
 
 namespace DegreeLabeling
 
@@ -14,6 +17,9 @@ universe u
 
 variable {V : Type u} [Fintype V]
 
+/-- Every finite simple graph has a degree-respecting labelling whose weighted
+neighbour sums are ordered among equal-degree vertices for any strictly
+increasing real weight function. -/
 theorem exists_degreeOrdered_labeling_strictMonoWeights
     (G : SimpleGraph V)
     (c : Fin (Fintype.card V) → ℝ)
@@ -23,14 +29,30 @@ theorem exists_degreeOrdered_labeling_strictMonoWeights
     (admissibleLabeling_nonempty G)
   exact ⟨f.1, f.2, minimizer_respectsEqualDegreeNeighborSums G c hc f hmin⟩
 
+open scoped Classical in
+/-- Every finite simple graph has a zero-based labelling satisfying the degree
+order and the corresponding natural-number powers-of-two inequalities. -/
 theorem exists_degreeOrdered_labeling_powersOfTwo
     (G : SimpleGraph V) :
-    HasDegreeOrderedNeighborSumLabeling G
-      (fun i : Fin (Fintype.card V) =>
-        (2 : ℝ) ^ (i.val + 1)) := by
-  apply exists_degreeOrdered_labeling_strictMonoWeights G
-  exact (pow_right_strictMono₀ one_lt_two).comp (by
-    intro i j hij
-    exact Nat.add_lt_add_right (Fin.mk_lt_mk.mp hij) 1)
+    ∃ f : V ≃ Fin (Fintype.card V),
+      RespectsDegreeOrder G f ∧
+        ∀ v w : V,
+          G.degree v = G.degree w →
+          f w < f v →
+          (∑ u ∈ G.neighborFinset v, 2 ^ (f u : ℕ)) ≤
+            ∑ u ∈ G.neighborFinset w, 2 ^ (f u : ℕ) := by
+  let c : Fin (Fintype.card V) → ℝ := fun i => (2 : ℝ) ^ (i : ℕ)
+  have hc : StrictMono c := by
+    exact (pow_right_strictMono₀ one_lt_two).comp (by
+      intro i j hij
+      exact Fin.mk_lt_mk.mp hij)
+  obtain ⟨f, hdegree, hsum⟩ :=
+    exists_degreeOrdered_labeling_strictMonoWeights G c hc
+  refine ⟨f, hdegree, ?_⟩
+  intro v w hdeg hlabel
+  have hreal := hsum v w hdeg hlabel
+  change (∑ u ∈ G.neighborFinset v, (2 : ℝ) ^ (f u : ℕ)) ≤
+    ∑ u ∈ G.neighborFinset w, (2 : ℝ) ^ (f u : ℕ) at hreal
+  exact_mod_cast hreal
 
 end DegreeLabeling

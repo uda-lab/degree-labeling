@@ -3,10 +3,19 @@ import Mathlib.Tactic
 
 namespace DegreeLabeling
 
+/-!
+# The minimising labelling
+
+This module uses the swap formula and potential minimality to prove the ordered
+neighbour-sum condition for a degree-respecting minimiser.
+-/
+
 universe u
 
 variable {V : Type u} [Fintype V]
 
+/-- A potential-minimising admissible labelling orders the neighbour sums among
+equal-degree vertices. -/
 theorem minimizer_respectsEqualDegreeNeighborSums
     (G : SimpleGraph V)
     (c : Fin (Fintype.card V) → ℝ)
@@ -17,8 +26,7 @@ theorem minimizer_respectsEqualDegreeNeighborSums
         edgePotential G c f.1 ≤ edgePotential G c g.1) :
     RespectsEqualDegreeNeighborSums G c f.1 := by
   classical
-  intro v w hvw
-  rcases hvw with ⟨hdeg, hlabel⟩
+  intro v w hdeg hlabel
   have hvw_ne : v ≠ w := by
     intro h
     subst w
@@ -31,10 +39,7 @@ theorem minimizer_respectsEqualDegreeNeighborSums
       0 ≤ edgePotential G c (swapVertices f.1 v w) - edgePotential G c f.1 :=
     sub_nonneg.mpr hpot
   rw [edgePotential_swapVertices_sub G c f.1 hvw_ne] at hdiff
-  have hfin : f.1 w < f.1 v := by
-    apply Fin.mk_lt_mk.mpr
-    simpa [sourceLabel] using hlabel
-  have hweight : c (f.1 w) < c (f.1 v) := hc hfin
+  have hweight : c (f.1 w) < c (f.1 v) := hc hlabel
   have hsum :
       neighborSumExcept G c f.1 v w ≤ neighborSumExcept G c f.1 w v := by
     nlinarith
