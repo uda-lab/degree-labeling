@@ -31,8 +31,8 @@ For a finite simple graph on \(n\) vertices, a zero-based labelling is a
 bijection to the integers from \(0\) to \(n-1\). For every strictly increasing
 real sequence \(c_0<\cdots<c_{n-1}\), there is a
 zero-based labelling \(f\) that orders vertices by non-increasing degree and,
-within each degree class, gives the larger label to the vertex with no larger
-neighbour sum. The neighbour sum at a vertex is the sum of \(c_{f(u)}\) over
+within each degree class the vertex with the larger label has the smaller or
+equal neighbour sum. The neighbour sum at a vertex is the sum of \(c_{f(u)}\) over
 all neighbours \(u\). The weights may be
 arbitrary real numbers; only strict increase is required. Choosing \(c_i=2^i\)
 yields the powers-of-two case, in which the neighbour sums are natural numbers.
@@ -205,19 +205,18 @@ the label swap used in the proof.
     \draw[very thick] (0,0) -- (2,1) -- (4,1) -- (6,0);
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
       inner sep=1pt, align=center] (bad-a) at (0,0) {$a$\\[-1pt]$f(a)=2$\\[-1pt]$S=1$};
-    \node[circle, draw=black, very thick, fill=oi-blue, minimum size=15mm,
+    \node[circle, draw=oi-vermillion, very thick, fill=oi-blue, minimum size=15mm,
       inner sep=1pt, align=center] (bad-b) at (2,1) {$b$\\[-1pt]$f(b)=0$\\[-1pt]$S=6$};
-    \node[circle, draw=black, very thick, fill=oi-blue, minimum size=15mm,
+    \node[circle, draw=oi-vermillion, very thick, fill=oi-blue, minimum size=15mm,
       inner sep=1pt, align=center] (bad-x) at (4,1) {$x$\\[-1pt]$f(x)=1$\\[-1pt]$S=9$};
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
       inner sep=1pt, align=center] (bad-y) at (6,0) {$y$\\[-1pt]$f(y)=3$\\[-1pt]$S=2$};
     \draw[->, very thick, oi-vermillion] (2,2.15) to[bend left=18]
       node[above, font=\small, text=black] {swap} (4,2.15);
-    \draw[very thick, oi-vermillion] (2.65,1.27) -- (3.35,1.27);
     \node[font=\small, text=oi-vermillion, align=center] at (3,3.0)
       {the displayed sum at $x$ exceeds that at $b$};
   \end{tikzpicture}
-  \caption{The same graph has a degree-respecting labelling for which \eqref{eq:equal-degree-order} fails at the marked central pair; the red arrow shows the exchange of their labels.}
+  \caption{The same graph has a degree-respecting labelling for which \eqref{eq:equal-degree-order} fails at the central pair marked by red borders; the red arrow shows the exchange of their labels.}
   \label{fig:bad-labelling}
 \end{figure}
 
@@ -244,7 +243,7 @@ Take \(v,w\in V\) with \(d(v)=d(w)\) and \(f(w)<f(v)\). Put
 \]
 and
 \[
-  A_v=\sum_{\substack{u\in N(v)\\u\ne w}}c_{f(u)},qquad
+  A_v=\sum_{\substack{u\in N(v)\\u\ne w}}c_{f(u)},\qquad
   A_w=\sum_{\substack{u\in N(w)\\u\ne v}}c_{f(u)}.
   \tag{4.3}\label{eq:AvAw}
 \]
@@ -263,24 +262,24 @@ disjoint and cover \(E\).
 \begin{figure}[ht]
   \centering
   \begin{tikzpicture}[line cap=round, line join=round]
-    \draw[very thick, oi-orange] (-1,2) -- (0,1) -- (-1,0);
-    \draw[very thick, oi-sky] (4,1) -- (5,2);
-    \draw[very thick, oi-sky] (4,1) -- (5,0);
-    \draw[very thick, oi-yellow] (0,1) -- (4,1);
-    \draw[very thick, oi-green] (1.8,3) -- (2.8,3);
+    \draw[very thick, oi-vermillion] (-1,2) -- (0,1) -- (-1,0);
+    \draw[very thick, oi-blue] (4,1) -- (5,2);
+    \draw[very thick, oi-blue] (4,1) -- (5,0);
+    \draw[very thick, oi-green] (0,1) -- (4,1);
+    \draw[very thick, black!65] (1.8,3) -- (2.8,3);
     \node[circle, draw=black, fill=oi-purple, minimum size=8mm] at (0,1) {$v$};
     \node[circle, draw=black, fill=oi-purple, minimum size=8mm] at (4,1) {$w$};
     \node[circle, draw=black, fill=white, minimum size=7mm] at (-1,2) {};
     \node[circle, draw=black, fill=white, minimum size=7mm] at (-1,0) {};
     \node[circle, draw=black, fill=white, minimum size=7mm] at (5,2) {};
     \node[circle, draw=black, fill=white, minimum size=7mm] at (5,0) {};
-    \node[circle, draw=black, fill=white, minimum size=7mm] at (1.8,3) {};
-    \node[circle, draw=black, fill=white, minimum size=7mm] at (2.8,3) {};
-    \node[font=\small, align=left] at (1.0,-0.75)
-      {\textcolor{oi-orange}{$E_v$: incident with $v$ only}\\
-       \textcolor{oi-sky}{$E_w$: incident with $w$ only}\\
-       \textcolor{oi-yellow}{$E_{vw}$: incident with both}\\
-       \textcolor{oi-green}{$E_0$: incident with neither}};
+    \node[circle, draw=black!65, fill=white, minimum size=7mm] at (1.8,3) {};
+    \node[circle, draw=black!65, fill=white, minimum size=7mm] at (2.8,3) {};
+    \node[font=\small, align=left, anchor=north west] at (-1.0,-0.45)
+      {\textcolor{oi-vermillion}{$E_v$: incident with $v$ only}\\
+       \textcolor{oi-blue}{$E_w$: incident with $w$ only}\\
+       \textcolor{oi-green}{$E_{vw}$: incident with both}\\
+       \textcolor{black!65}{$E_0$: incident with neither}};
   \end{tikzpicture}
   \caption{The four colours identify the four disjoint edge classes in the edge-potential comparison for the vertices \(v\) and \(w\).}
   \label{fig:edge-classes}
@@ -307,7 +306,7 @@ Minimality of \(f\) gives \(\Phi(f')-\Phi(f)\geq0\). Since \(a-b>0\),
 
 With the notation \(S_v^{(c)}(f)\) from \eqref{eq:neighbour-sum}, if \(v\sim w\), then
 \[
-  S_v^{(c)}(f)=A_v+b,qquad S_w^{(c)}(f)=A_w+a.
+  S_v^{(c)}(f)=A_v+b,\qquad S_w^{(c)}(f)=A_w+a.
 \]
 Equation \eqref{eq:Av-le-Aw} and \(b<a\) imply
 \(S_v^{(c)}(f)\leq S_w^{(c)}(f)\). If \(v\not\sim w\), then
@@ -341,15 +340,10 @@ scope of the stated theorem.
 \section{Formal verification}
 
 The companion Lean 4 development formalises the definitions and proves the two
-theorems, including the finite-minimisation and label-swap lemmas. This source
-assigns the following names to the two theorem declarations. The general theorem is named
-\begin{quote}\small\ttfamily
-exists\_degreeOrdered\_labeling\_strictMonoWeights
-\end{quote}
-and the powers-of-two theorem is named
-\begin{quote}\small\ttfamily
-exists\_degreeOrdered\_labeling\_powersOfTwo
-\end{quote}
+theorems, including the finite-minimisation and label-swap lemmas. In the Lean
+development the two theorems are named
+\texttt{\small exists\_\allowbreak degreeOrdered\_\allowbreak labeling\_\allowbreak strictMonoWeights} and
+\texttt{\small exists\_\allowbreak degreeOrdered\_\allowbreak labeling\_\allowbreak powersOfTwo}.
 The formal representation treats the finite vertex set as a finite type, which is a set
 equipped with a finite enumeration, and uses an ordered set of \(n\) positions
 for labels. The weights are represented by a strictly increasing real-valued
@@ -359,12 +353,8 @@ dependencies; they are not hypotheses on the graph or on the weights.
 Propositional extensionality identifies logically equivalent propositions,
 choice selects an element from a nonempty collection, and quotient soundness
 supplies equality for equivalent representatives. The Lean names of these
-principles are:
-\begin{quote}\small\ttfamily
-propext\\
-Classical.choice\\
-Quot.sound
-\end{quote}
+principles are \texttt{propext}, \texttt{Classical.choice}, and
+\texttt{Quot.sound}.
 
 Each vertex is represented by one position in the finite
 ordered type, and a labelling is a bijection to that type. The edge potential is
