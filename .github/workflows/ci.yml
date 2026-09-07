@@ -92,8 +92,10 @@ jobs:
         include:
           - root_file: docs/paper/degree_labeling.tex
             pdf_file: docs/paper/degree_labeling.pdf
+            artifact_name: degree-labeling-paper
           - root_file: docs/ja/formalization-report.tex
             pdf_file: docs/ja/formalization-report.pdf
+            artifact_name: formalization-report
     steps:
       - uses: actions/checkout@v4
 
@@ -102,6 +104,7 @@ jobs:
         uses: xu-cheng/latex-action@v3
         with:
           root_file: ${{ matrix.root_file }}
+          work_in_root_file_dir: true
           latexmk_use_xelatex: false
 
       - name: Skip missing LaTeX document
@@ -112,6 +115,6 @@ jobs:
         if: ${{ hashFiles(matrix.pdf_file) != '' }}
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.event.repository.name }}-${{ strategy.job-index }}-${{ matrix.root_file }}
+          name: ${{ github.event.repository.name }}-${{ strategy.job-index }}-${{ matrix.artifact_name }}
           path: ${{ matrix.pdf_file }}
           if-no-files-found: ignore
