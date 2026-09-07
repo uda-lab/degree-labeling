@@ -10,7 +10,7 @@
 # Logs and proof-experiment output are never tracked (scripts/check-transient-artifacts.sh)
 *.log
 
-# Source papers/preprints stay local (copyright, size); cite them in docs/math/references.md
+# Source papers/preprints stay local (copyright, size); cite them in docs/references.bib
 /sources/
 
 # Agent scratch: plans, review evidence, work notes, dispatch prompts — disposable by policy

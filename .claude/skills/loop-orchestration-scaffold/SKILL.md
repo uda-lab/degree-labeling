@@ -80,8 +80,8 @@ review route. Dispatch a **driver (routine tier)** with the checklist below, or 
 yourself only when no subagent facility exists.
 
 1. `bash scripts/rename-project.sh <LibraryName>`; then `bash scripts/check.sh`.
-2. `docs/math/references.md`: every primary source with a stable identifier and a citation
-   key. Papers go to `sources/` (gitignored), never into the tree.
+2. `docs/references.bib`: every primary source with a stable identifier and a citation key.
+   Papers go to `sources/` (gitignored), never into the tree.
 3. `docs/math/<digest>.md`: the target theorem(s) verbatim, definitions, the lemma route the
    source uses, and every convention the Lean encoding will commit to. Dispatch a **judge
    (reasoning tier, read-only, skills: `sot-integrity`, `math-semantic-preservation`)** to

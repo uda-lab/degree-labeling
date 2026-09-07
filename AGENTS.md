@@ -10,7 +10,7 @@
 ## Project Overview
 
 <!-- Managed section: update with apply input, or omit/pass [] to remove. -->
-- `DegreeLabeling` formalises `[P]` (`docs/math/references.md`): for every finite simple graph there exists a degree-respecting labelling (smaller degree gets the larger label) that among same-degree vertices orders labels by a weighted neighbour-sum tie-break — T1 for a general strictly increasing weight, T2 (the original problem) for the source's `2^f(u)` weight. The mathematical source of truth is `docs/math/degree_labeling.md`; its conventions are frozen by the statement-contract history, not amended here.
+- `DegreeLabeling` proves the two zero-based labelling theorems in `docs/math/degree_labeling.md`: arbitrary strictly increasing real weights and the natural-number powers-of-two case. Bibliographic data is in `docs/references.bib`.
 - Charter Issue #1 tracks scope, milestones and the definition of done; `docs/orchestration.md` maps the orchestrator/driver/worker/reviewer/judge roles, and `.claude/skills/degree-labeling-orchestration/SKILL.md` is this machine's container contract.
 
 ## Commands

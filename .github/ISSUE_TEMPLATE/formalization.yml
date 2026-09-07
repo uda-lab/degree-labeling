@@ -9,7 +9,8 @@ body:
         Do not apply `agent:ready` yourself. Before it is applied to source-sensitive work, an agent
         distinct from the eventual implementer audits the primary source against the literal claim below
         and records the audit in this Issue. The digest under `docs/math/` is the working mathematical
-        source of truth; the primary papers (`docs/math/references.md`) win on any conflict.
+        source of truth; bibliographic data is recorded in `docs/references.bib`, while primary
+        papers remain outside the repository and win on any conflict.
   - type: input
     id: source
     attributes:

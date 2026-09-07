@@ -5,16 +5,26 @@ open scoped BigOperators
 
 namespace DegreeLabeling
 
+/-!
+# Swapping two labels
+
+This module proves the effect of exchanging two vertex labels on the edge
+potential. The calculation partitions the edge set according to incidence with
+the two vertices and treats their possible connecting edge separately.
+-/
+
 universe u
 
 variable {V : Type u} [Fintype V]
 
+/-- The labelling obtained by exchanging the labels of two vertices. -/
 noncomputable def swapVertices
     (f : Labeling V) (v w : V) : Labeling V := by
   classical
   exact (Equiv.swap v w).trans f
 
 open scoped Classical in
+/-- Exchanging equal-degree vertices preserves the degree-order condition. -/
 theorem respectsDegreeOrder_swapVertices
     (G : SimpleGraph V)
     (f : Labeling V)
@@ -38,8 +48,9 @@ theorem respectsDegreeOrder_swapVertices
     rw [hdegree_swap, hdegree_swap]
     exact hxy
   have h := hf (Equiv.swap v w x) (Equiv.swap v w y) hxy'
-  simpa [sourceLabel, swapVertices] using h
+  simpa [swapVertices] using h
 
+/-- The weighted neighbour sum with one specified vertex omitted. -/
 noncomputable def neighborSumExcept
     (G : SimpleGraph V)
     (c : Fin (Fintype.card V) → ℝ)
@@ -48,6 +59,7 @@ noncomputable def neighborSumExcept
   classical
   exact ∑ u ∈ (G.neighborFinset v).erase excluded, c (f u)
 
+/-- The change in edge potential under a label exchange. -/
 theorem edgePotential_swapVertices_sub
     (G : SimpleGraph V)
     (c : Fin (Fintype.card V) → ℝ)

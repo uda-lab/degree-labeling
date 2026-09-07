@@ -92,9 +92,9 @@ pin, budget). Everything else is decided and recorded on the Issue.
 `references/dispatch-prompt.md` of `loop-orchestration-scaffold`, every placeholder filled,
 plus these repository traps learned so far:
 
-- The `Fin n` source-label shift, the exact T2 exponent `f(u).val + 1`, empty graphs, no
-  positivity assumption, the S2 finite minimisation domain, S4 edge bookkeeping, the shared
-  build lock, and the sandbox-disabled requirement (see `docs/math/degree_labeling.md`).
+- Zero-based `Fin n` labels, the exact T2 exponent `(f u : ℕ)`, empty graphs, no positivity
+  assumption, the finite minimisation domain, four-class edge bookkeeping, the shared build
+  lock, and the sandbox-disabled requirement (see `docs/math/degree_labeling.md`).
 - `scripts/rename-project.sh` substitutes the library name by whole word everywhere it
   appears, including comments and hook scripts describing the *uninitialised* scaffold; the
   prose still needs a hand rewrite afterwards.

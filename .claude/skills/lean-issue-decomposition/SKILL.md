@@ -12,7 +12,7 @@ list *are* the plan.
 
 ## 1. Statement contract first
 
-The first Issue (M1) fixes the target's Lean statements before any proof: a `Contract.lean`
+The first Issue (M1) fixes the target's Lean statements before any proof: a `Defs.lean`
 (or equivalently named module) holding the main theorem(s) and the interface they quantify
 over, stated in the source's vocabulary, with proofs and data holes marked
 `sorry -- ALLOW_SORRY: #<M1> statement contract`. When the repository's audit rejects
