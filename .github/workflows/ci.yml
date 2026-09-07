@@ -81,3 +81,26 @@ jobs:
       - name: Build skipped (no build-relevant changes)
         if: steps.changes.outputs.build != 'true'
         run: echo "No Lean sources, build config, scripts or workflows changed; textual guards passed."
+
+  latex:
+    name: latex
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        include:
+          - root_file: docs/ja/formalization-report.tex
+            artifact_name: japanese-formalization-report
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ${{ matrix.root_file }}
+          latexmk_use_lualatex: true
+          args: -interaction=nonstopmode -halt-on-error
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: docs/ja/formalization-report.pdf
