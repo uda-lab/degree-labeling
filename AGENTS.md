@@ -29,7 +29,7 @@ scripts/github-setup.sh   # idempotent labels, squash-only, `main` ruleset
 - Accepted code has no `sorry`/`admit`; `-- ALLOW_SORRY: #<issue> …` on the same line is the only escape, for work an Issue authorises to land incomplete, and it never reaches a pinned theorem's closure.
 - No `axiom`/`constant`/`opaque`/`unsafe`; `-- ALLOW_AXIOM: #<issue> …` passes the textual guard, but `scripts/check-axioms.sh` still rejects it if it reaches the closure of a theorem pinned in `scripts/print_axioms.lean` (allowlist: propext, Classical.choice, Quot.sound; changing it is `needs-decision`). An authorised axiom unreachable from any pinned theorem is not caught by either guard — do not rely on `ALLOW_AXIOM:` alone to keep an unused axiom out of the codebase.
 - Never weaken, specialise or trivialise a statement to close a proof; statement-changing PRs need a source ↔ Lean review by an agent distinct from the implementer.
-- Every public theorem a PR claims is appended to `scripts/print_axioms.lean` (append-only; enforced by the coverage guard).
+- Every public theorem a PR claims is appended to `scripts/print_axioms.lean` (append-only by default; an owner-authorized migration may remove obsolete pins when its Issue explicitly requires it; enforced by the coverage guard).
 - Proof experiments, logs, plans and notes stay untracked (`.claude/scratch/`); the transient-artefact guard rejects status/roadmap/handoff-style documents.
 
 ## Architecture

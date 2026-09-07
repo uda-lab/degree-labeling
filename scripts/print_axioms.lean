@@ -3,7 +3,8 @@
 --
 -- Append one `#print axioms` line for every public theorem a PR claims as a result
 -- (scripts/check-axiom-coverage.sh fails the gate when one is missing).
--- APPEND-ONLY: removing or renaming a line is a `needs-decision` change.
+-- APPEND-ONLY BY DEFAULT: removing or renaming a line requires an explicit owner-authorized
+-- migration decision in the governing Issue.
 import DegreeLabeling
 
 #print axioms DegreeLabeling.exists_minimal_edgePotential
