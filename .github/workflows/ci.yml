@@ -93,9 +93,11 @@ jobs:
           - root_file: docs/paper/degree_labeling.tex
             pdf_file: docs/paper/degree_labeling.pdf
             artifact_name: degree-labeling-paper
+            use_lualatex: false
           - root_file: docs/ja/formalization-report.tex
             pdf_file: docs/ja/formalization-report.pdf
             artifact_name: formalization-report
+            use_lualatex: true
     steps:
       - uses: actions/checkout@v4
 
@@ -105,6 +107,7 @@ jobs:
         with:
           root_file: ${{ matrix.root_file }}
           work_in_root_file_dir: true
+          latexmk_use_lualatex: ${{ matrix.use_lualatex }}
           latexmk_use_xelatex: false
 
       - name: Skip missing LaTeX document
