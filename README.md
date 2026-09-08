@@ -1,17 +1,17 @@
 # DegreeLabeling
 
-For every finite simple graph, the development proves that a bijection from its
-vertices to \(0,\ldots,n-1\) can order vertices by decreasing degree and, within
-each degree class, order weighted neighbour sums for every strictly increasing real
-weight sequence. It also proves the powers-of-two case with natural-number sums,
-using \(2^k\) for the zero-based label \(k\).
+For every finite simple graph with \(n\) vertices, the development proves that a
+bijection from its vertices to \(n\) ordered labels can order vertices by decreasing
+degree and, within each degree class, order weighted neighbour sums for every
+strictly increasing real weight function. It also proves the powers-of-two case,
+using \(2^{f(u)}\) for the label \(f(u)\) of a neighbour \(u\).
 
 ## Public results
 
 | Mathematical statement | Lean declaration |
 |---|---|
 | A finite simple graph has a degree-respecting labelling that orders weighted neighbour sums for every strictly increasing real weight function. | DegreeLabeling.exists_degreeOrdered_labeling_strictMonoWeights |
-| A finite simple graph has a zero-based degree-respecting labelling whose powers-of-two neighbour sums are ordered within each degree class. | DegreeLabeling.exists_degreeOrdered_labeling_powersOfTwo |
+| A finite simple graph has a degree-respecting labelling whose powers-of-two neighbour sums are ordered within each degree class. | DegreeLabeling.exists_degreeOrdered_labeling_powersOfTwo |
 | A degree-respecting labelling exists. | DegreeLabeling.admissibleLabeling_nonempty |
 | The edge potential attains a minimum on the finite admissible type. | DegreeLabeling.exists_minimal_edgePotential |
 | Exchanging equal-degree vertices preserves the degree-order condition. | DegreeLabeling.respectsDegreeOrder_swapVertices |
