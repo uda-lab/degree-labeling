@@ -83,24 +83,41 @@ jobs:
         run: echo "No Lean sources, build config, scripts or workflows changed; textual guards passed."
 
   latex:
-    name: latex
+    name: latex (${{ matrix.root_file }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
+      fail-fast: false
       matrix:
         include:
+          - root_file: docs/paper/degree_labeling.tex
+            pdf_file: docs/paper/degree_labeling.pdf
+            artifact_name: degree-labeling-paper
+            use_lualatex: false
           - root_file: docs/ja/formalization-report.tex
-            artifact_name: japanese-formalization-report
+            pdf_file: docs/ja/formalization-report.pdf
+            artifact_name: formalization-report
+            use_lualatex: true
     steps:
       - uses: actions/checkout@v4
+
       - name: Build LaTeX document
+        if: ${{ hashFiles(matrix.root_file) != '' }}
         uses: xu-cheng/latex-action@v3
         with:
           root_file: ${{ matrix.root_file }}
-          latexmk_use_lualatex: true
-          args: -interaction=nonstopmode -halt-on-error
-      - name: Upload PDF
+          work_in_root_file_dir: true
+          latexmk_use_lualatex: ${{ matrix.use_lualatex }}
+          latexmk_use_xelatex: false
+
+      - name: Skip missing LaTeX document
+        if: ${{ hashFiles(matrix.root_file) == '' }}
+        run: echo "Skipping missing ${{ matrix.root_file }}"
+
+      - name: Upload PDF artefact
+        if: ${{ hashFiles(matrix.pdf_file) != '' }}
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact_name }}
-          path: docs/ja/formalization-report.pdf
+          name: ${{ github.event.repository.name }}-${{ strategy.job-index }}-${{ matrix.artifact_name }}
+          path: ${{ matrix.pdf_file }}
+          if-no-files-found: ignore
