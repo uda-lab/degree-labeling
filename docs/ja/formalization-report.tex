@@ -72,7 +72,7 @@
 \maketitle
 
 \begin{abstract}
-有限単純無向グラフの頂点に，頂点数を $n$ としてラベル $0,\ldots,n-1$ を 1 つずつ割り当て，ラベル $i$ の重みを $c(i)$ とし，$i<j$ ならば $c(i)<c(j)$ と仮定する．次数の小さい頂点に大きいラベルを割り当て，さらに同じ次数の頂点では，大きいラベルをもつ頂点の隣接頂点の重みの和が小さくなるラベル付けの存在を示す．ラベル $1,\ldots,n$ と重み $2^k$ を用いる問題は，各ラベルから $1$ を引いたラベル $0,\ldots,n-1$ と重み $2^i$ を用いる設定と同値であり，近傍和は共通因子 $2$ だけ異なるため，対応する自然数の和の存在主張も成り立つ．証明では，次数条件を満たすラベル付けの中から辺の両端の重みの積の総和が最小のものをとり，同じ次数の 2 頂点のラベルを交換して比較する．Lean 4（定理証明支援系）による定義と証明を数学的な主張および証明手順と対応させる．
+有限単純無向グラフ $G=(V,E)$ の頂点数を $n=|V|$ とし，頂点へのラベル付けを全単射 $f:V\to\{0,\ldots,n-1\}$ とする．ラベル $i$ の重みを $c(i)$ とし，$i<j$ ならば $c(i)<c(j)$ と仮定し，頂点 $v$ の近傍を $N(v)$，重み付き近傍和を $\sum_{u\in N(v)}c(f(u))$ とする．次数の小さい頂点に大きいラベルを割り当て，さらに同じ次数の頂点では，大きいラベルをもつ頂点の重み付き近傍和が，小さいラベルをもつ頂点の重み付き近傍和以下となるラベル付けが存在し，特に重みが $2^i$ のとき，この比較は自然数の不等式として成り立つ．証明では，次数条件を満たすラベル付けの中から各辺の両端点の重みの積を全て足し合わせた値が最小のものをとり，同じ次数の 2 頂点のラベルを交換して比較する．Lean 4（定理証明支援系）による定義と証明を数学的な主張および証明手順と対応させる．
 \end{abstract}
 
 \section{問題と主張}
@@ -163,6 +163,7 @@
   有限単純無向グラフ $G=(V,E)$（$n=|V|$）に対して，全ての狭義単調増加な実数値関数 $c:I_n\to\mathbb R$ について，次数条件 \eqref{eq:degree-order} と同次数近傍和条件 \eqref{eq:neighbour-order} を同時に満たすラベル付け $f$ が存在する．
 \end{theorem}
 
+\needspace{12\baselineskip}
 \begin{corollary}[2 の冪の重み]\label{cor:powers}
   有限単純無向グラフ $G=(V,E)$（$n=|V|$）に対して，次数条件 \eqref{eq:degree-order} を満たすラベル付け $f$ であって，全ての $v,w\in V$ に対して
   \[
@@ -172,11 +173,11 @@
     \leq
     \sum_{u\in N(w)}2^{f(u)}
   \]
-  を満たすものが存在する．ここで両辺の和は自然数である．
+  を満たすものが存在する．
 \end{corollary}
 
 \begin{remark}
-  引用文献 \cite{smooth-pudding-2024} は，ラベルを $1,\ldots,n$ とし，ラベル $k$ の重みを $2^k$ とする問題設定を提示している．この問題では，次数の小さい頂点に大きいラベルを割り当て，同じ次数の 2 頂点では，ラベルが大きい頂点の重み付き近傍和がラベルが小さい頂点の重み付き近傍和以下となるラベル付けを求める．本稿の系2はこの問題の $I_n$ による表現に対応し，定理1は狭義単調増加な実数重みへ拡張する．ラベルを $1,\ldots,n$ とする表現で各ラベルに $1$ を加えると各重み付き近傍和は $2$ 倍になり，逆向きに $1$ を引くと各重み付き近傍和は $1/2$ 倍になるため，2つの表現は同値である．
+  引用文献 \cite{smooth-pudding-2024} は，ラベルを $1,\ldots,n$ とし，ラベル $k$ の重みを $2^k$ とする問題設定を提示している．引用文献の問題では，次数の小さい頂点に大きいラベルを割り当て，同じ次数の 2 頂点では，ラベルの大きい頂点の重み付き近傍和がラベルの小さい頂点のそれ以下となるラベル付けを求める．本稿の系2はこの問題の $I_n$ による表現に対応し，定理1は狭義単調増加な実数重みへ拡張する．ラベルを $1,\ldots,n$ とする表現で各ラベルに $1$ を加えると各重み付き近傍和は $2$ 倍になり，逆向きに $1$ を引くと各重み付き近傍和は $1/2$ 倍になるため，2つの表現は同値である．
 \end{remark}
 
 \section{定理1の証明}
@@ -190,26 +191,16 @@
 \]
 と定める．ラベル付けは有限個しかないので $\mathcal A$ は有限であり，$\Phi$ は $\mathcal A$ 上で最小値をとる．その最小値を与える $f\in\mathcal A$ をとる．
 
-定理1の同次数近傍和条件 \eqref{eq:neighbour-order} を示すため，$d(v)=d(w)$ かつ $f(w)<f(v)$ を満たす $v,w\in V$ をとる．この条件から $v\ne w$ が従う．
+定理1の同次数近傍和条件 \eqref{eq:neighbour-order} を示すため，$d(v)=d(w)$ かつ $f(w)<f(v)$ を満たす $v,w\in V$ をとる．$c$ は狭義単調増加であるから
 \[
   c(f(w))<c(f(v))
   \tag{4}\label{eq:weight-order}
 \]
 である．$v,w$ のラベルを交換してラベル付け $f'$ を構成する．交換後も全単射であり，$v,w$ の次数が等しいため $f'$ は次数条件を満たす．したがって $f'\in\mathcal A$ である．
 
-辺 $e$ が頂点 $x$ に接続するとは $x\in e$ を意味する．$v,w$ への接続関係で場合を分け，辺集合を次の 4 種類に分割する．
-\[
-\begin{aligned}
-  E_0&=\{e\in E:v\notin e,\ w\notin e\},\\
-  E_v&=\{e\in E:v\in e,\ w\notin e\},\\
-  E_w&=\{e\in E:v\notin e,\ w\in e\},\\
-  E_{vw}&=\{e\in E:v\in e,\ w\in e\}.
-\end{aligned}
-\tag{5}\label{eq:edge-classes}
-\]
-これら 4 集合は互いに交わらず，辺集合 $E$ の分割を与える．
+$v,w$ への接続関係で場合を分け，$E$ を，$v$ と $w$ のいずれにも接続しない辺の集合 $E_0$，$v$ のみに接続する辺の集合 $E_v$，$w$ のみに接続する辺の集合 $E_w$，両方に接続する辺の集合 $E_{vw}$ に分割する．
 
-\begin{figure}[tbp]
+\begin{figure}[H]
   \centering
   \begin{tikzpicture}[x=1cm,y=1.25cm]
     \draw[edgev] (0,0) -- (1.8,1);
@@ -248,7 +239,7 @@ $E_v$ と $E_w$ の寄与を合わせると，
         -\sum_{u\in N(v)\setminus\{w\}}c(f(u))
       \right).
 \end{aligned}
-\tag{6}\label{eq:swap-identity}
+\tag{5}\label{eq:swap-identity}
 \end{equation}
 
 $f$ は $\Phi$ の最小値を与え，$f'\in\mathcal A$ であるため，$0\leq\Phi(f')-\Phi(f)$ である．式 \eqref{eq:weight-order} により $c(f(v))-c(f(w))>0$ であるから，式 \eqref{eq:swap-identity} より
@@ -256,7 +247,7 @@ $f$ は $\Phi$ の最小値を与え，$f'\in\mathcal A$ であるため，$0\le
   \sum_{u\in N(v)\setminus\{w\}}c(f(u))
   \leq
   \sum_{u\in N(w)\setminus\{v\}}c(f(u))
-  \tag{7}\label{eq:neighbour-sums-except}
+\tag{6}\label{eq:neighbour-sums-except}
 \]
 が従う．
 
@@ -272,7 +263,7 @@ $w\in N(v)$ かつ $v\in N(w)$ であるため，
   &=\sum_{u\in N(w)}c(f(u))
 \end{aligned}
 \]
-が成り立つ．ここでは式 \eqref{eq:neighbour-sums-except} と $c(f(w))<c(f(v))$ を用いた．
+が成り立つ．式 \eqref{eq:neighbour-sums-except} と $c(f(w))<c(f(v))$ を用いた．
 
 \paragraph{隣接しない場合．}
 $w\notin N(v)$ かつ $v\notin N(w)$ であるため，
@@ -288,27 +279,21 @@ $w\notin N(v)$ かつ $v\notin N(w)$ であるため，
 
 定理1において $c(i)=2^i\ (i\in I_n)$ とする．関数 $i\mapsto2^i$ は $I_n$ 上で狭義単調増加であるため，定理1を適用して，式 \eqref{eq:degree-order} と同次数近傍和条件の実数値版を満たすラベル付け $f$ をとる．各項は自然数であり，$\mathbb N$ から $\mathbb R$ への包含は順序を保つため，実数の不等式は系2の自然数の不等式になる．
 
-頂点も辺ももたないグラフを空グラフと呼ぶ．空グラフでは，辺ポテンシャル
-\[
-  \Phi(f)=\sum_{\{x,y\}\in E}c(f(x))c(f(y))
-\]
-が空和となる．頂点をもつが辺をもたないグラフでは，全ての $v\in V$ について
-\[
-  \sum_{u\in N(v)}c(f(u))=0
-\]
-であるため，同次数近傍和条件は成り立つ．定理1と系2は，空グラフを含む．
+頂点をもたないグラフや辺をもたないグラフでは全ての重み付き近傍和が $0$ であり，定理1と系2はそれらに対しても成り立つ．
 
-定理1と系2はラベル付けの存在を主張し，一意性や特定のラベル付けを主張しない．狭義単調増加性は式 \eqref{eq:swap-identity} から式 \eqref{eq:neighbour-sums-except} を導くために用いる．重みに単調非減少性だけを仮定する場合については，以上の結論を主張しない．
+定理1と系2はラベル付けの存在を主張し，一意性や特定のラベル付けを主張しない．狭義単調増加性は式 \eqref{eq:swap-identity} から式 \eqref{eq:neighbour-sums-except} を導くために用いる．
 
 \section{形式化との対応}
 
-Lean 4（定理証明支援系）と，その数学ライブラリ Mathlib の定義と補題を用いて，有限集合，実数，グラフを表す．以下の表に現れる英語の識別子は，この形式化で用いる定義または補題の名前である．Lean では，型が数学的対象の種類を表し，その型の要素が個々の対象を表す．有限性は，頂点を表す型 $V$ に \texttt{Fintype V} を備えさせることで表す．Lean 側では，頂点を表す型の要素数 \texttt{Fintype.card V} を数学の $n=|V|$ に対応させる．有限単純グラフ $G=(V,E)$ の隣接関係を，\texttt{SimpleGraph V} 型の要素 $G$ で表す．この型は，隣接関係が対称であり，どの頂点も自分自身には隣接しないという単純グラフの条件を表す．この関係から近傍集合と次数を定める．数学的なラベル付け $f:V\to I_n$ は，\texttt{Fin (Fintype.card V)}（要素が $0,\ldots,\texttt{Fintype.card V}-1$ を表す有限型）への全単射として表す．
+Lean 4（定理証明支援系）と数学ライブラリ Mathlib の定義と補題を用いる．以下の表に現れる英語の識別子は，形式化で用いる定義または補題の名前である．頂点を表す型 $V$ に \texttt{Fintype V} を備えて有限性を表し，\texttt{Fintype.card V} を数学の $n=|V|$ に対応させる．\texttt{Fin m} は $0,\ldots,m-1$ を要素とする型である．有限単純グラフ $G=(V,E)$ は \texttt{SimpleGraph V} 型の要素 $G$ で表し，数学的なラベル付け $f:V\to I_n$ は \texttt{Fin (Fintype.card V)} への全単射で表す．
 
-\begin{table}[tbp]
+\begin{table}[H]
   \centering
   \caption{数学的対象と Lean 4 の定義・補題の対応．}
   \label{tab:correspondence}
-  {\scriptsize
+  {\small
+  \renewcommand{\arraystretch}{0.75}
+  \setlength{\tabcolsep}{2pt}
   \begin{tabular}{p{0.57\linewidth}p{0.35\linewidth}}
     \toprule
 数学的内容 & Lean 4 の定義・補題 \\
@@ -317,20 +302,19 @@ Lean 4（定理証明支援系）と，その数学ライブラリ Mathlib の�
     頂点数 $n=|V|$ & \texttt{Fintype.card V} \\
     近傍 $N(v)$・次数 $d(v)$ & \texttt{G.neighborFinset v}・\texttt{G.degree v} \\
     ラベル付け $f:V\to I_n$ & \texttt{Labeling V} \\
-    重み付き近傍和 $\sum_{u\in N(v)}c(f(u))$ & \texttt{weightedNeighborSum} \\
+    重み付き近傍和 $\textstyle\sum_{u\in N(v)}c(f(u))$ & \texttt{weightedNeighborSum} \\
     次数条件 & \texttt{RespectsDegreeOrder} \\
-    同次数近傍和条件 $\sum_{u\in N(v)}c(f(u))\leq\sum_{u\in N(w)}c(f(u))$ & \texttt{RespectsEqualDegreeNeighborSums} \\
+    同次数近傍和条件（全ての $v,w\in V$ について，$d(v)=d(w)$ かつ $f(w)<f(v)$ ならば $\textstyle\sum_{u\in N(v)}c(f(u))\leq\textstyle\sum_{u\in N(w)}c(f(u))$） & \texttt{RespectsEqualDegreeNeighborSums} \\
     次数条件を満たすラベル付け全体 & \texttt{AdmissibleLabeling} \\
     辺ポテンシャル & \texttt{edgePotential} \\
     ラベル交換 & \texttt{swapVertices} \\
-    次数条件を満たすラベル付けの存在 & \texttt{admissibleLabeling\_nonempty} \\
-    最小辺ポテンシャルの存在 & \texttt{exists\_minimal\_edgePotential} \\
-    ラベル交換による辺ポテンシャルの差の恒等式 & \texttt{edgePotential\_swapVertices\_sub} \\
-    ラベル交換後も次数条件を満たすこと & \texttt{respectsDegreeOrder\_swapVertices} \\
-    最小辺ポテンシャルから同次数近傍和条件を導く補題 & \texttt{minimizer\_respectsEqualDegreeNeighborSums} \\
-    定理1の存在主張 & \texttt{exists\_degreeOrdered\_labeling\_}\\[-2pt]
-      \texttt{strictMonoWeights} \\
-    系2の存在主張 $\sum_{u\in N(v)}2^{f(u)}\leq\sum_{u\in N(w)}2^{f(u)}$ & \texttt{exists\_degreeOrdered\_labeling\_powersOfTwo} \\
+    次数条件を満たすラベル付けの存在 & \texttt{admissibleLabeling\_\allowbreak{}nonempty} \\
+    最小辺ポテンシャルの存在 & \texttt{exists\_\allowbreak{}minimal\_\allowbreak{}edgePotential} \\
+    ラベル交換による辺ポテンシャルの差の恒等式 & \texttt{edgePotential\_\allowbreak{}swapVertices\_\allowbreak{}sub} \\
+    ラベル交換後も次数条件を満たすこと & \texttt{respectsDegreeOrder\_\allowbreak{}swapVertices} \\
+    最小辺ポテンシャルから同次数近傍和条件を導く補題 & \texttt{minimizer\_\allowbreak{}respectsEqualDegreeNeighborSums} \\
+    定理1の存在主張 & \texttt{exists\_\allowbreak{}degreeOrdered\_\allowbreak{}labeling\_\allowbreak{}strictMonoWeights} \\
+    系2の存在主張（次数条件を満たし，全ての $v,w\in V$ について $d(v)=d(w)$ かつ $f(w)<f(v)$ ならば $\textstyle\sum_{u\in N(v)}2^{f(u)}\leq\textstyle\sum_{u\in N(w)}2^{f(u)}$ となるラベル付け $f$ が存在すること） & \texttt{exists\_\allowbreak{}degreeOrdered\_\allowbreak{}labeling\_\allowbreak{}powersOfTwo} \\
     \bottomrule
   \end{tabular}
   }
@@ -338,17 +322,17 @@ Lean 4（定理証明支援系）と，その数学ライブラリ Mathlib の�
 
 \section{証明手順と Lean 4 形式化の対応}
 
-次数条件を満たすラベル付けは，$V$ に固定した全順序を用いて次数の非増加順に頂点を並べ，同じ次数ならその全順序に従ってラベルを割り当てることで構成できる．形式化では，この構成に基づいて次数条件を満たす全単射を要素とする型が空でないことを証明し，その型に \texttt{Fintype} 構造を備えさせる．候補となる型は有限であり，辺ポテンシャルが最小となるラベル付けをとる．
+次数条件を満たすラベル付けは，$V$ に固定した全順序を用いて次数の非増加順に頂点を並べ，同じ次数ならその全順序に従ってラベルを割り当てることで構成できる．形式化では，次数条件を満たすラベル付けの構成に基づき，全単射を要素とする型が空でないことを証明し，その型に \texttt{Fintype} 構造を備えさせる．候補となる型は有限であり，辺ポテンシャルが最小となるラベル付けをとる．
 
-式 \eqref{eq:edge-classes} の 4 種類の辺集合は辺集合を分割する．隣接する場合と隣接しない場合のいずれでも $E_{vw}$ の寄与は変化せず，辺 $\{v,w\}$ が存在する場合の寄与 $c(f(v))c(f(w))$ も交換前後で変化しない．形式化では，これらを有限集合の等式として証明し，式 \eqref{eq:swap-identity} を得る．
+4 種類の辺集合 $E_0,E_v,E_w,E_{vw}$ は $E$ を分割する．隣接する場合と隣接しない場合のいずれでも $E_{vw}$ の寄与は変化せず，辺 $\{v,w\}$ が存在する場合の寄与 $c(f(v))c(f(w))$ も交換前後で変化しない．形式化では，これらを有限集合の等式として証明し，式 \eqref{eq:swap-identity} を得る．
 
 空グラフと辺をもたないグラフも扱う．空和は $0$ であり，定理1の仮定は重みの狭義単調増加性である．$c(i)=2^i$ の狭義単調増加性を実数上で証明し，定理1から系2を導く．
 
 \section{形式化が依存する基礎原理の範囲}
 
-形式化された証明は，証明せずに基礎原理として受け入れる命題（公理）に依存することがある．基礎ライブラリに属さず，この形式化に固有の公理を形式化固有の公理と呼ぶ．\texttt{propext} は同値な命題を等しい命題として扱う原理であり，\texttt{Classical.choice} は空でない存在証明から要素をとる原理である．対象を同じものとみなす関係でまとめた構成を商と呼ぶ．\texttt{Quot.sound} は，その構成で同じものとみなされる対象を等しいと扱う原理である．定理1・系2とそれらの証明を構成する定理が直接または間接に参照する公理は，この 3 種類のいずれかである．
+形式化された証明が依存する，証明せずに基礎原理として受け入れる命題（公理）を確認する．\texttt{propext} は同値な命題を等しい命題として扱う原理であり，\texttt{Classical.choice} は空でない存在証明から要素をとる原理である．\texttt{Quot.sound} は商構成において同じものとみなされる対象を等しいと扱う原理である．定理1・系2とその証明が直接または間接に参照する公理は，これら 3 種類である．これらはいずれも形式化が追加した公理ではなく，Lean と Mathlib の基礎環境に含まれる原理である．
 
-この形式化の定義と定理の証明には，未証明箇所を仮に証明済みとして受け入れるコマンド \texttt{sorry} を用いていない．ここに挙げた 3 種類はいずれもこの形式化が追加した公理ではなく，Lean と Mathlib の基礎環境に含まれる原理である．公理依存性を確認する作業は，定理の数学的内容，表示した恒等式，および形式化との対応の正しさを検証するものではない．
+形式化の定義と定理の証明には，未証明箇所を仮に証明済みとして受け入れるコマンド \texttt{sorry} を用いていない．公理依存性を確認する作業は，定理の数学的内容，表示した恒等式，および形式化との対応の正しさを検証するものではない．
 
 \enlargethispage{5\baselineskip}
 \printbibliography[heading=bibintoc,title={参考文献}]
