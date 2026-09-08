@@ -6,6 +6,25 @@
 \usepackage{cleveref}
 \usepackage{luatexja-fontspec}
 \usepackage{booktabs}
+\usepackage{float}
+\usepackage{needspace}
+\usepackage[backend=biber,style=authoryear]{biblatex}
+
+\addbibresource{../references.bib}
+
+\DeclareBibliographyDriver{online}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit{\addperiod\space}%
+  \printfield{title}%
+  \setunit{\addperiod\space}%
+  \printfield{day}\addspace\mkbibmonth{\thefield{month}}\addspace\printfield{year}
+  \setunit{\addperiod\space}%
+  \printtext{URL: }\url{\thefield{url}}%
+  \setunit{\addperiod\space}%
+  \printfield{note}%
+  \usebibmacro{finentry}}
 
 \setmainjfont[ItalicFont=*-Regular,BoldItalicFont=*-Bold]{HaranoAjiMincho}
 \setsansjfont[ItalicFont=*-Regular,BoldItalicFont=*-Heavy]{HaranoAjiGothic}
@@ -28,14 +47,14 @@
 \definecolor{cbpurple}{HTML}{CC79A7}
 
 \tikzset{
-  vertex/.style={circle, draw=black, thick, minimum size=10mm, inner sep=1pt,
+  vertex/.style={circle, draw=black, thick, minimum size=9mm, inner sep=1pt,
     font=\small, align=center},
   degreeone/.style={vertex, fill=cbblue!22},
   degreetwo/.style={vertex, fill=cborange!28},
   edgezero/.style={draw=black, very thick},
-  edgev/.style={draw=cbblue, very thick},
-  edgew/.style={draw=cborange, very thick},
-  edgeb/.style={draw=cbvermillion, very thick},
+  edgev/.style={draw=cbblue, line width=1.2pt},
+  edgew/.style={draw=cbgreen, line width=1.2pt},
+  edgeb/.style={draw=cbvermillion, line width=1.2pt},
   edge-label/.style={font=\scriptsize, fill=white, inner sep=1pt}
 }
 
@@ -48,12 +67,12 @@
 \maketitle
 
 \begin{abstract}
-有限単純無向グラフの頂点を，頂点数を $n$ として，0以上 $n$ 未満の整数全体への全単射でラベル付けする．頂点 $v$ と隣接する頂点を $v$ の近傍と呼び，ラベル $i$ に対応する実数 $c_i$ をその頂点の重みとする．頂点 $v$ の近傍にある頂点の重みの総和を $v$ の重み付き近傍和と呼ぶ．任意の二つのラベル $i<j$ に対して $c_i<c_j$ を満たす重み関数 $c$ を考えるとき，次数の小さい頂点に大きいラベルを割り当て，同じ次数の二頂点についてはラベルの大きい頂点のこの和がラベルの小さい頂点のこの和以下となるラベル付けの存在を示す．この主張では重みの正値性を仮定しない．重みをラベルの二の冪とする場合には，自然数値の不等式を得る．証明では，次数条件を満たす有限個のラベル付けの中から，辺の両端に割り当てた重みの積の総和が最小となるものを選び，同じ次数の二頂点のラベル交換と比較する．証明の機械的な形式化との対応も記述する．
+有限単純無向グラフの頂点を，頂点数を $n$ として，0以上 $n$ 未満の整数全体への全単射でラベル付けする．頂点 $v$ に隣接する頂点全体を $v$ の近傍と呼び，ラベル $i$（$0\leq i<n$）を付けられた頂点の重みを $c_i$ とする．頂点 $v$ の近傍にある頂点の重みの総和を $v$ の重み付き近傍和と呼ぶ．狭義単調増加な実数値関数 $c:\{0,\ldots,n-1\}\to\mathbb R$（$i<j$ ならば $c_i<c_j$）を考えるとき，次数の小さい頂点に大きいラベルを割り当て，同じ次数の二頂点についてはラベルの大きい頂点のこの和がラベルの小さい頂点のこの和以下となるラベル付けの存在を示す．この主張では重みの正値性を仮定しない．重みを $c_i=2^i$ とする場合にも，次数条件と同次数近傍和条件を同時に満たす0 始まりのラベル付けが存在し，その重み付き近傍和は非負整数値をとる．証明では，次数とラベルの関係を満たす有限個のラベル付けの中から，辺の両端に割り当てた重みの積の総和が最小となるものを選び，同じ次数の二頂点のラベル交換と比較する．数学的対象・定義・証明を，証明の各段階を機械的に検査する定理証明系上に記述することを形式化と呼ぶ．本稿で用いる Lean 4 はそのような定理証明系であり，これら二つの存在主張を Lean 4 を用いて形式化し，それらの証明手順とコード中の定義・定理との対応を示す．
 \end{abstract}
 
 \section{問題と主張}
 
-有限単純無向グラフを $G=(V,E)$ とし，頂点数を $n=|V|$ とする．辺は $V$ の二元部分集合であり，頂点 $v$ の次数を $d(v)$ とする．$\mathbb N_0=\{0,1,2,\ldots\}$ とおき，ラベル指数の集合を
+有限単純無向グラフを $G=(V,E)$ とし，頂点数を $n=|V|$ とする．辺は $V$ の二元部分集合であり，頂点 $v$ の次数を $d(v)$ とする．$\mathbb N_0=\{0,1,2,\ldots\}$ とおき，ラベルの集合を
 \[
   I_n=\{i\in\mathbb N_0\mid i<n\}
 \]
@@ -63,11 +82,12 @@
 \]
 と定める．
 
-零始まりのラベル付けとは，$V$ から $I_n$ への全単射 $f$ である．実数値関数 $c:I_n\to\mathbb R$ に対して，頂点 $v$ の重み付き近傍和を
+\Needspace{10\baselineskip}
+0 始まりのラベル付けとは，$V$ から $I_n$ への全単射 $f$ である．実数値関数 $c:I_n\to\mathbb R$ に対して，頂点 $v$ の重み付き近傍和を
 \[
   S_v^{(c)}(f)=\sum_{u\in N(v)}c_{f(u)}
 \]
-と定める．ラベル付け $f$ が次数条件を満たすとは，任意の $v,w\in V$ に対して
+と定める．項のない和は $0$ とする（これを空和と呼ぶ）．ラベル付け $f$ が次数条件を満たすとは，任意の $v,w\in V$ に対して
 \[
   d(v)<d(w)\quad\Longrightarrow\quad f(w)<f(v)
   \tag{1}\label{eq:degree-order}
@@ -81,29 +101,49 @@
 \]
 が成り立つことである．
 
-\begin{figure}[tb]
+頂点集合と辺集合を
+\[
+  V_{\mathrm{ex}}=\{p_1,p_2,p_3,p_4\},\qquad
+  E_{\mathrm{ex}}=\{\{p_1,p_2\},\{p_2,p_3\},\{p_3,p_4\}\}
+\]
+とし，重みを $c_{\mathrm{ex},i}=2^i$，ラベル付けを
+\[
+  f_{\mathrm{ex}}(p_1)=3,\quad f_{\mathrm{ex}}(p_2)=0,\quad f_{\mathrm{ex}}(p_3)=1,\quad f_{\mathrm{ex}}(p_4)=2
+\]
+とする．各頂点の重み付き近傍和を図\ref{fig:example}に示す．
+
+\begin{figure}[H]
   \centering
-  \begin{tikzpicture}[x=1.45cm,y=1.05cm]
-    \draw[edgezero] (0,0) -- (1.45,0) -- (2.9,0) -- (4.35,0);
-    \node[degreeone] (p1) at (0,0) {$p_1$\\[-2pt]\scriptsize $f=3,\ S_{p_1}^{(c)}(f)=1$};
-    \node[degreetwo] (p2) at (1.45,0) {$p_2$\\[-2pt]\scriptsize $f=0,\ S_{p_2}^{(c)}(f)=10$};
-    \node[degreetwo] (p3) at (2.9,0) {$p_3$\\[-2pt]\scriptsize $f=1,\ S_{p_3}^{(c)}(f)=5$};
-    \node[degreeone] (p4) at (4.35,0) {$p_4$\\[-2pt]\scriptsize $f=2,\ S_{p_4}^{(c)}(f)=2$};
-    \node[anchor=north west, align=left, font=\scriptsize] at (0,-0.68)
+  \begin{tikzpicture}[x=3cm,y=1.1cm]
+    \draw[edgezero] (0,0) -- (1,0) -- (2,0) -- (3,0);
+    \node[degreeone] (p1) at (0,0) {$p_1$};
+    \node[degreetwo] (p2) at (1,0) {$p_2$};
+    \node[degreetwo] (p3) at (2,0) {$p_3$};
+    \node[degreeone] (p4) at (3,0) {$p_4$};
+    \node[font=\scriptsize, align=center] at (0,0.48) {$f_{\mathrm{ex}}(p_1)=3$};
+    \node[font=\scriptsize, align=center] at (1,0.48) {$f_{\mathrm{ex}}(p_2)=0$};
+    \node[font=\scriptsize, align=center] at (2,0.48) {$f_{\mathrm{ex}}(p_3)=1$};
+    \node[font=\scriptsize, align=center] at (3,0.48) {$f_{\mathrm{ex}}(p_4)=2$};
+    \node[font=\scriptsize, align=center] at (0,-0.48) {$S_{p_1}^{(c_{\mathrm{ex}})}(f_{\mathrm{ex}})=1$};
+    \node[font=\scriptsize, align=center] at (1,-0.48) {$S_{p_2}^{(c_{\mathrm{ex}})}(f_{\mathrm{ex}})=10$};
+    \node[font=\scriptsize, align=center] at (2,-0.48) {$S_{p_3}^{(c_{\mathrm{ex}})}(f_{\mathrm{ex}})=5$};
+    \node[font=\scriptsize, align=center] at (3,-0.48) {$S_{p_4}^{(c_{\mathrm{ex}})}(f_{\mathrm{ex}})=2$};
+    \node[anchor=north west, align=left, font=\scriptsize] at (0,-1.2)
       {青: 次数 $1$\\橙: 次数 $2$};
   \end{tikzpicture}
-  \caption{図1は，重み $c_i=2^i$ に対して次数条件と同次数近傍和条件を同時に満たすラベル付けの例を示す．}
+  \caption{重み $c_{\mathrm{ex},i}=2^i$ に対して次数条件と同次数近傍和条件を同時に満たすラベル付けの一例を示す．}
   \label{fig:example}
 \end{figure}
 
-図\ref{fig:example}では，頂点集合を $V=\{p_1,p_2,p_3,p_4\}$，辺集合を $E=\{\{p_1,p_2\},\{p_2,p_3\},\{p_3,p_4\}\}$ とし，ラベルを $(3,0,1,2)$ としている．次数条件は，次数 $1$ の頂点にラベル $2,3$ を，次数 $2$ の頂点にラベル $0,1$ を割り当てることで成り立つ．同次数の二頂点については，$f(p_2)<f(p_3)$ であるため $S_{p_3}^{(c)}(f)=5\leq10=S_{p_2}^{(c)}(f)$ となり，両端点については $1\leq2$ となる．
+図\ref{fig:example}では，次数 $1$ の頂点にラベル $2,3$ を，次数 $2$ の頂点にラベル $0,1$ を割り当てているため，次数条件が成り立つ．同次数の二頂点については，$f_{\mathrm{ex}}(p_2)<f_{\mathrm{ex}}(p_3)$ であるため $S_{p_3}^{(c_{\mathrm{ex}})}(f_{\mathrm{ex}})=5\leq10=S_{p_2}^{(c_{\mathrm{ex}})}(f_{\mathrm{ex}})$ となり，両端点については $1\leq2$ となる．
 
 \begin{theorem}[狭義単調増加実数重み]\label{thm:weights}
-  狭義単調増加な実数値関数 $c:I_n\to\mathbb R$ に対して，次数条件 \eqref{eq:degree-order} と同次数近傍和条件 \eqref{eq:neighbour-order} を同時に満たす零始まりのラベル付け $f$ が存在する．この主張は重みの正値性を仮定しない．
+  上で固定した有限単純無向グラフ $G=(V,E)$（$n=|V|$）に対して，任意の狭義単調増加な実数値関数 $c:I_n\to\mathbb R$ に対し，次数条件 \eqref{eq:degree-order} と同次数近傍和条件 \eqref{eq:neighbour-order} を同時に満たす0 始まりのラベル付け $f$ が存在する．この主張は重みの正値性を仮定しない．
 \end{theorem}
 
+\Needspace{9\baselineskip}
 \begin{corollary}[二の冪の重み]\label{cor:powers}
-  次数条件 \eqref{eq:degree-order} を満たす零始まりのラベル付け $f$ であって，任意の $v,w\in V$ に対して
+  上で固定した有限単純無向グラフ $G=(V,E)$（$n=|V|$）に対して，次数条件 \eqref{eq:degree-order} を満たす0 始まりのラベル付け $f$ であって，任意の $v,w\in V$ に対して
   \[
     d(v)=d(w)\ \text{かつ}\ f(w)<f(v)
     \quad\Longrightarrow\quad
@@ -114,13 +154,14 @@
   を満たすものが存在する．ここで両辺の和は $\mathbb N_0$ 値である．
 \end{corollary}
 
+\Needspace{12\baselineskip}
 \begin{remark}
-  Smooth Pudding \cite{smooth-pudding-2024} が提示した一始まり・二の冪の問題は，零始まりでは系2に対応する．この問題を含む狭義単調増加な実数重みの場合を定理1で示す．ラベルを $1,\ldots,n$ とし，ラベル $k$ の重みを $2^k$ とする定式化と，零始まりの定式化は同値である．零始まりのラベルに一を加えると各近傍和は二倍になり，逆に一を引くと各近傍和は二分の一になるためである．
+  引用文献 \cite{smooth-pudding-2024} は，ラベルを $1,\ldots,n$ とし，ラベル $k$ の重みを $2^k$ とする問題設定を提示している．この問題設定では，次数の小さい頂点に大きいラベルを割り当て，同次数の二頂点では，ラベルが大きい頂点の重み付き近傍和（近傍の各頂点について，そのラベルの二の冪を合計した値）が，ラベルが小さい頂点の重み付き近傍和以下となるラベル付けを求める．この問題設定の0 始まり版の存在を系2で示し，狭義単調増加な実数重みの場合を定理1で示す．系2は定理1の二の冪への特殊化である．ラベルを $1,\ldots,n$ とし，ラベル $k$ の重みを $2^k$ とする定式化と，0 始まりの定式化は同値である．0 始まりのラベルに一を加えると各重み付き近傍和は二倍になり，逆に一を引くと各重み付き近傍和は二分の一になるためである．
 \end{remark}
 
 \section{定理1の証明}
 
-次数条件を満たす零始まりのラベル付け全体を $\mathcal A$ と書く．まず頂点集合 $V$ の各頂点に相異なる順位を一つずつあらかじめ付ける．頂点を次数の非増加順に並べ，同じ次数の頂点はこの順位の順に並べる．その順に $0,1,\ldots,n-1$ を割り当て，次数条件を満たす全単射を得る．したがって $\mathcal A$ は空でない．
+次数条件を満たす0 始まりのラベル付け全体を $\mathcal A$ と書く．まず頂点集合 $V$ の各頂点に相異なる順位を一つずつあらかじめ付ける．頂点を次数の非増加順に並べ，同じ次数の頂点はこの順位の順に並べる．その順に $0,1,\ldots,n-1$ を割り当て，次数条件を満たす全単射を得る．したがって $\mathcal A$ は空でない．
 
 各 $g\in\mathcal A$ に対して辺ポテンシャルを
 \[
@@ -129,7 +170,7 @@
 \]
 と定める．辺が非順序対であるため，積 $c_{g(x)}c_{g(y)}$ は端点の記述順序に依存しない．ラベル付けは有限個しかないので $\mathcal A$ は有限であり，実数値関数 $\Phi$ は $\mathcal A$ 上で最小値を取る．その最小値を与えるラベル付けを $f$ とする．
 
-次に，$d(v)=d(w)$ かつ $f(w)<f(v)$ を満たす $v,w\in V$ を固定する．この不等式から $v\neq w$ が従う．
+定理1の同次数近傍和条件 \eqref{eq:neighbour-order} を示すため，$d(v)=d(w)$ かつ $f(w)<f(v)$ を満たす任意の $v,w\in V$ を固定する．この不等式から $v\neq w$ が従う．ここで，$N(x)=\{u\in V:\{u,x\}\in E\}$（$x\in V$）は第1節で定めた近傍である．
 \[
   a=c_{f(v)},\qquad b=c_{f(w)},
   \tag{4}\label{eq:ab}
@@ -151,27 +192,28 @@
 \end{aligned}
 \tag{6}\label{eq:edge-classes}
 \]
-四類は条件の組合せによって互いに交わらず，任意の辺は $v,w$ への接続の有無のいずれかを満たすため，$E=E_0\mathbin{\dot\cup}E_v\mathbin{\dot\cup}E_w\mathbin{\dot\cup}E_{vw}$ である．図\ref{fig:four-classes}にこの4類を示す．
+四類は条件の組合せによって互いに交わらず，任意の辺は $v,w$ への接続の有無のいずれかを満たすため，$E=E_0\mathbin{\dot\cup}E_v\mathbin{\dot\cup}E_w\mathbin{\dot\cup}E_{vw}$ である．
 
-\begin{figure}[tb]
+\begin{figure}[H]
   \centering
-  \begin{tikzpicture}[x=1.2cm,y=0.95cm]
-    \draw[edgev] (0,0) -- (1.2,0.9);
-    \draw[edgew] (3.6,0) -- (2.4,0.9);
-    \draw[edgeb] (1.2,0.9) -- (2.4,0.9);
-    \draw[edgezero] (4.8,0.9) -- (6,0);
-    \node[vertex, fill=cbpurple!24] (v) at (1.2,0.9) {$v$};
-    \node[vertex, fill=cbpurple!24] (w) at (2.4,0.9) {$w$};
+  \begin{tikzpicture}[x=1cm,y=1.25cm]
+    \draw[edgev] (0,0) -- (1.8,1);
+    \draw[edgew] (4.2,0) -- (3,1);
+    \draw[edgeb] (1.8,1) -- (3,1);
+    \draw[edgezero] (5.4,1) -- (7.2,0);
+    \node[vertex, fill=cbpurple!24] (v) at (1.8,1) {$v$};
+    \node[vertex, fill=cbpurple!24] (w) at (3,1) {$w$};
     \node[vertex, fill=white] at (0,0) {$u$};
-    \node[vertex, fill=white] at (3.6,0) {$z$};
-    \node[vertex, fill=white] at (4.8,0.9) {$x$};
-    \node[vertex, fill=white] at (6,0) {$y$};
-    \node[edge-label, text=cbblue] at (0.42,0.58) {$E_v$};
-    \node[edge-label, text=cborange] at (3.18,0.58) {$E_w$};
-    \node[edge-label, text=cbvermillion] at (1.8,1.22) {$E_{vw}$};
-    \node[edge-label] at (5.4,0.68) {$E_0$};
+    \node[vertex, fill=white] at (4.2,0) {$z$};
+    \node[vertex, fill=white] at (5.4,1) {$x$};
+    \node[vertex, fill=white] at (7.2,0) {$y$};
+    \node[anchor=north west, align=left, font=\footnotesize] at (0,-0.55) {
+      \textcolor{cbblue}{\rule{7mm}{1.2pt}} $E_v$: $v$ のみに接続する辺\\
+      \textcolor{cbgreen}{\rule{7mm}{1.2pt}} $E_w$: $w$ のみに接続する辺\\
+      \textcolor{cbvermillion}{\rule{7mm}{1.2pt}} $E_{vw}$: $v,w$ の両方に接続する辺\\
+      \textcolor{black}{\rule{7mm}{1.2pt}} $E_0$: $v,w$ のいずれにも接続しない辺};
   \end{tikzpicture}
-  \caption{図2は，二頂点のラベル交換における4種類の辺を，$v$ のみに接続する辺，$w$ のみに接続する辺，両方に接続する辺，いずれにも接続しない辺の順に色分けして示す．}
+  \caption{二頂点への接続関係による辺の4分類を色分けして示す．}
   \label{fig:four-classes}
 \end{figure}
 
@@ -193,6 +235,7 @@ $f$ は $\Phi$ の最小値を与え，$f'\in\mathcal A$ であるため，$0\le
 \]
 が従う．
 
+\Needspace{9\baselineskip}
 重み付き近傍和 $S_x^{(c)}(f)=\sum_{u\in N(x)}c_{f(u)}\ (x\in V)$ の定義を用いると，$v$ と $w$ が隣接する場合には $w\in N(v)$ かつ $v\in N(w)$ であるため，
 \[
   S_v^{(c)}(f)=A_v+b,\qquad S_w^{(c)}(f)=A_w+a
@@ -203,61 +246,62 @@ $v$ と $w$ が隣接しない場合には $w\notin N(v)$ かつ $v\notin N(w)$ 
 
 \section{系2の証明と範囲}
 
-定理1において，$I_n=\{i\in\mathbb N_0\mid i<n\}$ とおき，$c_i=2^i\ (i\in I_n)$ とする．実数値関数 $i\mapsto2^i$ はラベル指数集合上で狭義単調増加であるため，定理1を適用して，式 \eqref{eq:degree-order} と実数値の同次数近傍和不等式を得る．各項は自然数であり，有限和の自然数から実数への包含は順序を保つため，この不等式は系2の自然数値の不等式と同値である．
+定理1において，$I_n=\{i\in\mathbb N_0\mid i<n\}$ とおき，$c_i=2^i\ (i\in I_n)$ とする．実数値関数 $i\mapsto2^i$ はラベルの集合上で狭義単調増加であるため，定理1を適用して，式 \eqref{eq:degree-order} と同次数近傍和条件 \eqref{eq:neighbour-order} の実数値版を満たす0 始まりのラベル付け $f$ を得る．各項は $\mathbb N_0$ の元であり，$\mathbb N_0$ から $\mathbb R$ への包含は順序を保つため，この不等式は系2の $\mathbb N_0$ 値の不等式と同値である．
 
-頂点も辺も持たないグラフ（空グラフ）では辺の和が空和となり，頂点は持つが辺を持たないグラフではすべての近傍和が空和となるため，同次数近傍和条件は自動的に成り立つ．定理1と系2は，任意の二頂点を辺の列で結べるかどうかに関する仮定や頂点の次数の上限を置かず，空グラフも含む．
+\mbox{空集合上}の和を $0$ とする第1節の空和の規約により，頂点も辺も持たないグラフ（空グラフ）では，辺ポテンシャル
+\[
+  \Phi(f)=\sum_{\{x,y\}\in E}c_{f(x)}c_{f(y)}
+\]
+（式\eqref{eq:potential}）が空和となる．また，頂点は持つが辺を持たないグラフでは，すべての重み付き近傍和 $S_v^{(c)}(f)$（$v\in V$）が空和となるため，同次数近傍和条件は自動的に成り立つ．定理1と系2は，グラフの連結性（任意の二頂点を辺をたどって結べる性質）や頂点の次数の上限を仮定せず，空グラフも含む．
 
-二つの結果は存在性だけを主張し，一意性や特定のラベル付けの選択を主張しない．狭義単調増加性は式 \eqref{eq:swap-identity} から式 \eqref{eq:Av-le-Aw} を導くために用いるため，任意のラベル指数 $i<j$ に対して $c_i\leq c_j$ だけを仮定する重みについては，同じ結論を主張しない．
+定理1と系2はラベル付けの存在だけを主張し，一意性や特定のラベル付けは主張しない．狭義単調増加性は式 \eqref{eq:swap-identity} から式 \eqref{eq:Av-le-Aw} を導くために用いる．任意のラベル $i<j$ に対して $c_i\leq c_j$ だけを仮定する重みについては，ここで述べた結論を主張しない．
 
 \section{形式化との対応}
 
-Lean 4 は，数学的対象を形式的に記述し，定義と証明が規則に従っているかを機械的に検査する定理証明系である．Mathlib は Lean 4 用の数学ライブラリであり，有限集合，実数，グラフなどの定義や補題を提供する．ここでいう型は，形式化された数学的対象を要素として扱うための概念である．\texttt{Fin n} は $n$ 未満の自然数全体を表す型である．\texttt{Fintype} は，その要素を有限集合として列挙するデータを備えた型を表す．以下の識別子は，Lean 内でこの二つの結果に付けた名前，すなわち定理や定義の名前を表す．
+Lean 4 を定理証明系として用いる．Mathlib は Lean 4 用の数学ライブラリであり，有限集合，実数，グラフなどの定義や補題を提供する．Lean では，型が数学的対象の種類を表し，その型の要素が個々の対象を表す．有限性は，頂点を表す型 $V$ に \texttt{Fintype V}（要素を有限個列挙できる構造）を備えさせることで表す．Lean 側では，頂点を表す型の要素数 \texttt{Fintype.card V} を数学の $n=|V|$ に対応させる．有限単純グラフ $G=(V,E)$ の隣接関係を，\texttt{SimpleGraph V} 型の要素 $G$ で表す．この型は，隣接関係が対称であり，どの頂点も自分自身には隣接しないという単純グラフの条件を表す．この関係から近傍集合と次数を定める．\texttt{Fin n} は $I_n=\{0,\ldots,n-1\}$ に対応する型であり，数学的なラベル付け $f:V\to I_n$ は \texttt{Fin (Fintype.card V)} への全単射として表す．
 
-表の「有限型」は，その要素を有限集合として列挙できる型を意味する．
-
-\begin{table}[tb]
+\begin{table}[H]
   \centering
-  \caption{数学的対象と形式化での表現の対応を示す．}
+  \caption{数学的対象と Lean 4 での表現．}
   \label{tab:correspondence}
-  \begin{tabular}{p{0.27\linewidth}p{0.62\linewidth}}
+  {\small
+  \begin{tabular}{p{0.31\linewidth}p{0.58\linewidth}}
     \toprule
 数学的対象 & 形式化での表現 \\
     \midrule
-    ラベル付け & $\texttt{Fin n}$（$0,\ldots,n-1$ を要素とする有限型）への全単射 \\
-    重み & $\texttt{Fin n}$ 上の狭義単調増加な実数値関数 \\
-    次数条件を満たすラベル付け全体 & 次数条件を備えた全単射からなる有限型 \\
+    グラフ $G=(V,E)$ & 頂点を表す型 $V$ と \texttt{SimpleGraph V} 型の要素 $G$ \\
+    頂点数 $n=|V|$ & \texttt{Fintype.card V} \\
+    近傍 $N(v)$・次数 $d(v)$ & グラフの隣接関係から得られる近傍集合と次数 \\
+    ラベル付け & $\texttt{Fin (Fintype.card V)}$ への全単射 \\
+    重み & $\texttt{Fin (Fintype.card V)}$ 上の狭義単調増加な実数値関数 \\
+    次数条件を満たすラベル付け全体 & 次数条件を満たす全単射を要素とする型に \texttt{Fintype} 構造を備えたもの \\
     辺ポテンシャル & 辺集合をなす非順序対上で端点の重みの積を足し合わせた実数 \\
-    ラベル交換 & 二頂点の入れ替えと全単射の合成 \\
+    ラベル交換 & 二頂点のラベルを入れ替え，その他の頂点のラベルを変えずに得られる全単射 \\
     \bottomrule
   \end{tabular}
+  }
 \end{table}
 
-定理1に対応する宣言名は \texttt{exists\_degreeOrdered\_labeling\_strictMonoWeights} であり，系2に対応する宣言名は \texttt{exists\_degreeOrdered\_labeling\_powersOfTwo} である．前者は，有限型で表した次数条件を満たすラベル付けのうち，辺ポテンシャルを最小にする要素を選び，その要素が同次数近傍和条件 \eqref{eq:neighbour-order} を満たすことを証明する．後者は，重みを $i\mapsto(2:\mathbb R)^i$ として前者を適用し，実数値の有限和を自然数値の有限和へ移す．
+Lean 4 のコードでは，定理1を表す形式化された定理に \texttt{exists\_degreeOrdered\allowbreak\_labeling\allowbreak\_strictMonoWeights}，系2を表す定理に \texttt{exists\_degreeOrdered\allowbreak\_labeling\allowbreak\_powersOfTwo} という名前を付けている．コード中では，これらの識別子で定理1と系2を参照する．定理1と系2に対応する定義・定理を Lean で実装し，定理1から系2を導く．
 
-次数条件を満たすラベル付けの存在では，$V$ の各頂点にあらかじめ付けた相異なる順位を固定する．次数とこの順位の組から頂点の全順序を定め，次数は大きい順，同じ次数では固定順位の順に並べるため，形式化では同順位を明示的に解消する．
+\Needspace{10\baselineskip}
+\section{証明手順と Lean 4 形式化の対応}
 
-辺ポテンシャルの交換恒等式 \eqref{eq:swap-identity} では，式 \eqref{eq:edge-classes} で固定した $v,w\in V$ に関する辺集合を四つに分ける．形式化は四つの有限集合の和が辺集合全体であることと各二つが互いに交わらないことを別々に証明する．両方に接続する集合は，$v$ と $w$ が隣接するときは $\{v,w\}$ だけからなり，隣接しないときは空集合である．この二場合で寄与の差が零になることを証明し，残り二類の和から式 \eqref{eq:swap-identity} を得る．
+次数条件を満たすラベル付けは，各頂点に異なる順位を付け，次数の非増加順に並べ，同じ次数なら順位順に並べて構成できる．形式化では，この構成を用いて次数条件を満たす全単射を要素とする型が空でないことを証明し，その型に \texttt{Fintype} 構造を備えたものを構成する．候補となる型は有限であり，辺ポテンシャルが最小となるラベル付けを一つ選ぶ．
 
-\section{人手による確認と機械検証の対応}
+式 \eqref{eq:edge-classes} の $E_0,E_v,E_w,E_{vw}$ は辺集合を一度ずつ被覆し，互いに交わらない．\mbox{隣接・非隣接の二場合とも} $E_{vw}$ の寄与は変化せず，式 \eqref{eq:ab} の $a,b$ による $\{v,w\}$ の寄与 $ab$ も交換前後で変化しない．形式化では，これらを有限集合の等式として証明し，式 \eqref{eq:swap-identity} を得る．
 
-有限最小化では，候補集合の非空性・有限性と，辺ポテンシャルが実数値であることを確認する．形式化では，次数条件を満たす全単射の有限型を構成し，その非空性を証明した後に最小元を選ぶ．
+空グラフ，辺を持たないグラフ，および重みの正値性を仮定しない場合も扱う．空集合上の和を $0$ とする空和の規約を用い，定理1の仮定に重みの正値性を含めず，二の冪の狭義単調増加性を実数上で証明する．
 
-交換恒等式では，四つの辺類が辺集合を一度ずつ被覆すること，互いに交わらないこと，および隣接・非隣接の二場合で両方に接続する類の寄与が変わらないことを確認する．式 \eqref{eq:ab} の $a,b$ による $\{v,w\}$ の寄与 $ab$ も交換前後で変わらない．形式化では，これらを有限集合の等式として証明し，残り二類の寄与から式 \eqref{eq:swap-identity} を得る．
+\Needspace{12\baselineskip}
+\section{形式化が依存する基礎原理の範囲}
 
-次数条件を満たすラベル付けは，次数の非増加順と同次数内の順位から構成する．形式化では，次数と固定順位の組の全順序を定め，得られたラベル付けが次数条件を満たすことを示す．
+形式化された証明は，証明せずに基礎原理として受け入れる命題（公理）に依存することがある．基礎ライブラリに属さず，この形式化に固有の公理を形式化固有の公理と呼ぶ．定理1・系2とそれらの証明を構成する定理が直接または間接に参照する公理の集合は，\texttt{propext}，\texttt{Classical.choice}，\texttt{Quot.sound} の部分集合である．\texttt{propext} は同値な命題を等しい命題として扱う原理であり，\texttt{Classical.choice} は空でない存在証明から一つの要素を選ぶ原理である．対象を同じものとみなす関係でまとめた構成を商と呼ぶ．\texttt{Quot.sound} は，その構成で同じものとみなされる対象を等しいと扱う原理である．
 
-境界例として，空グラフ，辺のないグラフ，重みの正値性を仮定しない場合を扱う．形式化では，空の辺集合の和を空和とし，定理1の仮定に重みの正値性を含めず，二の冪の狭義単調増加性を実数上で証明する．
+この形式化の定義と定理の証明には，未証明箇所を仮に証明済みとして受け入れるコマンド \texttt{sorry} を用いていない．
+ここに挙げた三つはいずれもこの形式化が追加した公理ではなく，Lean と Mathlib の基礎環境に含まれる原理である．したがって，これらの証明は \texttt{sorry} や形式化固有の公理に依存しない．ただし，公理依存性の確認だけでは，定理の数学的内容，表示した恒等式，および形式化との対応の正しさは保証されない．
 
-\section{形式化の信頼範囲}
-
-\texttt{propext} は同値な命題を等しい命題として扱う原理であり，\texttt{Classical.choice} は空でない存在証明から一つの要素を選ぶ原理であり，\texttt{Quot.sound} は同値関係で割った構成における同値な代表の等しさを与える原理である．
-
-公開された定義と定理の証明に未完成箇所を表す \texttt{sorry} は存在しない．本稿の定理1とその系2，ならびにそれらの証明を構成する公開定理について，証明が直接または間接に依存する公理の集合を監査し，その集合が $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ の部分集合であることを確認する．この監査は，各公開定理の証明が未完成の穴やプロジェクト固有の公理に依存しないことと，依存する基礎原理の範囲を示す．定理の数学的内容，表示した恒等式，および形式化との対応の正しさは，この公理監査とは別に本文を読むことで確認する．
-
-\section{参考文献}
-
-
-\bibliographystyle{amsplain}
-\bibliography{../references}
+\enlargethispage{5\baselineskip}
+\printbibliography[heading=bibintoc,title={参考文献}]
 
 \end{document}
