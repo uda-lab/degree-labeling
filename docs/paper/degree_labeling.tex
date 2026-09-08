@@ -35,33 +35,36 @@
 \begin{CJK*}{UTF8}{min}
 
 \begin{abstract}
-For a finite simple graph on \(n\) vertices, a zero-based labelling is a
-bijection to the integers from \(0\) to \(n-1\). For every strictly increasing
-real sequence \(c_0<\cdots<c_{n-1}\), there is a
-zero-based labelling \(f\) that orders vertices by non-increasing degree and,
-within each degree class the vertex with the larger label has the smaller or
-equal neighbour sum. The neighbour sum at a vertex is the sum of \(c_{f(u)}\) over
-all neighbours \(u\). The weights may be
-arbitrary real numbers; only strict increase is required. Choosing \(c_i=2^i\)
-yields the powers-of-two case, in which the neighbour sums are natural numbers.
-The proof chooses, among labellings that order vertices by non-increasing
-degree, one minimizing the sum over edges of the products of the endpoint
-weights.
+The motivating question comes from the enumeration of hydrocarbon graphs, where
+vertices represent carbon atoms, hydrogen atoms are omitted, and edges represent
+single carbon--carbon bonds. For every finite simple graph, every strictly
+increasing real assignment of weights to its ordered labels admits a labelling
+that orders vertices by non-increasing degree and, among vertices of equal degree,
+gives the vertex with the larger label the smaller or equal weighted sum over its
+neighbours. Theorem~\ref{thm:strict-weights} proves this statement for arbitrary
+strictly increasing real weights, and Corollary~\ref{cor:powers-of-two} gives the
+powers-of-two case. The proof chooses, among labellings that order vertices by
+non-increasing degree, one minimizing the sum over edges of the products of the
+endpoint weights.
 \end{abstract}
 
 \maketitle
 
 \section{Introduction}
 
-The motivating setting is the enumeration of hydrocarbon graphs. A
-hydrocarbon graph is a connected graph whose vertices represent carbon atoms;
-hydrogen atoms are omitted, and edges represent single carbon--carbon bonds.
-Its maximum degree is at most four. In the convention with labels
-\(1,\ldots,n\), a labelling is a bijection
-\(V\to\{1,\ldots,n\}\). The theorem below uses labels \(0,\ldots,n-1\).
-Vertices of equal degree are compared by the sum of \(2^k\) over neighbours
-carrying label \(k\). We seek a labelling that orders vertices by degree and,
-within each degree class, orders their neighbour sums using powers of two.
+The motivating setting is the enumeration of hydrocarbon graphs, where vertices
+represent carbon atoms, hydrogen atoms are omitted, and edges represent single
+carbon--carbon bonds. For a graph with vertex set \(V\) and \(n=|V|\) vertices,
+the convention with labels \(1,\ldots,n\) uses a bijection
+\(V\to\{1,\ldots,n\}\); here we use the ordered label set
+\[
+  I_n=\{0,1,\ldots,n-1\}.
+\]
+For the labels in \(I_n\), assign weight \(2^i\) to label \(i\). The weighted
+neighbour sum of a vertex is the sum of the weights assigned to its neighbours.
+We seek a labelling that gives smaller labels to vertices of larger degree and,
+among vertices of equal degree, gives the vertex with the larger label the
+smaller or equal weighted neighbour sum.
 Smooth Pudding describes this labelling question in a 2024 post
 \cite{smooth-pudding-2024} and attributes it to an earlier post dated 29 May
 2024.
@@ -86,10 +89,7 @@ be its neighbourhood. We write \(u\sim v\) when \(u\) and \(v\) are adjacent.
 For each integer \(r\), the degree-\(r\) class is
 \(\{v\in V:d(v)=r\}\).
 
-A zero-based labelling is a bijection
-\[
-  f:V\longrightarrow\{0,1,\ldots,n-1\}.
-\]
+A labelling is a bijection \(f:V\longrightarrow I_n\).
 The target is the ordered \(n\)-element set of labels, interpreted as empty
 when \(n=0\). A labelling \(f\) respects the degree order if
 \[
@@ -98,75 +98,55 @@ when \(n=0\). A labelling \(f\) respects the degree order if
 \]
 We call a labelling satisfying \cref{eq:degree-order} degree-respecting.
 
-Let \(c:\{0,1,\ldots,n-1\}\to\R\) be strictly increasing, and write
-\(c_i=c(i)\). Thus
+Let \(c:I_n\to\R\) be strictly increasing. Thus
 \[
-  c_0<c_1<\cdots<c_{n-1}.
+  c(0)<c(1)<\cdots<c(n-1).
   \tag{2.2}\label{eq:strict-weights}
 \]
-For a labelling \(f\), define the weighted neighbour sum at \(v\) by
+For a labelling \(f\), write the weighted neighbour sum at \(v\) as
 \[
-  S_v^{(c)}(f)=\sum_{u\in N(v)}c_{f(u)}.
+  \sum_{u\in N(v)}c(f(u)).
   \tag{2.3}\label{eq:neighbour-sum}
 \]
-When \(c\) is fixed, we call \(S_v^{(c)}(f)\) the neighbour sum at \(v\).
 We say that \(f\) respects the equal-degree neighbour-sum order for \(c\) if
 \[
   d(v)=d(w)\ \text{and}\ f(w)<f(v)
   \quad\Longrightarrow\quad
-  S_v^{(c)}(f)\leq S_w^{(c)}(f).
+  \sum_{u\in N(v)}c(f(u))\leq\sum_{u\in N(w)}c(f(u)).
   \tag{2.4}\label{eq:equal-degree-order}
 \]
 
 \section{Main results}
 
 \begin{theorem}[Strictly increasing weights]\label{thm:strict-weights}
-For every finite simple graph \(G=(V,E)\) and every strictly increasing
-function \(c:\{0,1,\ldots,n-1\}\to\R\), there exists a zero-based labelling
-\(f:V\to\{0,1,\ldots,n-1\}\) such that, for all \(v,w\in V\),
-\[
-  d(v)<d(w)\quad\Longrightarrow\quad f(w)<f(v),
-  \tag{3.1}\label{eq:theorem-degree}
-\]
-and
-\[
-  d(v)=d(w)\ \text{and}\ f(w)<f(v)
-  \quad\Longrightarrow\quad
-  \sum_{u\in N(v)}c_{f(u)}
-  \leq
-  \sum_{u\in N(w)}c_{f(u)}.
-  \tag{3.2}\label{eq:theorem-sum}
-\]
+For every finite simple graph \(G=(V,E)\), with \(n=|V|\), and every strictly
+increasing function \(c:I_n\to\R\), there exists a labelling \(f\) satisfying
+the degree condition \cref{eq:degree-order} and the equal-degree neighbour-sum
+condition \cref{eq:equal-degree-order}.
 \end{theorem}
 
 \begin{corollary}[Powers of two]\label{cor:powers-of-two}
 For every finite simple graph \(G=(V,E)\), with \(n=|V|\), there exists a
-zero-based labelling \(f\) such that, for all \(v,w\in V\),
-\[
-  d(v)<d(w)\quad\Longrightarrow\quad f(w)<f(v),
-  \tag{3.3}\label{eq:corollary-degree}
-\]
-and
+labelling \(f\) satisfying the degree condition \cref{eq:degree-order} and, for
+all \(v,w\in V\),
 \[
   d(v)=d(w)\ \text{and}\ f(w)<f(v)
   \quad\Longrightarrow\quad
   \sum_{u\in N(v)}2^{f(u)}
   \leq
   \sum_{u\in N(w)}2^{f(u)}.
-  \tag{3.4}\label{eq:corollary-sum}
 \]
-The sums in \cref{eq:corollary-sum} are sums of natural numbers.
 \end{corollary}
 
 \begin{remark}[The two labelling conventions]
 Let \(k\in\{1,\ldots,n\}\) be a label in the convention with labels
-\(1,\ldots,n\), and let \(f_0=k-1\) be its zero-based counterpart. The weight
+\(1,\ldots,n\), and let \(i=k-1\) be its corresponding label in \(I_n\). The weight
 in the convention with labels \(1,\ldots,n\) is
 then
 \[
-  2^k=2^{f_0+1}=2\,2^{f_0}.
+  2^k=2^{i+1}=2\,2^i.
 \]
-Thus the original neighbour sum is twice the sum in the zero-based convention.
+Thus the original neighbour sum is twice the sum in the \(I_n\) convention.
 The factor is the same positive number for every vertex, so both the degree
 order and the equal-degree neighbour-sum order are unchanged. The two formulations are
 equivalent.
@@ -174,11 +154,11 @@ equivalent.
 
 \section{Examples}
 
-In the figures, \(S\) denotes the weighted neighbour sum
-\(S_v^{(c)}(f)\) at the displayed vertex. The graph in
+In the figures, each vertex displays its weighted neighbour sum
+\(\sum_{u\in N(v)}2^{f(u)}\). The graph in
 \cref{fig:good-labelling} has vertices \(a,b,x,y\) and edges
 \(\{a,b\},\{b,x\},\{x,y\}\). It has two degree classes. Its displayed
-labelling satisfies both conditions with \(c_i=2^i\). The labels of the two
+labelling satisfies both conditions with \(c(i)=2^i\). The labels of the two
 degree-two vertices are \(1\) and \(0\), and the labels of the two degree-one
 vertices are \(2\) and \(3\). Within each degree class, the displayed sums
 satisfy the required order.
@@ -188,17 +168,21 @@ satisfy the required order.
   \begin{tikzpicture}[line cap=round, line join=round]
     \draw[very thick] (0,0) -- (2,1) -- (4,1) -- (6,0);
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt, align=center] at (0,0) {$a$\\[-1pt]$f(a)=2$\\[-1pt]$S=2$};
+      inner sep=1pt, align=center] at (0,0) {$a$\\[-1pt]$f(a)=2$\\[-1pt]
+      $\sum_{u\in N(a)}$\\[-1pt]$2^{f(u)}=2$};
     \node[circle, draw=black, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt, align=center] at (2,1) {$b$\\[-1pt]$f(b)=1$\\[-1pt]$S=5$};
+      inner sep=1pt, align=center] at (2,1) {$b$\\[-1pt]$f(b)=1$\\[-1pt]
+      $\sum_{u\in N(b)}$\\[-1pt]$2^{f(u)}=5$};
     \node[circle, draw=black, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt, align=center] at (4,1) {$x$\\[-1pt]$f(x)=0$\\[-1pt]$S=10$};
+      inner sep=1pt, align=center] at (4,1) {$x$\\[-1pt]$f(x)=0$\\[-1pt]
+      $\sum_{u\in N(x)}$\\[-1pt]$2^{f(u)}=10$};
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt, align=center] at (6,0) {$y$\\[-1pt]$f(y)=3$\\[-1pt]$S=1$};
+      inner sep=1pt, align=center] at (6,0) {$y$\\[-1pt]$f(y)=3$\\[-1pt]
+      $\sum_{u\in N(y)}$\\[-1pt]$2^{f(u)}=1$};
     \node[font=\small, align=center] at (3,-0.85)
       {orange: degree 1\\blue: degree 2};
   \end{tikzpicture}
-  \caption{The path with vertices \(a,b,x,y\) has a labelling satisfying both required orders for \(c_i=2^i\).}
+  \caption{The path with vertices \(a,b,x,y\) has a labelling satisfying both required orders for \(c(i)=2^i\).}
   \label{fig:good-labelling}
 \end{figure}
 
@@ -213,13 +197,17 @@ the label swap used in the proof.
   \begin{tikzpicture}[line cap=round, line join=round]
     \draw[very thick] (0,0) -- (2,1) -- (4,1) -- (6,0);
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt, align=center] (bad-a) at (0,0) {$a$\\[-1pt]$f(a)=2$\\[-1pt]$S=1$};
+      inner sep=1pt, align=center] (bad-a) at (0,0) {$a$\\[-1pt]$f(a)=2$\\[-1pt]
+      $\sum_{u\in N(a)}$\\[-1pt]$2^{f(u)}=1$};
     \node[circle, draw=oi-vermillion, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt, align=center] (bad-b) at (2,1) {$b$\\[-1pt]$f(b)=0$\\[-1pt]$S=6$};
+      inner sep=1pt, align=center] (bad-b) at (2,1) {$b$\\[-1pt]$f(b)=0$\\[-1pt]
+      $\sum_{u\in N(b)}$\\[-1pt]$2^{f(u)}=6$};
     \node[circle, draw=oi-vermillion, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt, align=center] (bad-x) at (4,1) {$x$\\[-1pt]$f(x)=1$\\[-1pt]$S=9$};
+      inner sep=1pt, align=center] (bad-x) at (4,1) {$x$\\[-1pt]$f(x)=1$\\[-1pt]
+      $\sum_{u\in N(x)}$\\[-1pt]$2^{f(u)}=9$};
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt, align=center] (bad-y) at (6,0) {$y$\\[-1pt]$f(y)=3$\\[-1pt]$S=2$};
+      inner sep=1pt, align=center] (bad-y) at (6,0) {$y$\\[-1pt]$f(y)=3$\\[-1pt]
+      $\sum_{u\in N(y)}$\\[-1pt]$2^{f(u)}=2$};
     \draw[->, very thick, oi-vermillion] (2,2.15) to[bend left=18]
       node[above, font=\small, text=black] {swap} (4,2.15);
     \node[font=\small, text=oi-vermillion, align=center] at (3,3.0)
@@ -231,42 +219,30 @@ the label swap used in the proof.
 
 \section{Proof of Theorem~\ref{thm:strict-weights}}
 
-Let \(\mathcal A\) be the set of all zero-based labellings that respect
+Let \(\mathcal A\) be the set of all labellings that respect
 \cref{eq:degree-order}. This set is nonempty. Order the vertices by
 non-increasing degree, choose any order inside each degree class, and assign
-the labels \(0,1,\ldots,n-1\) in that order. The set \(\mathcal A\) is finite
+the labels in \(I_n\) in that order. The set \(\mathcal A\) is finite
 because it is a subset of the finite set of all bijective labellings.
 
 For \(g\in\mathcal A\), define the edge potential
 \[
-  \Phi(g)=\sum_{\{x,y\}\in E}c_{g(x)}c_{g(y)}.
+  \Phi(g)=\sum_{\{x,y\}\in E}c(g(x))c(g(y)).
   \tag{4.1}\label{eq:potential}
 \]
 The finite nonempty set of real values \(\{\Phi(g):g\in\mathcal A\}\) has a
 minimum. Choose \(f\in\mathcal A\) with minimal edge potential.
 
-Take \(v,w\in V\) with \(d(v)=d(w)\) and \(f(w)<f(v)\). Put
-\[
-  a=c_{f(v)},\qquad b=c_{f(w)},
-  \tag{4.2}\label{eq:ab}
-\]
-and
-\[
-  A_v=\sum_{\substack{u\in N(v)\\u\ne w}}c_{f(u)},\qquad
-  A_w=\sum_{\substack{u\in N(w)\\u\ne v}}c_{f(u)}.
-  \tag{4.3}\label{eq:AvAw}
-\]
-Strict increase in \cref{eq:strict-weights} gives \(b<a\). Let \(f'\) be
-obtained from \(f\) by exchanging the labels of \(v\) and \(w\). Since
+Take \(v,w\in V\) with \(d(v)=d(w)\) and \(f(w)<f(v)\). Strict increase in
+\cref{eq:strict-weights} gives \(c(f(w))<c(f(v))\). Let \(f'\) be obtained from
+\(f\) by exchanging the labels of \(v\) and \(w\). Since
 \(d(v)=d(w)\), the exchanged labelling still belongs to \(\mathcal A\).
 
 The edge classes used to compare \(\Phi(f')\) and \(\Phi(f)\) are shown in
-\cref{fig:edge-classes}. Let \(E_v\) consist of edges incident with \(v\) but
-not with \(w\), let \(E_w\) consist of edges incident with \(w\) but not with
-\(v\), let \(E_{vw}\) consist of edges incident with both \(v\) and \(w\), and
-let \(E_0\) consist of the remaining edges. Because the graph is simple,
-\(E_{vw}\) is either \(\{\{v,w\}\}\) or empty. These four classes are pairwise
-disjoint and cover \(E\).
+\cref{fig:edge-classes}. The edge set \(E\) splits into the edges incident with
+neither \(v\) nor \(w\) (\(E_0\)), with \(v\) only (\(E_v\)), with \(w\) only
+(\(E_w\)), and with both (\(E_{vw}\)). Because the graph is simple,
+\(E_{vw}\) is either \(\{\{v,w\}\}\) or empty.
 
 \begin{figure}[ht]
   \centering
@@ -295,75 +271,93 @@ disjoint and cover \(E\).
 \end{figure}
 
 Edges in \(E_0\) have the same contribution before and after the exchange. The
-contribution from \(E_v\) changes from \(aA_v\) to \(bA_v\), and the
-contribution from \(E_w\) changes from \(bA_w\) to \(aA_w\). If \(E_{vw}\) is
-nonempty, its sole edge contributes \(ab\) before and after the exchange. Hence
+contributions from \(E_v\) and \(E_w\), together with the unchanged contribution
+from \(E_{vw}\), give
 \[
   \begin{aligned}
   \Phi(f')-\Phi(f)
-    &=bA_v+aA_w-aA_v-bA_w\\
-    &=(a-b)(A_w-A_v).
+    &={}\bigl(c(f(w))-c(f(v))\bigr)
+      \sum_{u\in N(v)\setminus\{w\}}c(f(u))\\
+    &\quad+\bigl(c(f(v))-c(f(w))\bigr)
+      \sum_{u\in N(w)\setminus\{v\}}c(f(u))\\
+    &=\bigl(c(f(v))-c(f(w))\bigr)
+      \left(
+        \sum_{u\in N(w)\setminus\{v\}}c(f(u))
+        -\sum_{u\in N(v)\setminus\{w\}}c(f(u))
+      \right).
   \end{aligned}
   \tag{4.4}\label{eq:swap-identity}
 \]
-Minimality of \(f\) gives \(\Phi(f')-\Phi(f)\geq0\). Since \(a-b>0\),
-\cref{eq:swap-identity} implies
+Minimality of \(f\) gives \(\Phi(f')-\Phi(f)\geq0\). Since
+\(c(f(v))-c(f(w))>0\), \cref{eq:swap-identity} implies
 \[
-  A_v\leq A_w.
-  \tag{4.5}\label{eq:Av-le-Aw}
+  \sum_{u\in N(v)\setminus\{w\}}c(f(u))
+  \leq
+  \sum_{u\in N(w)\setminus\{v\}}c(f(u)).
+  \tag{4.5}\label{eq:neighbour-sums-except}
 \]
 
-With the notation \(S_v^{(c)}(f)\) from \cref{eq:neighbour-sum}, if \(v\sim w\), then
+We distinguish whether \(v\) and \(w\) are adjacent.
+
+\paragraph{Adjacent case.}
+If \(v\sim w\), then
 \[
-  S_v^{(c)}(f)=A_v+b,\qquad S_w^{(c)}(f)=A_w+a.
+  \begin{aligned}
+  \sum_{u\in N(v)}c(f(u))
+    &=\sum_{u\in N(v)\setminus\{w\}}c(f(u))+c(f(w))\\
+    &\leq\sum_{u\in N(w)\setminus\{v\}}c(f(u))+c(f(v))\\
+    &=\sum_{u\in N(w)}c(f(u)).
+  \end{aligned}
 \]
-\cref{eq:Av-le-Aw} and \(b<a\) imply
-\(S_v^{(c)}(f)\leq S_w^{(c)}(f)\). If \(v\not\sim w\), then
-\(S_v^{(c)}(f)=A_v\) and \(S_w^{(c)}(f)=A_w\), so the same inequality follows
-from \cref{eq:Av-le-Aw}. Therefore \(f\) satisfies
+Thus the required inequality holds in the adjacent case.
+
+\paragraph{Non-adjacent case.}
+If \(v\not\sim w\), then
+\[
+  \sum_{u\in N(v)}c(f(u))
+  =\sum_{u\in N(v)\setminus\{w\}}c(f(u))
+  \leq\sum_{u\in N(w)\setminus\{v\}}c(f(u))
+  =\sum_{u\in N(w)}c(f(u)).
+\]
+Thus the required inequality holds in the non-adjacent case. Therefore \(f\) satisfies
 \cref{eq:equal-degree-order}, which proves \cref{thm:strict-weights}.
 
 \section{Proof of Corollary~\ref{cor:powers-of-two}}
 
 Apply \cref{thm:strict-weights} to the function
 \[
-  c_i=2^i\qquad(0\leq i<n).
+  c(i)=2^i\qquad(i\in I_n).
   \tag{5.1}\label{eq:powers-function}
 \]
 This function is strictly increasing. The resulting inequalities are exactly
-\cref{eq:corollary-degree} and \cref{eq:corollary-sum}; the displayed sums
-are natural numbers.
+the degree condition and the displayed inequality in the corollary.
 
 \section{Scope and limitations}
 
 The argument includes the empty graph and graphs with vertices but no edges.
 The conclusions assert existence and do not assert uniqueness. The minimiser
-of the edge potential \(\Phi\) defined in \cref{eq:potential} is one
+of the edge potential defined in \cref{eq:potential} is one
 construction among possibly many labellings satisfying the degree order and the
-equal-degree neighbour-sum order. In the swap argument, \(a=c_{f(v)}\) and \(b=c_{f(w)}\) with
-\(f(w)<f(v)\), so strict increase gives \(b<a\). This is the step requiring
-strict weights. A non-decreasing sequence means
-\(c_0\leq c_1\leq\cdots\leq c_{n-1}\). Non-decreasing weights are outside the
+equal-degree neighbour-sum order. In the swap argument, \(f(w)<f(v)\) gives
+\(c(f(w))<c(f(v))\). This is the step requiring strict weights. A non-decreasing
+function need not satisfy this strict inequality, so non-decreasing weights are outside the
 scope of the stated theorem.
 
 \section{Formal verification}
 
-The companion Lean 4 development formalises the definitions and proves the two
-theorems, including the finite-minimisation and label-swap lemmas. In the Lean
-development the two theorems are named
-\texttt{\small exists\_\allowbreak degreeOrdered\_\allowbreak labeling\_\allowbreak strictMonoWeights} and
-\texttt{\small exists\_\allowbreak degreeOrdered\_\allowbreak labeling\_\allowbreak powersOfTwo}.
-The formal representation treats the finite vertex set as a finite type, which is a set
+A companion machine-checked proof written in the Lean 4 proof assistant
+formalises the definitions and proves the two theorems. It also formalises the
+finite-minimisation and label-swap lemmas. The formal representation treats the
+finite vertex set as a finite type, which is a set
 equipped with a finite enumeration, and uses an ordered set of \(n\) positions
 for labels. The weights are represented by a strictly increasing real-valued
-function on that ordered label set. The formal development uses propositional
-extensionality, choice, and quotient soundness as foundational proof
-dependencies; they are not hypotheses on the graph or on the weights.
-Propositional extensionality identifies logically equivalent propositions,
-choice selects an element from a nonempty collection, and quotient soundness
-supplies equality for equivalent representatives. The Lean names of these
-principles are \texttt{propext}, \texttt{Classical.choice}, and
-\texttt{Quot.sound}.
+function on that ordered label set. The formal development relies on three
+foundational principles: propositional extensionality, which identifies
+logically equivalent propositions; choice, which selects an element from a
+nonempty collection; and quotient soundness, which supplies equality for
+equivalent representatives. These are proof dependencies, not hypotheses on
+the graph or on the weights. The Lean names of these principles are
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
 
 Each vertex is represented by one position in the finite
 ordered type, and a labelling is a bijection to that type. The edge potential is
