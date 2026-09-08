@@ -33,7 +33,12 @@
 \newtheorem{theorem}{定理}
 \newtheorem{corollary}[theorem]{系}
 \newtheorem{lemma}{補題}
-\theoremstyle{remark}
+\newtheoremstyle{jremark}
+  {\topsep}{\topsep}
+  {\normalfont}{}
+  {\itshape}{。}
+  {5pt plus 1pt minus 1pt}{}
+\theoremstyle{jremark}
 \newtheorem*{remark}{注意}
 
 \crefname{theorem}{定理}{定理}
@@ -112,7 +117,7 @@
 \]
 とする．各頂点の重み付き近傍和を図\ref{fig:example}に示す．
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \begin{tikzpicture}[x=3cm,y=1.1cm]
     \draw[edgezero] (0,0) -- (1,0) -- (2,0) -- (3,0);
@@ -120,18 +125,18 @@
     \node[degreetwo] (p2) at (1,0) {$p_2$};
     \node[degreetwo] (p3) at (2,0) {$p_3$};
     \node[degreeone] (p4) at (3,0) {$p_4$};
-    \node[font=\scriptsize, align=center] at (0,0.48) {$f_{\mathrm{ex}}(p_1)=3$};
-    \node[font=\scriptsize, align=center] at (1,0.48) {$f_{\mathrm{ex}}(p_2)=0$};
-    \node[font=\scriptsize, align=center] at (2,0.48) {$f_{\mathrm{ex}}(p_3)=1$};
-    \node[font=\scriptsize, align=center] at (3,0.48) {$f_{\mathrm{ex}}(p_4)=2$};
-    \node[font=\scriptsize, align=center] at (0,-0.48) {$S_{p_1}^{(c_{\mathrm{ex}})}(f_{\mathrm{ex}})=1$};
-    \node[font=\scriptsize, align=center] at (1,-0.48) {$S_{p_2}^{(c_{\mathrm{ex}})}(f_{\mathrm{ex}})=10$};
-    \node[font=\scriptsize, align=center] at (2,-0.48) {$S_{p_3}^{(c_{\mathrm{ex}})}(f_{\mathrm{ex}})=5$};
-    \node[font=\scriptsize, align=center] at (3,-0.48) {$S_{p_4}^{(c_{\mathrm{ex}})}(f_{\mathrm{ex}})=2$};
-    \node[anchor=north west, align=left, font=\scriptsize] at (0,-1.2)
-      {青: 次数 $1$\\橙: 次数 $2$};
+    \node[font=\scriptsize, align=center] at (0,0.48) {$f(p_1)=3$};
+    \node[font=\scriptsize, align=center] at (1,0.48) {$f(p_2)=0$};
+    \node[font=\scriptsize, align=center] at (2,0.48) {$f(p_3)=1$};
+    \node[font=\scriptsize, align=center] at (3,0.48) {$f(p_4)=2$};
+    \node[font=\scriptsize, align=center] at (0,-0.48) {$S=1$};
+    \node[font=\scriptsize, align=center] at (1,-0.48) {$S=10$};
+    \node[font=\scriptsize, align=center] at (2,-0.48) {$S=5$};
+    \node[font=\scriptsize, align=center] at (3,-0.48) {$S=2$};
+    \node[anchor=north west, align=left, font=\small] at (0,-1.2)
+      {青：次数 $1$\\橙：次数 $2$};
   \end{tikzpicture}
-  \caption{重み $c_{\mathrm{ex},i}=2^i$ に対して次数条件と同次数近傍和条件を同時に満たすラベル付けの一例を示す．}
+  \caption{重み $c_{\mathrm{ex},i}=2^i$ に対して次数条件と同次数近傍和条件を同時に満たすラベル付けの一例を示す．図中では $f=f_{\mathrm{ex}}$ および $S=S^{(c_{\mathrm{ex}})}$ と略記する．}
   \label{fig:example}
 \end{figure}
 
@@ -208,10 +213,10 @@
     \node[vertex, fill=white] at (5.4,1) {$x$};
     \node[vertex, fill=white] at (7.2,0) {$y$};
     \node[anchor=north west, align=left, font=\footnotesize] at (0,-0.55) {
-      \textcolor{cbblue}{\rule{7mm}{1.2pt}} $E_v$: $v$ のみに接続する辺\\
-      \textcolor{cbgreen}{\rule{7mm}{1.2pt}} $E_w$: $w$ のみに接続する辺\\
-      \textcolor{cbvermillion}{\rule{7mm}{1.2pt}} $E_{vw}$: $v,w$ の両方に接続する辺\\
-      \textcolor{black}{\rule{7mm}{1.2pt}} $E_0$: $v,w$ のいずれにも接続しない辺};
+      \textcolor{cbblue}{\rule{7mm}{1.2pt}} $E_v$：$v$ のみに接続する辺\\
+      \textcolor{cbgreen}{\rule{7mm}{1.2pt}} $E_w$：$w$ のみに接続する辺\\
+      \textcolor{cbvermillion}{\rule{7mm}{1.2pt}} $E_{vw}$：$v,w$ の両方に接続する辺\\
+      \textcolor{black}{\rule{7mm}{1.2pt}} $E_0$：$v,w$ のいずれにも接続しない辺};
   \end{tikzpicture}
   \caption{二頂点への接続関係による辺の4分類を色分けして示す．}
   \label{fig:four-classes}
@@ -282,21 +287,28 @@ Lean 4 を定理証明系として用いる．Mathlib は Lean 4 用の数学ラ
   }
 \end{table}
 
-Lean 4 のコードでは，定理1を表す形式化された定理に \texttt{exists\_degreeOrdered\allowbreak\_labeling\allowbreak\_strictMonoWeights}，系2を表す定理に \texttt{exists\_degreeOrdered\allowbreak\_labeling\allowbreak\_powersOfTwo} という名前を付けている．コード中では，これらの識別子で定理1と系2を参照する．定理1と系2に対応する定義・定理を Lean で実装し，定理1から系2を導く．
+Lean 4 のコードでは，定理1と系2を表す形式化された定理に，それぞれ次の名前を付けている．
+\begin{center}
+  \begin{tabular}{ll}
+    定理1： & \texttt{exists\_degreeOrdered\_labeling\_strictMonoWeights} \\
+    系2： & \texttt{exists\_degreeOrdered\_labeling\_powersOfTwo}
+  \end{tabular}
+\end{center}
+コード中では，これらの識別子で定理1と系2を参照する．定理1と系2に対応する定義・定理を Lean で実装し，定理1から系2を導く．
 
 \Needspace{10\baselineskip}
 \section{証明手順と Lean 4 形式化の対応}
 
 次数条件を満たすラベル付けは，各頂点に異なる順位を付け，次数の非増加順に並べ，同じ次数なら順位順に並べて構成できる．形式化では，この構成を用いて次数条件を満たす全単射を要素とする型が空でないことを証明し，その型に \texttt{Fintype} 構造を備えたものを構成する．候補となる型は有限であり，辺ポテンシャルが最小となるラベル付けを一つ選ぶ．
 
-式 \eqref{eq:edge-classes} の $E_0,E_v,E_w,E_{vw}$ は辺集合を一度ずつ被覆し，互いに交わらない．\mbox{隣接・非隣接の二場合とも} $E_{vw}$ の寄与は変化せず，式 \eqref{eq:ab} の $a,b$ による $\{v,w\}$ の寄与 $ab$ も交換前後で変化しない．形式化では，これらを有限集合の等式として証明し，式 \eqref{eq:swap-identity} を得る．
+式 \eqref{eq:edge-classes} の四つの辺集合 $E_0$, $E_v$, $E_w$, $E_{vw}$ は辺集合を一度ずつ被覆し，互いに交わらない．\mbox{隣接・非隣接の二場合とも} $E_{vw}$ の寄与は変化せず，式 \eqref{eq:ab} の $a,b$ による $\{v,w\}$ の寄与 $ab$ も交換前後で変化しない．形式化では，これらを有限集合の等式として証明し，式 \eqref{eq:swap-identity} を得る．
 
 空グラフ，辺を持たないグラフ，および重みの正値性を仮定しない場合も扱う．空集合上の和を $0$ とする空和の規約を用い，定理1の仮定に重みの正値性を含めず，二の冪の狭義単調増加性を実数上で証明する．
 
 \Needspace{12\baselineskip}
 \section{形式化が依存する基礎原理の範囲}
 
-形式化された証明は，証明せずに基礎原理として受け入れる命題（公理）に依存することがある．基礎ライブラリに属さず，この形式化に固有の公理を形式化固有の公理と呼ぶ．定理1・系2とそれらの証明を構成する定理が直接または間接に参照する公理の集合は，\texttt{propext}，\texttt{Classical.choice}，\texttt{Quot.sound} の部分集合である．\texttt{propext} は同値な命題を等しい命題として扱う原理であり，\texttt{Classical.choice} は空でない存在証明から一つの要素を選ぶ原理である．対象を同じものとみなす関係でまとめた構成を商と呼ぶ．\texttt{Quot.sound} は，その構成で同じものとみなされる対象を等しいと扱う原理である．
+形式化された証明は，証明せずに基礎原理として受け入れる命題（公理）に依存することがある．基礎ライブラリに属さず，この形式化に固有の公理を形式化固有の公理と呼ぶ．定理1・系2とそれらの証明を構成する定理が直接または間接に参照する公理の集合は，\texttt{propext} と \texttt{Classical.choice} と \texttt{Quot.sound} からなる集合の部分集合である．\texttt{propext} は同値な命題を等しい命題として扱う原理であり，\texttt{Classical.choice} は空でない存在証明から一つの要素を選ぶ原理である．対象を同じものとみなす関係でまとめた構成を商と呼ぶ．\texttt{Quot.sound} は，その構成で同じものとみなされる対象を等しいと扱う原理である．
 
 この形式化の定義と定理の証明には，未証明箇所を仮に証明済みとして受け入れるコマンド \texttt{sorry} を用いていない．
 ここに挙げた三つはいずれもこの形式化が追加した公理ではなく，Lean と Mathlib の基礎環境に含まれる原理である．したがって，これらの証明は \texttt{sorry} や形式化固有の公理に依存しない．ただし，公理依存性の確認だけでは，定理の数学的内容，表示した恒等式，および形式化との対応の正しさは保証されない．
