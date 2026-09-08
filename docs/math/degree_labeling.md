@@ -33,13 +33,13 @@ d(v)=d(w)\ \text{and}\ f(w)<f(v)\quad\Longrightarrow\quad
 \sum_{u\in N(v)}c(f(u))\leq\sum_{u\in N(w)}c(f(u)).
 \]
 
-## The two existence theorems
+## The existence results
 
 Theorem 1. For every finite simple graph and every strictly increasing function
 \(c:I_n\to\mathbb R\), there is a labelling that respects both the degree order
 and the equal-degree neighbour-sum order for \(c\).
 
-Theorem 2. For every finite simple undirected graph \(G=(V,E)\), with
+Corollary 2. For every finite simple undirected graph \(G=(V,E)\), with
 \(n=|V|\), there exists a labelling \(f:V\to I_n\) such that, for all
 \(v,w\in V\),
 
@@ -133,16 +133,16 @@ Thus the required inequality holds in the adjacent case.
 Thus the required inequality holds in the non-adjacent case. Therefore the chosen
 labelling proves Theorem 1.
 
-## Proof of Theorem 2
+## Proof of Corollary 2
 
-Apply Theorem 1 to the strictly increasing real function
+Apply Theorem 1 to the function
 
 \[
 c(i)=2^i\qquad(i\in I_n).
 \]
 
 This function is strictly increasing, and the resulting inequalities are exactly
-those in Theorem 2.
+those in Corollary 2.
 
 ## Scope and convention
 

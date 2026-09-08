@@ -35,17 +35,16 @@
 \begin{CJK*}{UTF8}{min}
 
 \begin{abstract}
-The motivating question comes from the enumeration of hydrocarbon graphs, where
-vertices represent carbon atoms, hydrogen atoms are omitted, and edges represent
-single carbon--carbon bonds. For every finite simple graph, every strictly
-increasing real assignment of weights to its ordered labels admits a labelling
+For every finite simple graph \(G=(V,E)\) with \(n=|V|\), every strictly
+increasing real function \(c:I_n\to\R\), where
+\(I_n=\{0,1,\ldots,n-1\}\), admits a labelling
 that orders vertices by non-increasing degree and, among vertices of equal degree,
-gives the vertex with the larger label the smaller or equal weighted sum over its
-neighbours. Theorem~\ref{thm:strict-weights} proves this statement for arbitrary
-strictly increasing real weights, and Corollary~\ref{cor:powers-of-two} gives the
-powers-of-two case. The proof chooses, among labellings that order vertices by
-non-increasing degree, one minimizing the sum over edges of the products of the
-endpoint weights.
+gives the vertex with the larger label the smaller or equal sum of the values
+assigned by \(c\) to its neighbours. Theorem~\ref{thm:strict-weights} proves
+this statement for arbitrary strictly increasing real weights, and
+Corollary~\ref{cor:powers-of-two} gives the powers-of-two case. The proof
+chooses, among labellings that order vertices by non-increasing degree, one
+minimizing the sum over edges of the products of the endpoint weights.
 \end{abstract}
 
 \maketitle
@@ -68,15 +67,15 @@ smaller or equal weighted neighbour sum.
 Smooth Pudding describes this labelling question in a 2024 post
 \cite{smooth-pudding-2024} and attributes it to an earlier post dated 29 May
 2024.
-The result applies to every finite simple graph, without connectedness or a
-bound on the maximum degree, and allows the powers of two to be replaced by any
-strictly increasing real weights. Theorem~\ref{thm:strict-weights} establishes
+The result applies to every finite simple graph and allows the powers of two to
+be replaced by any strictly increasing real weights. Theorem~\ref{thm:strict-weights} establishes
 this statement, with the powers-of-two case as
 Corollary~\ref{cor:powers-of-two}.
 
-Morgan's canonical numbering of chemical structures also uses vertex labels
-\cite{morgan-1965}. We instead study a labelling that orders vertices by degree
-and, within each degree class, orders weighted neighbour sums.
+Morgan's method for assigning labels to chemical structures provides related
+context \cite{morgan-1965}. The present paper studies a different labelling: it
+orders vertices first by degree and then, within each degree class, by weighted
+neighbour sums.
 
 \section{Preliminaries}
 
@@ -90,8 +89,8 @@ For each integer \(r\), the degree-\(r\) class is
 \(\{v\in V:d(v)=r\}\).
 
 A labelling is a bijection \(f:V\longrightarrow I_n\).
-The target is the ordered \(n\)-element set of labels, interpreted as empty
-when \(n=0\). A labelling \(f\) respects the degree order if
+The target is the ordered \(n\)-element set of labels. A labelling \(f\) respects
+the degree order if
 \[
   d(v)<d(w)\quad\Longrightarrow\quad f(w)<f(v).
 \tag{2.1}\label{eq:degree-order}
@@ -139,17 +138,15 @@ all \(v,w\in V\),
 \end{corollary}
 
 \begin{remark}[The two labelling conventions]
-Let \(k\in\{1,\ldots,n\}\) be a label in the convention with labels
-\(1,\ldots,n\), and let \(i=k-1\) be its corresponding label in \(I_n\). The weight
-in the convention with labels \(1,\ldots,n\) is
-then
+Suppose the alternative convention labels vertices by
+\(\{1,\ldots,n\}\) and assigns weight \(2^k\) to label \(k\). For
+\(i=k-1\in I_n\), we have
 \[
   2^k=2^{i+1}=2\,2^i.
 \]
-Thus the original neighbour sum is twice the sum in the \(I_n\) convention.
-The factor is the same positive number for every vertex, so both the degree
-order and the equal-degree neighbour-sum order are unchanged. The two formulations are
-equivalent.
+Thus every neighbour sum in the \(\{1,\ldots,n\}\) convention is twice the
+corresponding sum in the \(I_n\) convention. Since this is the same positive
+factor for every vertex, both ordering conditions are unchanged.
 \end{remark}
 
 \section{Examples}
@@ -168,21 +165,28 @@ satisfy the required order.
   \begin{tikzpicture}[line cap=round, line join=round]
     \draw[very thick] (0,0) -- (2,1) -- (4,1) -- (6,0);
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt, align=center] at (0,0) {$a$\\[-1pt]$f(a)=2$\\[-1pt]
-      $\sum_{u\in N(a)}$\\[-1pt]$2^{f(u)}=2$};
+      inner sep=1pt] at (0,0) {$a$};
     \node[circle, draw=black, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt, align=center] at (2,1) {$b$\\[-1pt]$f(b)=1$\\[-1pt]
-      $\sum_{u\in N(b)}$\\[-1pt]$2^{f(u)}=5$};
+      inner sep=1pt] at (2,1) {$b$};
     \node[circle, draw=black, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt, align=center] at (4,1) {$x$\\[-1pt]$f(x)=0$\\[-1pt]
-      $\sum_{u\in N(x)}$\\[-1pt]$2^{f(u)}=10$};
+      inner sep=1pt] at (4,1) {$x$};
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt, align=center] at (6,0) {$y$\\[-1pt]$f(y)=3$\\[-1pt]
-      $\sum_{u\in N(y)}$\\[-1pt]$2^{f(u)}=1$};
-    \node[font=\small, align=center] at (3,-0.85)
+      inner sep=1pt] at (6,0) {$y$};
+    \node[font=\small] at (0,0.95) {$f(a)=2$};
+    \node[font=\small] at (2,1.95) {$f(b)=1$};
+    \node[font=\small] at (4,1.95) {$f(x)=0$};
+    \node[font=\small] at (6,0.95) {$f(y)=3$};
+    \node[font=\small] at (0,-0.95) {$2$};
+    \node[font=\small] at (2,0.05) {$5$};
+    \node[font=\small] at (4,0.05) {$10$};
+    \node[font=\small] at (6,-0.95) {$1$};
+    \node[font=\small, align=center] at (3,-1.55)
       {orange: degree 1\\blue: degree 2};
   \end{tikzpicture}
-  \caption{The path with vertices \(a,b,x,y\) has a labelling satisfying both required orders for \(c(i)=2^i\).}
+  \caption{The path with vertices \(a,b,x,y\) has a labelling satisfying both
+  required orders for \(c(i)=2^i\). The value below each vertex is
+  \(\sum_{u\in N(\cdot)}2^{f(u)}\); from left to right, the values are
+  \(2,5,10,1\).}
   \label{fig:good-labelling}
 \end{figure}
 
@@ -197,23 +201,31 @@ the label swap used in the proof.
   \begin{tikzpicture}[line cap=round, line join=round]
     \draw[very thick] (0,0) -- (2,1) -- (4,1) -- (6,0);
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt, align=center] (bad-a) at (0,0) {$a$\\[-1pt]$f(a)=2$\\[-1pt]
-      $\sum_{u\in N(a)}$\\[-1pt]$2^{f(u)}=1$};
+      inner sep=1pt] (bad-a) at (0,0) {$a$};
     \node[circle, draw=oi-vermillion, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt, align=center] (bad-b) at (2,1) {$b$\\[-1pt]$f(b)=0$\\[-1pt]
-      $\sum_{u\in N(b)}$\\[-1pt]$2^{f(u)}=6$};
+      inner sep=1pt] (bad-b) at (2,1) {$b$};
     \node[circle, draw=oi-vermillion, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt, align=center] (bad-x) at (4,1) {$x$\\[-1pt]$f(x)=1$\\[-1pt]
-      $\sum_{u\in N(x)}$\\[-1pt]$2^{f(u)}=9$};
+      inner sep=1pt] (bad-x) at (4,1) {$x$};
     \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt, align=center] (bad-y) at (6,0) {$y$\\[-1pt]$f(y)=3$\\[-1pt]
-      $\sum_{u\in N(y)}$\\[-1pt]$2^{f(u)}=2$};
+      inner sep=1pt] (bad-y) at (6,0) {$y$};
+    \node[font=\small] at (0,0.95) {$f(a)=2$};
+    \node[font=\small] at (2,1.95) {$f(b)=0$};
+    \node[font=\small] at (4,1.95) {$f(x)=1$};
+    \node[font=\small] at (6,0.95) {$f(y)=3$};
+    \node[font=\small] at (0,-0.95) {$1$};
+    \node[font=\small] at (2,0.05) {$6$};
+    \node[font=\small] at (4,0.05) {$9$};
+    \node[font=\small] at (6,-0.95) {$2$};
     \draw[->, very thick, oi-vermillion] (2,2.15) to[bend left=18]
       node[above, font=\small, text=black] {swap} (4,2.15);
     \node[font=\small, text=oi-vermillion, align=center] at (3,3.0)
-      {the displayed sum at $x$ exceeds that at $b$};
+      {the required comparison $9\leq 6$ fails};
   \end{tikzpicture}
-  \caption{The same graph has a degree-respecting labelling for which \cref{eq:equal-degree-order} fails at the central pair marked by red borders; the red arrow shows the exchange of their labels.}
+  \caption{The same graph has a degree-respecting labelling for which
+  \cref{eq:equal-degree-order} fails at the central pair marked by red borders;
+  the red arrow shows the exchange of their labels. The value below each vertex
+  is \(\sum_{u\in N(\cdot)}2^{f(u)}\); from left to right, the values are
+  \(1,6,9,2\), so the required comparison \(9\leq6\) fails.}
   \label{fig:bad-labelling}
 \end{figure}
 
@@ -339,31 +351,22 @@ The conclusions assert existence and do not assert uniqueness. The minimiser
 of the edge potential defined in \cref{eq:potential} is one
 construction among possibly many labellings satisfying the degree order and the
 equal-degree neighbour-sum order. In the swap argument, \(f(w)<f(v)\) gives
-\(c(f(w))<c(f(v))\). This is the step requiring strict weights. A non-decreasing
-function need not satisfy this strict inequality, so non-decreasing weights are outside the
-scope of the stated theorem.
+\(c(f(w))<c(f(v))\). This is the step requiring strict weights.
 
 \section{Formal verification}
 
-A companion machine-checked proof written in the Lean 4 proof assistant
-formalises the definitions and proves the two theorems. It also formalises the
-finite-minimisation and label-swap lemmas. The formal representation treats the
-finite vertex set as a finite type, which is a set
-equipped with a finite enumeration, and uses an ordered set of \(n\) positions
-for labels. The weights are represented by a strictly increasing real-valued
-function on that ordered label set. The formal development relies on three
-foundational principles: propositional extensionality, which identifies
-logically equivalent propositions; choice, which selects an element from a
-nonempty collection; and quotient soundness, which supplies equality for
-equivalent representatives. These are proof dependencies, not hypotheses on
-the graph or on the weights. The Lean names of these principles are
-\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
-
-Each vertex is represented by one position in the finite
-ordered type, and a labelling is a bijection to that type. The edge potential is
-represented by a finite sum over the edge set.
-The Lean development formalises the minimisation argument and label-swap
-calculation.
+The preceding definitions and proof have also been checked mechanically in
+Lean 4, a proof assistant for formal mathematics. The Lean development
+represents the finite vertex set as a finite type (a set equipped with a finite
+enumeration), represents labels by a bijection to an ordered set of \(n\)
+positions, and represents the edge potential by a finite sum over the edge set.
+It therefore checks the finite-minimisation and label-swap arguments. Its proof
+dependencies are three foundational principles: propositional extensionality,
+which identifies logically equivalent propositions; choice, which selects an
+element from a nonempty collection; and quotient soundness, which supplies
+equality for equivalent representatives. Their Lean names are
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; these are
+dependencies of the formal proof, not hypotheses on the graph or on the weights.
 
 \bibliographystyle{amsplain}
 \bibliography{../references}
