@@ -58,7 +58,7 @@ In an exhaustive enumeration of hydrocarbons with only single bonds, carbon
 skeletons are generated as adjacency matrices and pruned by two rules: a vertex
 of larger degree receives a smaller label, and among vertices of equal degree,
 a vertex whose adjacency row is the larger binary integer receives a smaller
-label. The pruning is sound only if every graph admits a labelling obeying
+label. The pruning is sound only if every skeleton admits a labelling obeying
 both rules. We prove that such a labelling exists for every finite simple
 graph, connected or not and with no bound on the degrees, and that the same
 holds when the weights \(2^i\) of the labels \(i\) are replaced by any
@@ -115,8 +115,8 @@ vertex with the larger label have a row value no larger than that of the
 other vertex. The problem goes back to a post by T.I. dated 29 May 2024, cited
 in \cite{smooth-pudding-2024}.
 
-Pruning of this kind is sound only if it discards no graph: every graph has to
-admit at least one labelling obeying both rules, since a graph with no such
+Pruning of this kind is sound only if it discards no skeleton: every skeleton has to
+admit at least one labelling obeying both rules, since a skeleton with no such
 labelling would be missing from the output. This existence had not been proved
 when \cite{smooth-pudding-2024} was written. \Cref{cor:powers-of-two} below
 proves it, in greater generality than the enumeration requires: the proof uses
@@ -187,7 +187,7 @@ For each integer \(r\), the degree-\(r\) class is
 
 A labelling is a bijection \(f:V\longrightarrow I_n\).
 The target is the ordered \(n\)-element set of labels. A labelling \(f\) is
-degree-respecting if it satisfies the degree condition
+degree-respecting if it satisfies, for all \(v,w\in V\), the degree condition
 \begin{equation}
   d(v)<d(w)\quad\Longrightarrow\quad f(w)<f(v).
 \label{eq:degree-order}
@@ -202,7 +202,8 @@ For a labelling \(f\), write the neighbour sum at \(v\) as
 \[
   \sum_{u\in N(v)}c(f(u)).
 \]
-We say that \(f\) satisfies the equal-degree neighbour-sum condition for \(c\) if
+We say that \(f\) satisfies the equal-degree neighbour-sum condition for \(c\) if, for all
+\(v,w\in V\),
 \begin{equation}
   d(v)=d(w)\ \text{and}\ f(w)<f(v)
   \quad\Longrightarrow\quad
@@ -470,7 +471,7 @@ with \(c(i)=2^i\). The last column counts isomorphism classes of skeletons.
 For \(n=7\), rule~1 reduces the \(859\,130\) skeleton matrices to \(10\,544\), by
 a factor of about \(81\), and rule~2 reduces these to \(566\), by a further
 factor of about \(19\). The \(353\) isomorphism classes then have about \(1.6\)
-surviving matrices each, against about \(2434\) before pruning. No class is
+surviving matrices on average, against about \(2434\) before pruning. No class is
 lost, as \cref{cor:powers-of-two} guarantees.
 
 All counts are exact and come from an exhaustive enumeration of the
