@@ -119,8 +119,8 @@ graphs of maximum degree at most \(4\), but the proof uses neither
 restriction: the corollary holds for every finite simple graph.
 Theorem~\ref{thm:strict-weights} further replaces the weights \(2^i\) by the
 values \(c(i)\) of an arbitrary strictly increasing function \(c:I_n\to\R\).
-\Cref{sec:counts} measures, for skeletons with at most \(7\) carbon atoms, how
-many adjacency matrices each rule removes.
+\Cref{sec:counts} counts, for skeletons with at most \(7\) carbon atoms, the
+adjacency matrices that each rule removes.
 
 The result is an existence statement. It does not assert uniqueness, and the
 two rules do not give a canonical form for graph isomorphism: several labellings
@@ -440,11 +440,11 @@ the degree condition and the displayed inequality in the corollary.
 
 \section{Size of the pruning for small skeletons}\label{sec:counts}
 
-\Cref{tab:counts} measures the effect of the two rules of the introduction for
+\Cref{tab:counts} shows the effect of the two rules of the introduction for
 \(n\leq7\). Except in the last column, every entry is a number of adjacency
-matrices of size \(n\), that is, of graphs on the vertex set \(I_n\); a graph on
-\(n\) vertices contributes one matrix for each labelling that produces a
-different matrix. The columns count, in turn, all such matrices; the skeleton
+matrices of size \(n\), that is, of labelled graphs on \(I_n\); an unlabelled
+graph \(G\) on \(n\) vertices contributes \(n!/|\mathrm{Aut}(G)|\) distinct
+matrices. The columns count, in turn, all such matrices; the skeleton
 matrices, whose graph is connected with maximum degree at most \(4\); the
 skeleton matrices that also satisfy rule~1, that is, \cref{eq:degree-order};
 and those that satisfy rule~2 as well, that is, \cref{eq:equal-degree-order}
@@ -452,7 +452,7 @@ with \(c(i)=2^i\). The last column counts isomorphism classes of skeletons.
 
 \begin{table}[ht]
   \centering
-  \caption{Numbers of adjacency matrices of size \(n\) that survive each
+  \caption{Numbers of adjacency matrices of size \(n\), in total and after each
   successive restriction, and the number of isomorphism classes of connected
   graphs on \(n\) vertices with maximum degree at most \(4\).}
   \begin{tabular}{rrrrrr}
@@ -475,14 +475,15 @@ For \(n=7\), rule~1 reduces the \(859\,130\) skeleton matrices to \(10\,544\), b
 a factor of about \(81\), and rule~2 reduces these to \(566\), by a further
 factor of about \(19\). The \(353\) isomorphism classes then have about \(1.6\)
 surviving matrices each, against about \(2434\) before pruning. No class is
-lost, as Corollary~\ref{cor:powers-of-two} guarantees, but for \(n\geq5\) some classes
+lost, as Corollary~\ref{cor:powers-of-two} guarantees, but for \(5\leq n\leq7\) some classes
 keep more than one matrix, so the remaining candidates still have to be
 compared.
 
 All counts are exact and come from an exhaustive enumeration of the
-\(2^{n(n-1)/2}\) matrices. Two matrices are identified up to isomorphism by a
-canonical form, the lexicographically largest sequence of row values over all
-relabellings that keep the degrees non-increasing. Applied to every skeleton
+\(2^{n(n-1)/2}\) matrices. Isomorphism classes are counted by a canonical form,
+the lexicographically largest sequence of row values over all relabellings that
+keep the degrees non-increasing; two matrices are isomorphic exactly when their
+canonical forms coincide. Applied to every skeleton
 matrix, it confirms that each class keeps at least one matrix under both rules.
 The class counts agree with those reported in \cite{smooth-pudding-2024}.
 
