@@ -6,18 +6,16 @@
 \crefname{theorem}{Theorem}{Theorems}
 \crefname{corollary}{Corollary}{Corollaries}
 \crefname{figure}{Figure}{Figures}
-\crefname{equation}{Equation}{Equations}
 \crefname{remark}{Remark}{Remarks}
 \crefname{example}{Example}{Examples}
 \crefname{section}{Section}{Sections}
+\crefname{table}{Table}{Tables}
 
-\definecolor{oi-orange}{HTML}{E69F00}
 \definecolor{oi-sky}{HTML}{56B4E9}
 \definecolor{oi-green}{HTML}{009E73}
 \definecolor{oi-yellow}{HTML}{F0E442}
 \definecolor{oi-blue}{HTML}{0072B2}
 \definecolor{oi-vermillion}{HTML}{D55E00}
-\definecolor{oi-purple}{HTML}{CC79A7}
 
 \usetikzlibrary{decorations.pathreplacing}
 \tikzset{
@@ -61,7 +59,7 @@ In an exhaustive enumeration of hydrocarbons with only single bonds, carbon
 skeletons are generated as adjacency matrices and pruned by two rules: a vertex
 of larger degree receives a smaller label, and among vertices of equal degree,
 a vertex whose adjacency row is the larger binary integer receives a smaller
-label. The pruning is sound only if every graph admits a labelling obeying
+label. The pruning is sound only if every skeleton admits a labelling obeying
 both rules. We prove that such a labelling exists for every finite simple
 graph, connected or not and with no bound on the degrees, and that the same
 holds when the weights \(2^i\) of the labels \(i\) are replaced by any
@@ -76,7 +74,8 @@ the products of the endpoint weights.
 
 The question studied here arose in an exhaustive enumeration of hydrocarbons
 with only single bonds, described by one of the authors (T.I.) in a blog post
-\cite{smooth-pudding-2024}. Up to stereoisomerism,
+\cite{smooth-pudding-2024}; the problem goes back to a post by T.I. dated
+29 May 2024, cited there. Up to stereoisomerism,
 such a molecule is determined by its carbon skeleton: the finite simple graph whose vertices are
 the carbon atoms and whose edges are the carbon--carbon bonds. The skeleton is
 connected, every vertex has degree at most \(4\), and hydrogen atoms fill the
@@ -85,14 +84,17 @@ hydrocarbons with \(n\) carbon atoms therefore amounts to listing, up to
 isomorphism, the connected graphs on \(n\) vertices with maximum degree at
 most \(4\).
 
-The enumeration generates such graphs as adjacency matrices. With the label set
+The enumeration generates such graphs as adjacency matrices. We describe it
+with the label set
 \[
-  I_n=\{0,1,\ldots,n-1\},
+  I_n=\{0,1,\ldots,n-1\}
 \]
-a bijective labelling of the vertices by \(I_n\) turns a graph into a symmetric
+in place of the labels \(1,\ldots,n\) used in \cite{smooth-pudding-2024}; by
+\cref{rem:conventions}, this changes neither of the rules below. A bijective labelling of the vertices by \(I_n\) turns a graph into a symmetric
 \(0/1\) matrix with zero diagonal, and different labellings of one graph
-generally give different matrices. Listing the adjacency matrices of all such
-graphs under all labellings therefore produces each graph many times, and every
+generally give different matrices. In practice, listing the adjacency matrices
+of all such graphs under all labellings therefore produces each graph many
+times, and every
 duplicate has to be removed later by an isomorphism test. To reduce this
 redundancy, the enumeration prunes while a matrix is being generated. It reads
 the row of a vertex \(v\) as the \(n\)-bit integer whose bit in position \(j\),
@@ -104,29 +106,26 @@ labelled \(j\), and it keeps only matrices whose labelling obeys two rules.
     integer receives a smaller label.
 \end{enumerate}
 For a labelling \(f\) and the set \(N(v)\) of neighbours of \(v\), the row
-integer of \(v\) is
+value of \(v\) is
 \[
   \sum_{u\in N(v)}2^{f(u)},
 \]
 the sum of the weights \(2^i\) of the labels \(i\) carried by the neighbours of
-\(v\); \cref{fig:motivation} shows these row integers for a labelled
+\(v\); \cref{fig:motivation} shows these row values for a labelled
 five-vertex skeleton that obeys both rules. The second rule thus requires that, among vertices of equal degree, the
-vertex with the larger label have a neighbour sum no larger than that of the
-other vertex. The problem goes back to a post by T.I. dated 29 May 2024, cited
-in \cite{smooth-pudding-2024}, which labels vertices by \(1,\ldots,n\); by
-\cref{rem:conventions}, this convention changes neither rule.
+vertex with the larger label have a row value no larger than that of the
+other vertex.
 
-Pruning of this kind is sound only if it discards no graph: every graph has to
-admit at least one labelling obeying both rules, since a graph with no such
-labelling would be missing from the output. This existence had not been proved
+The pruning is sound only if every skeleton admits at least one labelling
+obeying both rules; otherwise that skeleton would be missing from the output. This existence had not been proved
 when \cite{smooth-pudding-2024} was written. \Cref{cor:powers-of-two} below
 proves it, in greater generality than the enumeration requires: the proof uses
 neither connectedness nor the degree bound, and
 \cref{thm:strict-weights} replaces the weights \(2^i\) by the values \(c(i)\)
 of an arbitrary strictly increasing function \(c:I_n\to\R\).
 \Cref{sec:remarks} discusses the lack of uniqueness, counts
-for skeletons with at most \(7\) carbon atoms the adjacency matrices that each
-rule removes, and describes a check of the proofs in Lean~4.
+for skeletons with \(2\) to \(7\) carbon atoms the adjacency matrices that remain
+after each rule, and describes a check of the proofs in Lean~4.
 
 \begin{figure}[t]
   \centering
@@ -168,9 +167,7 @@ rule removes, and describes a check of the proofs in Lean~4.
   \caption{Left: the carbon skeleton of 2-methylbutane with a labelling by
   \(I_5\); dark, medium and light shading mark degree \(3\), \(2\) and \(1\). Right: its adjacency
   matrix, rows and columns in label order; the number above column \(j\)
-  is its weight \(2^j\), so the row value is the sum of the weights over the \(1\)s of the
-  row, which is \(\sum_{u\in N(v)}2^{f(u)}\) for the vertex \(v\) with that
-  label. The columns \(d\) and row give the degree and the row value of each
+  is its weight \(2^j\). The columns \(d\) and row give the degree and the row value of each
   vertex. Degrees do not increase down the rows, and the brace shows that the
   row values \(2\geq1\geq1\) of the degree-\(1\) class do not increase either.}
   \label{fig:motivation}
@@ -186,25 +183,24 @@ be its neighbourhood. We write \(u\sim v\) when \(u\) and \(v\) are adjacent.
 For each integer \(r\), the degree-\(r\) class is
 \(\{v\in V:d(v)=r\}\).
 
-A labelling is a bijection \(f:V\longrightarrow I_n\).
-The target is the ordered \(n\)-element set of labels. A labelling \(f\) respects
-the degree order if
+A labelling is a bijection \(f:V\longrightarrow I_n\). A labelling \(f\) is
+degree-respecting if it satisfies, for all \(v,w\in V\), the degree condition
 \begin{equation}
   d(v)<d(w)\quad\Longrightarrow\quad f(w)<f(v).
 \label{eq:degree-order}
 \end{equation}
-We call a labelling satisfying \cref{eq:degree-order} degree-respecting.
 
 Let \(c:I_n\to\R\) be strictly increasing. Thus
 \begin{equation}
   c(0)<c(1)<\cdots<c(n-1).
   \label{eq:strict-weights}
 \end{equation}
-For a labelling \(f\), write the weighted neighbour sum at \(v\) as
+For a labelling \(f\), write the neighbour sum at \(v\) as
 \[
   \sum_{u\in N(v)}c(f(u)).
 \]
-We say that \(f\) respects the equal-degree neighbour-sum order for \(c\) if
+We say that \(f\) satisfies the equal-degree neighbour-sum condition for \(c\) if, for all
+\(v,w\in V\),
 \begin{equation}
   d(v)=d(w)\ \text{and}\ f(w)<f(v)
   \quad\Longrightarrow\quad
@@ -215,13 +211,13 @@ We say that \(f\) respects the equal-degree neighbour-sum order for \(c\) if
 \begin{theorem}[Strictly increasing weights]\label{thm:strict-weights}
 For every finite simple graph \(G=(V,E)\), with \(n=|V|\), and every strictly
 increasing function \(c:I_n\to\R\), there exists a labelling \(f\) satisfying
-the degree condition \cref{eq:degree-order} and the equal-degree neighbour-sum
-condition \cref{eq:equal-degree-order}.
+the degree condition \eqref{eq:degree-order} and the equal-degree neighbour-sum
+condition \eqref{eq:equal-degree-order}.
 \end{theorem}
 
 \begin{corollary}[Powers of two]\label{cor:powers-of-two}
 For every finite simple graph \(G=(V,E)\), with \(n=|V|\), there exists a
-labelling \(f\) satisfying the degree condition \cref{eq:degree-order} and, for
+labelling \(f\) satisfying the degree condition \eqref{eq:degree-order} and, for
 all \(v,w\in V\),
 \[
   d(v)=d(w)\ \text{and}\ f(w)<f(v)
@@ -245,17 +241,16 @@ Suppose the alternative convention labels vertices by
   2^k=2^{i+1}=2\,2^i.
 \]
 Thus every neighbour sum in the \(\{1,\ldots,n\}\) convention is twice the
-corresponding sum in the \(I_n\) convention. Since this is the same positive
-factor for every vertex, both ordering conditions are unchanged.
+corresponding sum in the \(I_n\) convention. The shift \(k=i+1\) preserves the
+order of the labels, and the factor \(2\) is common to all vertices, so neither
+rule changes.
 \end{remark}
 
 \section{Proof of Theorem~\ref{thm:strict-weights}}\label{sec:proof}
 
-Let \(\mathcal A\) be the set of all labellings that respect
-\cref{eq:degree-order}. This set is nonempty. Order the vertices by
-non-increasing degree, choose any order inside each degree class, and assign
-the labels in \(I_n\) in that order. The set \(\mathcal A\) is finite
-because it is a subset of the finite set of all bijective labellings.
+Let \(\mathcal A\) be the set of all degree-respecting labellings. The set
+\(\mathcal A\) is finite, and it is nonempty: order the vertices by non-increasing degree, choose any order inside each
+degree class, and assign the labels in \(I_n\) in that order.
 
 For \(g\in\mathcal A\), define the edge potential
 \begin{equation}
@@ -266,7 +261,7 @@ The finite nonempty set of real values \(\{\Phi(g):g\in\mathcal A\}\) has a
 minimum. Choose \(f\in\mathcal A\) with minimal edge potential.
 
 Take \(v,w\in V\) with \(d(v)=d(w)\) and \(f(w)<f(v)\). Strict increase in
-\cref{eq:strict-weights} gives \(c(f(w))<c(f(v))\). Let \(f'\) be obtained from
+\eqref{eq:strict-weights} gives \(c(f(w))<c(f(v))\). Let \(f'\) be obtained from
 \(f\) by exchanging the labels of \(v\) and \(w\). Since
 \(d(v)=d(w)\), the exchanged labelling still belongs to \(\mathcal A\).
 
@@ -300,9 +295,7 @@ edges incident with neither \(v\) nor \(w\) (\(E_0\)), with \(v\) only
   \caption{The four edge classes in the comparison of \(\Phi(f')\) with
   \(\Phi(f)\) for the exchanged vertices \(v\) and \(w\): edges incident with
   \(v\) only (\(E_v\), solid), with \(w\) only (\(E_w\), dashed), with both
-  (\(E_{vw}\), heavy), and with neither (\(E_0\), dotted). Edges in \(E_0\) and
-  \(E_{vw}\) contribute equally to \(\Phi(f)\) and \(\Phi(f')\), so only \(E_v\)
-  and \(E_w\) enter \cref{eq:swap-identity}.}
+  (\(E_{vw}\), heavy), and with neither (\(E_0\), dotted).}
   \label{fig:edge-classes}
 \end{figure}
 
@@ -325,15 +318,13 @@ from \(E_{vw}\), give
   \label{eq:swap-identity}
 \end{equation}
 Minimality of \(f\) gives \(\Phi(f')-\Phi(f)\geq0\). Since
-\(c(f(v))-c(f(w))>0\), \cref{eq:swap-identity} implies
+\(c(f(v))-c(f(w))>0\), \eqref{eq:swap-identity} implies
 \begin{equation}
   \sum_{u\in N(v)\setminus\{w\}}c(f(u))
   \leq
   \sum_{u\in N(w)\setminus\{v\}}c(f(u)).
   \label{eq:neighbour-sums-except}
 \end{equation}
-
-We distinguish whether \(v\) and \(w\) are adjacent.
 
 \paragraph{Adjacent case.}
 If \(v\sim w\), then
@@ -345,7 +336,6 @@ If \(v\sim w\), then
     &=\sum_{u\in N(w)}c(f(u)).
   \end{aligned}
 \]
-Thus the required inequality holds in the adjacent case.
 
 \paragraph{Non-adjacent case.}
 If \(v\not\sim w\), then
@@ -355,24 +345,23 @@ If \(v\not\sim w\), then
   \leq\sum_{u\in N(w)\setminus\{v\}}c(f(u))
   =\sum_{u\in N(w)}c(f(u)).
 \]
-Thus the required inequality holds in the non-adjacent case. Therefore \(f\) satisfies
-\cref{eq:equal-degree-order}, which proves \cref{thm:strict-weights}.
+In both cases \(f\) satisfies \eqref{eq:equal-degree-order}, which proves \cref{thm:strict-weights}.
 
 \begin{example}\label{ex:swap}
 For the labelling in \cref{fig:motivation}, take \(c(i)=2^i\). The degree
-condition \cref{eq:degree-order} holds, and the only degree class with more
+condition \eqref{eq:degree-order} holds, and the only degree class with more
 than one vertex is the degree-\(1\) class, with labels \(2,3,4\) and neighbour
 sums \(2,1,1\). These sums do not increase with the label, so
-\cref{eq:equal-degree-order} holds as well. The labelling is not the only one:
+\eqref{eq:equal-degree-order} holds as well. The labelling is not the only one:
 exchanging the labels \(3\) and \(4\) of the two leaves at the degree-\(3\)
 vertex gives a second labelling satisfying both conditions. There are no
-others: \cref{eq:degree-order} forces the labels \(0\) and \(1\) on the
+others: \eqref{eq:degree-order} forces the labels \(0\) and \(1\) on the
 vertices of degree \(3\) and \(2\), and the leaf adjacent to the vertex
 labelled \(1\) must carry the label \(2\).
 
 \Cref{fig:swap} starts instead from a degree-respecting labelling that violates
-\cref{eq:equal-degree-order} and shows that exchanging the labels of the
-offending pair, the move compared in the proof above, removes the violation.
+\eqref{eq:equal-degree-order} and shows that exchanging the labels of the
+offending pair, the exchange used in the proof above, removes the violation.
 \end{example}
 
 \begin{figure}[ht]
@@ -411,40 +400,39 @@ offending pair, the move compared in the proof above, removes the violation.
       {$2\leftrightarrow3$} (5.8,-0.4);
   \end{tikzpicture}
   \caption{Left: a degree-respecting labelling of the graph of
-  \cref{fig:motivation}. The table lists the labels \(f\) of the
-  degree-\(1\) vertices and, below them, their neighbour sums
-  \(\sum_{u\in N(\cdot)}2^{f(u)}\); the leaf labelled \(3\) has sum \(2\),
+  \cref{fig:motivation}. The table lists the labels of the
+  degree-\(1\) vertices and, below them, their neighbour sums for
+  \(c(i)=2^i\); the leaf labelled \(3\) has sum \(2\),
   larger than the sum \(1\) of the leaf labelled \(2\), so
-  \cref{eq:equal-degree-order} fails for the dashed pair. Right: after the two
+  \eqref{eq:equal-degree-order} fails for the dashed pair. Right: after the two
   labels are exchanged, giving the labelling of \cref{fig:motivation}, the sums
   \(2,1,1\) do not increase with the label, and the edge potential
-  \(\sum_{\{x,y\}\in E}2^{f(x)+f(y)}\) (see \cref{eq:potential}) drops from
-  \(38\) to \(34\).}
+  \(\Phi\) of \eqref{eq:potential} with \(c(i)=2^i\) drops from \(38\) to \(34\).}
   \label{fig:swap}
 \end{figure}
 
 \section{Remarks}\label{sec:remarks}
 
 \Cref{thm:strict-weights,cor:powers-of-two} assert existence, not uniqueness.
-The minimiser of the edge potential defined in \cref{eq:potential} is one labelling among
-possibly several satisfying both conditions; the graph of \cref{ex:swap} has
-exactly two. The two rules therefore do not give a canonical form for graph
-isomorphism, and the candidates that survive the pruning still have to be
-compared. The enumeration of \cite{smooth-pudding-2024} reduces these
+A minimiser of the edge potential defined in \eqref{eq:potential} is one labelling among
+possibly several satisfying both conditions (\cref{ex:swap}). The two rules do not give a canonical form for graph isomorphism
+either: for \(5\leq n\leq7\) some isomorphism classes keep more than one matrix
+(\cref{tab:counts}), so the candidates that survive the pruning still have to
+be compared. The enumeration of \cite{smooth-pudding-2024} reduces these
 comparisons with a variant of Morgan's algorithm \cite{morgan-1965}, which
 assigns to each atom of a chemical structure an invariant computed from
 iterated sums over neighbours; the surviving candidates are sorted into classes
 such that only candidates in the same class can be isomorphic. That filtering
-step is separate from the degree and binary-row pruning studied here.
+step is separate from the pruning by the two rules studied here.
 
 \Cref{tab:counts} shows the effect of the two rules of the introduction for
-\(n\leq7\). Except in the last column, every entry is a number of adjacency
+\(2\leq n\leq7\). Except in the first and last columns, every entry is a number of adjacency
 matrices of size \(n\), that is, of labelled graphs on \(I_n\); an unlabelled
 graph \(G\) on \(n\) vertices contributes \(n!/|\mathrm{Aut}(G)|\) distinct
 matrices. The columns count, in turn, all such matrices; the skeleton
 matrices, whose graph is connected with maximum degree at most \(4\); the
-skeleton matrices that also satisfy rule~1, that is, \cref{eq:degree-order};
-and those that satisfy rule~2 as well, that is, \cref{eq:equal-degree-order}
+skeleton matrices that also satisfy rule~1, that is, \eqref{eq:degree-order};
+and those that satisfy rule~2 as well, that is, \eqref{eq:equal-degree-order}
 with \(c(i)=2^i\). The last column counts isomorphism classes of skeletons.
 
 \begin{table}[ht]
@@ -471,28 +459,26 @@ with \(c(i)=2^i\). The last column counts isomorphism classes of skeletons.
 For \(n=7\), rule~1 reduces the \(859\,130\) skeleton matrices to \(10\,544\), by
 a factor of about \(81\), and rule~2 reduces these to \(566\), by a further
 factor of about \(19\). The \(353\) isomorphism classes then have about \(1.6\)
-surviving matrices each, against about \(2434\) before pruning. No class is
-lost, as \cref{cor:powers-of-two} guarantees, but for \(5\leq n\leq7\) some
-classes keep more than one matrix.
+surviving matrices on average, against about \(2434\) before pruning.
 
 All counts are exact and come from an exhaustive enumeration of the
 \(2^{n(n-1)/2}\) matrices. Isomorphism classes are counted by a canonical form,
 the lexicographically largest sequence of row values over all relabellings that
 keep the degrees non-increasing; two matrices are isomorphic exactly when their
 canonical forms coincide. Applied to every skeleton
-matrix, it confirms that each class keeps at least one matrix under both rules.
+matrix, it confirms that each class keeps at least one matrix under both rules, as
+\cref{cor:powers-of-two} guarantees.
 The class counts agree with those reported in \cite{smooth-pudding-2024}.
 
 \Cref{thm:strict-weights,cor:powers-of-two}, with their definitions and proofs,
-have been formalised and mechanically checked in Lean~4, a proof assistant. The Lean development
-represents the finite vertex set as a finite type (a set equipped with a finite
-enumeration), represents labels by a bijection to an ordered set of \(n\)
-positions, and represents the edge potential by a finite sum over the edge set.
-It therefore checks the finite-minimisation and label-swap arguments. Its proof
-dependencies are three foundational principles: propositional extensionality,
+have been formalised and mechanically checked in Lean~4, a proof assistant.
+The Lean development represents the finite vertex set as a finite type (a type
+with finitely many elements), represents a labelling as a bijection to
+\(I_n\), and represents the edge potential by a finite sum over the edge set.
+Its proof dependencies are three foundational principles: propositional extensionality,
 which identifies logically equivalent propositions; choice, which selects an
-element from a nonempty collection; and quotient soundness, which supplies
-equality for equivalent representatives. Their Lean names are
+element from a nonempty collection; and quotient soundness, which makes
+related elements equal in the quotient. Their Lean names are
 \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; these are
 dependencies of the formal proof, not hypotheses on the graph or on the weights.
 
