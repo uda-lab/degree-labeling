@@ -21,6 +21,7 @@ scripts/preflight.sh      # measured environment facts; no build, no GitHub muta
 scripts/bootstrap.sh      # idempotent: mathlib oleans + git hooks path; never cold-build mathlib, never `lake update`
 scripts/check.sh          # full gate: guards, lake build, live #print axioms, coverage; serialised on /tmp/lean-build.lock
 scripts/github-setup.sh   # idempotent labels, squash-only, `main` ruleset
+scripts/arxiv-bundle.sh   # docs/paper → build/arxiv/degree_labeling.tar.gz (.tex + .bbl), verified with pdflatex alone
 ~~~
 
 ## Code Conventions
