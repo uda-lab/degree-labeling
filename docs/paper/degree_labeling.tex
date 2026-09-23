@@ -64,7 +64,7 @@ a vertex whose adjacency row is the larger binary integer receives a smaller
 label. The pruning is sound only if every graph admits a labelling obeying
 both rules. We prove that such a labelling exists for every finite simple
 graph, connected or not and with no bound on the degrees, and that the same
-holds when the binary weights \(2^i\) of the labels are replaced by any
+holds when the weights \(2^i\) of the labels \(i\) are replaced by any
 strictly increasing real weights. The proof takes, among the labellings that
 order vertices by non-increasing degree, one minimising the sum over edges of
 the products of the endpoint weights.
@@ -123,8 +123,8 @@ when \cite{smooth-pudding-2024} was written. \Cref{cor:powers-of-two} below
 proves it, in greater generality than the enumeration requires: the proof uses
 neither connectedness nor the degree bound, and
 \cref{thm:strict-weights} replaces the weights \(2^i\) by the values \(c(i)\)
-of an arbitrary strictly increasing function \(c:I_n\to\R\). The proof is in
-\cref{sec:proof}. \Cref{sec:remarks} discusses the lack of uniqueness, counts
+of an arbitrary strictly increasing function \(c:I_n\to\R\).
+\Cref{sec:remarks} discusses the lack of uniqueness, counts
 for skeletons with at most \(7\) carbon atoms the adjacency matrices that each
 rule removes, and describes a check of the proofs in Lean~4.
 
@@ -483,8 +483,8 @@ canonical forms coincide. Applied to every skeleton
 matrix, it confirms that each class keeps at least one matrix under both rules.
 The class counts agree with those reported in \cite{smooth-pudding-2024}.
 
-The definitions and proofs above have been formalised and mechanically checked
-in Lean~4, a proof assistant. The Lean development
+\Cref{thm:strict-weights,cor:powers-of-two}, with their definitions and proofs,
+have been formalised and mechanically checked in Lean~4, a proof assistant. The Lean development
 represents the finite vertex set as a finite type (a set equipped with a finite
 enumeration), represents labels by a bijection to an ordered set of \(n\)
 positions, and represents the edge potential by a finite sum over the edge set.
