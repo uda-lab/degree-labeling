@@ -123,8 +123,8 @@ neither connectedness nor the degree bound, and
 \cref{thm:strict-weights} replaces the weights \(2^i\) by the values \(c(i)\)
 of an arbitrary strictly increasing function \(c:I_n\to\R\).
 \Cref{sec:remarks} discusses the lack of uniqueness, counts
-for skeletons with at most \(7\) carbon atoms the adjacency matrices that each
-rule removes, and describes a check of the proofs in Lean~4.
+for skeletons with \(2\) to \(7\) carbon atoms the adjacency matrices that remain
+after each rule, and describes a check of the proofs in Lean~4.
 
 \begin{figure}[t]
   \centering
@@ -425,9 +425,10 @@ offending pair, the exchange used in the proof above, removes the violation.
 \Cref{thm:strict-weights,cor:powers-of-two} assert existence, not uniqueness.
 A minimiser of the edge potential defined in \eqref{eq:potential} is one labelling among
 possibly several satisfying both conditions; the graph of \cref{ex:swap} has
-exactly two. The two rules therefore do not give a canonical form for graph
-isomorphism, and the candidates that survive the pruning still have to be
-compared. The enumeration of \cite{smooth-pudding-2024} reduces these
+exactly two. The two rules do not give a canonical form for graph isomorphism
+either: for \(5\leq n\leq7\) some isomorphism classes keep more than one matrix
+(\cref{tab:counts}), so the candidates that survive the pruning still have to
+be compared. The enumeration of \cite{smooth-pudding-2024} reduces these
 comparisons with a variant of Morgan's algorithm \cite{morgan-1965}, which
 assigns to each atom of a chemical structure an invariant computed from
 iterated sums over neighbours; the surviving candidates are sorted into classes
@@ -435,7 +436,7 @@ such that only candidates in the same class can be isomorphic. That filtering
 step is separate from the pruning by the two rules studied here.
 
 \Cref{tab:counts} shows the effect of the two rules of the introduction for
-\(n\leq7\). Except in the first and last columns, every entry is a number of adjacency
+\(2\leq n\leq7\). Except in the first and last columns, every entry is a number of adjacency
 matrices of size \(n\), that is, of labelled graphs on \(I_n\); an unlabelled
 graph \(G\) on \(n\) vertices contributes \(n!/|\mathrm{Aut}(G)|\) distinct
 matrices. The columns count, in turn, all such matrices; the skeleton
@@ -469,8 +470,7 @@ For \(n=7\), rule~1 reduces the \(859\,130\) skeleton matrices to \(10\,544\), b
 a factor of about \(81\), and rule~2 reduces these to \(566\), by a further
 factor of about \(19\). The \(353\) isomorphism classes then have about \(1.6\)
 surviving matrices each, against about \(2434\) before pruning. No class is
-lost, as \cref{cor:powers-of-two} guarantees, but for \(5\leq n\leq7\) some
-classes keep more than one matrix.
+lost, as \cref{cor:powers-of-two} guarantees.
 
 All counts are exact and come from an exhaustive enumeration of the
 \(2^{n(n-1)/2}\) matrices. Isomorphism classes are counted by a canonical form,
