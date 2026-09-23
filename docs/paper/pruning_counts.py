@@ -2,10 +2,11 @@
 """Exact counts for the pruning rules of the hydrocarbon enumeration (Issue #45).
 
 Every count below is a number of adjacency matrices: symmetric 0/1 matrices of
-size n with zero diagonal, i.e. graphs on the vertex set I_n = {0, ..., n-1}.
-A matrix is the same thing as a graph together with a labelling of its
-vertices by I_n, so no separate "graph-plus-labelling" count is needed. The
-last column counts isomorphism classes (unlabelled graphs) instead.
+size n with zero diagonal, i.e. labelled graphs on I_n = {0, ..., n-1}. These
+are distinct matrices, not graph-labelling pairs: an unlabelled graph G gives
+n!/|Aut(G)| distinct matrices, since labellings that differ by an automorphism
+give the same matrix. The last column counts isomorphism classes (unlabelled
+graphs) instead.
 
 Columns, for each n:
   all        every adjacency matrix: 2^(n choose 2)
