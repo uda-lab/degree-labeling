@@ -18,6 +18,17 @@
 \definecolor{oi-vermillion}{HTML}{D55E00}
 \definecolor{oi-purple}{HTML}{CC79A7}
 
+\usetikzlibrary{decorations.pathreplacing}
+\tikzset{
+  vtx/.style={circle, draw=black, thick, minimum size=6.5mm, inner sep=0pt,
+    font=\small},
+  deg3/.style={vtx, fill=oi-blue, text=white},
+  deg2/.style={vtx, fill=oi-sky},
+  deg1/.style={vtx, fill=oi-yellow},
+  plain/.style={vtx, fill=white, minimum size=5mm},
+  edge/.style={thick},
+}
+
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{remark}{Remark}
@@ -89,7 +100,8 @@ integer of \(v\) is
   \sum_{u\in N(v)}2^{f(u)},
 \]
 the sum of the weights \(2^i\) of the labels \(i\) carried by the neighbours of
-\(v\). The second rule thus requires that, among vertices of equal degree, the
+\(v\); \cref{fig:motivation} shows these row integers for a labelled
+five-vertex skeleton that obeys both rules. The second rule thus requires that, among vertices of equal degree, the
 vertex with the larger label have a neighbour sum no larger than that of the
 other vertex. Smooth Pudding attributes the problem to a post dated 29 May 2024, which
 labels vertices by \(1,\ldots,n\); by Remark~\ref{rem:conventions}, this
@@ -115,6 +127,54 @@ neighbours. The enumeration uses a variant of it to sort the surviving
 candidates into classes such that only candidates in the same class can be
 isomorphic. That filtering step is separate from the degree and binary-row
 pruning studied here.
+
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}[line cap=round, line join=round]
+    % carbon skeleton of 2-methylbutane, vertices shown by their labels
+    \begin{scope}[yshift=-0.3cm]
+      \node[deg1] (x) at (0,0) {3};
+      \node[deg3] (a) at (1.2,0) {0};
+      \node[deg2] (b) at (2.4,0) {1};
+      \node[deg1] (z) at (3.6,0) {2};
+      \node[deg1] (y) at (1.2,-1.2) {4};
+      \draw[edge] (x) -- (a) -- (b) -- (z) (a) -- (y);
+    \end{scope}
+    % adjacency matrix with column weights, degrees and row values
+    \begin{scope}[xshift=5.2cm, yshift=1.0cm]
+      \def\cw{0.5}
+      \foreach \i/\col in {0/oi-blue, 1/oi-sky, 2/oi-yellow, 3/oi-yellow, 4/oi-yellow}
+        \fill[\col!30] (0.1,-\i*\cw-0.22) rectangle (3.95,-\i*\cw+0.22);
+      \foreach \w [count=\j from 0] in {1,2,4,8,16}
+        \node[font=\scriptsize] at (\j*\cw+0.35,0.55) {$\w$};
+      \node[font=\scriptsize] at (3.05,0.55) {$d$};
+      \node[font=\scriptsize] at (3.65,0.55) {row};
+      \foreach \r [count=\i from 0] in {{0,1,0,1,1},{1,0,1,0,0},{0,1,0,0,0},{1,0,0,0,0},{1,0,0,0,0}} {
+        \node[font=\scriptsize, text=black!70] at (-0.2,-\i*\cw) {$\i$};
+        \foreach \e [count=\j from 0] in \r
+          \node[font=\small] at (\j*\cw+0.35,-\i*\cw) {$\e$};
+      }
+      \foreach \d/\v [count=\i from 0] in {3/26, 2/5, 1/2, 1/1, 1/1} {
+        \node[font=\small] at (3.05,-\i*\cw) {$\d$};
+        \node[font=\small] at (3.65,-\i*\cw) {$\v$};
+      }
+      \draw[thick] (0.15,0.25) -- (0.1,0.25) -- (0.1,-2.25) -- (0.15,-2.25);
+      \draw[thick] (2.55,0.25) -- (2.6,0.25) -- (2.6,-2.25) -- (2.55,-2.25);
+      \draw[decorate, decoration={brace, amplitude=4pt}, thick]
+        (4.05,-0.8) -- (4.05,-2.2)
+        node[midway, right=5pt, font=\small] {$2\geq1\geq1$};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Left: the carbon skeleton of 2-methylbutane with a labelling by
+  \(I_5\); dark, medium and light shading mark degree \(3\), \(2\) and \(1\). Right: its adjacency
+  matrix, rows and columns in label order; the number above column \(j\)
+  is its weight \(2^j\), so the row value is the sum of the weights over the \(1\)s of the
+  row, which is \(\sum_{u\in N(v)}2^{f(u)}\) for the vertex \(v\) with that
+  label. The columns \(d\) and row give the degree and the row value of each
+  vertex. Degrees do not increase down the rows, and the brace shows that the
+  row values \(2\geq1\geq1\) of the degree-\(1\) class do not increase either.}
+  \label{fig:motivation}
+\end{figure}
 
 \section{Preliminaries}
 
@@ -190,82 +250,68 @@ factor for every vertex, both ordering conditions are unchanged.
 
 \section{Examples}
 
-In the figures, each vertex displays its weighted neighbour sum
-\(\sum_{u\in N(v)}2^{f(u)}\). The graph in
-\cref{fig:good-labelling} has vertices \(a,b,x,y\) and edges
-\(\{a,b\},\{b,x\},\{x,y\}\). It has two degree classes. Its displayed
-labelling satisfies both conditions with \(c(i)=2^i\). The labels of the two
-degree-two vertices are \(1\) and \(0\), and the labels of the two degree-one
-vertices are \(2\) and \(3\). Within each degree class, the displayed sums
-satisfy the required order.
+For the labelling in \cref{fig:motivation}, take \(c(i)=2^i\). The degree
+condition \cref{eq:degree-order} holds, and the only degree class with more
+than one vertex is the degree-\(1\) class, with labels \(2,3,4\) and neighbour
+sums \(2,1,1\). These sums do not increase with the label, so
+\cref{eq:equal-degree-order} holds as well. The labelling is not the only one:
+exchanging the labels \(3\) and \(4\) of the two leaves at the degree-\(3\)
+vertex gives a second labelling satisfying both conditions. There are no
+others: \cref{eq:degree-order} forces the labels \(0\) and \(1\) on the
+vertices of degree \(3\) and \(2\), and the leaf adjacent to the vertex
+labelled \(1\) must carry the label \(2\).
+
+\Cref{fig:swap} starts instead from a degree-respecting labelling that violates
+\cref{eq:equal-degree-order} and shows that exchanging the labels of the
+offending pair, the move compared in the proof of \cref{thm:strict-weights},
+removes the violation.
 
 \begin{figure}[ht]
   \centering
   \begin{tikzpicture}[line cap=round, line join=round]
-    \draw[very thick] (0,0) -- (2,1) -- (4,1) -- (6,0);
-    \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt] at (0,0) {$a$};
-    \node[circle, draw=black, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt] at (2,1) {$b$};
-    \node[circle, draw=black, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt] at (4,1) {$x$};
-    \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt] at (6,0) {$y$};
-    \node[font=\small] at (0,0.95) {$f(a)=2$};
-    \node[font=\small] at (2,1.95) {$f(b)=1$};
-    \node[font=\small] at (4,1.95) {$f(x)=0$};
-    \node[font=\small] at (6,0.95) {$f(y)=3$};
-    \node[font=\small] at (0,-0.95) {$2$};
-    \node[font=\small] at (2,0.05) {$5$};
-    \node[font=\small] at (4,0.05) {$10$};
-    \node[font=\small] at (6,-0.95) {$1$};
-    \node[font=\small, align=center] at (3,-1.55)
-      {orange: degree 1\\blue: degree 2};
+    \foreach \dx/\lx/\lz/\sa/\sb/\sc/\tag in
+        {0/2/3/1/2/1/before, 6.4/3/2/2/1/1/after} {
+      \begin{scope}[xshift=\dx cm]
+        \node[deg1] (x-\tag) at (0,0) {\lx};
+        \node[deg3] (a-\tag) at (1.2,0) {0};
+        \node[deg2] (b-\tag) at (2.4,0) {1};
+        \node[deg1] (z-\tag) at (3.6,0) {\lz};
+        \node[deg1] (y-\tag) at (1.2,-1.2) {4};
+        \draw[edge] (x-\tag) -- (a-\tag) -- (b-\tag) -- (z-\tag)
+          (a-\tag) -- (y-\tag);
+        % degree-1 class: labels and neighbour sums
+        \begin{scope}[xshift=1.2cm, yshift=-2.1cm, font=\small]
+          \node[anchor=east] at (0,0) {label};
+          \node[anchor=east] at (0,-0.5) {sum};
+          \foreach \l/\sm [count=\k from 0] in {2/\sa, 3/\sb, 4/\sc} {
+            \node at (0.35+\k*0.65,0) {$\l$};
+            \node at (0.35+\k*0.65,-0.5) {$\sm$};
+          }
+          \draw (0.05,-0.25) -- (1.95,-0.25);
+        \end{scope}
+      \end{scope}
+    }
+    % the offending pair before the exchange
+    \node[deg1, draw=oi-vermillion, line width=1.6pt, dash pattern=on 2.2pt off 1.4pt]
+      at (x-before) {2};
+    \node[deg1, draw=oi-vermillion, line width=1.6pt, dash pattern=on 2.2pt off 1.4pt]
+      at (z-before) {3};
+    \draw[oi-vermillion, very thick, dashed]
+      (1.32,-2.85) rectangle (2.43,-1.85);
+    \draw[->, very thick] (4.3,-0.4) -- node[above, font=\small]
+      {$2\leftrightarrow3$} (5.8,-0.4);
   \end{tikzpicture}
-  \caption{The path with vertices \(a,b,x,y\) has a labelling satisfying both
-  required orders for \(c(i)=2^i\). The value below each vertex is
-  \(\sum_{u\in N(\cdot)}2^{f(u)}\); from left to right, the values are
-  \(2,5,10,1\).}
-  \label{fig:good-labelling}
-\end{figure}
-
-A degree-respecting labelling can fail the equal-degree neighbour-sum order.
-In \cref{fig:bad-labelling}, the labels of the central
-vertices are exchanged relative to \cref{fig:good-labelling}. The red mark
-identifies a pair violating \cref{eq:equal-degree-order}, and the arrow shows
-the label swap used in the proof.
-
-\begin{figure}[ht]
-  \centering
-  \begin{tikzpicture}[line cap=round, line join=round]
-    \draw[very thick] (0,0) -- (2,1) -- (4,1) -- (6,0);
-    \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt] (bad-a) at (0,0) {$a$};
-    \node[circle, draw=oi-vermillion, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt] (bad-b) at (2,1) {$b$};
-    \node[circle, draw=oi-vermillion, very thick, fill=oi-blue, minimum size=15mm,
-      inner sep=1pt] (bad-x) at (4,1) {$x$};
-    \node[circle, draw=black, very thick, fill=oi-orange, minimum size=15mm,
-      inner sep=1pt] (bad-y) at (6,0) {$y$};
-    \node[font=\small] at (0,0.95) {$f(a)=2$};
-    \node[font=\small] at (2,1.95) {$f(b)=0$};
-    \node[font=\small] at (4,1.95) {$f(x)=1$};
-    \node[font=\small] at (6,0.95) {$f(y)=3$};
-    \node[font=\small] at (0,-0.95) {$1$};
-    \node[font=\small] at (2,0.05) {$6$};
-    \node[font=\small] at (4,0.05) {$9$};
-    \node[font=\small] at (6,-0.95) {$2$};
-    \draw[->, very thick, oi-vermillion] (2,2.15) to[bend left=18]
-      node[above, font=\small, text=black] {swap} (4,2.15);
-    \node[font=\small, text=oi-vermillion, align=center] at (3,3.0)
-      {the required comparison $9\leq 6$ fails};
-  \end{tikzpicture}
-  \caption{The same graph has a degree-respecting labelling for which
-  \cref{eq:equal-degree-order} fails at the central pair marked by red borders;
-  the red arrow shows the exchange of their labels. The value below each vertex
-  is \(\sum_{u\in N(\cdot)}2^{f(u)}\); from left to right, the values are
-  \(1,6,9,2\), so the required comparison \(9\leq6\) fails.}
-  \label{fig:bad-labelling}
+  \caption{Left: a degree-respecting labelling of the graph of
+  \cref{fig:motivation}. The table lists the labels \(f\) of the
+  degree-\(1\) vertices and, below them, their neighbour sums
+  \(\sum_{u\in N(\cdot)}2^{f(u)}\); the leaf labelled \(3\) has sum \(2\),
+  larger than the sum \(1\) of the leaf labelled \(2\), so
+  \cref{eq:equal-degree-order} fails for the dashed pair. Right: after the two
+  labels are exchanged, giving the labelling of \cref{fig:motivation}, the sums
+  \(2,1,1\) do not increase with the label, and the edge potential
+  \(\sum_{\{x,y\}\in E}2^{f(x)+f(y)}\) (see \cref{eq:potential}) drops from
+  \(38\) to \(34\).}
+  \label{fig:swap}
 \end{figure}
 
 \section{Proof of Theorem~\ref{thm:strict-weights}}
@@ -289,35 +335,39 @@ Take \(v,w\in V\) with \(d(v)=d(w)\) and \(f(w)<f(v)\). Strict increase in
 \(f\) by exchanging the labels of \(v\) and \(w\). Since
 \(d(v)=d(w)\), the exchanged labelling still belongs to \(\mathcal A\).
 
-The edge classes used to compare \(\Phi(f')\) and \(\Phi(f)\) are shown in
-\cref{fig:edge-classes}. The edge set \(E\) splits into the edges incident with
-neither \(v\) nor \(w\) (\(E_0\)), with \(v\) only (\(E_v\)), with \(w\) only
-(\(E_w\)), and with both (\(E_{vw}\)). Because the graph is simple,
+To compare \(\Phi(f')\) with \(\Phi(f)\), split the edge set \(E\) into the
+edges incident with neither \(v\) nor \(w\) (\(E_0\)), with \(v\) only
+(\(E_v\)), with \(w\) only (\(E_w\)), and with both (\(E_{vw}\))
+(\cref{fig:edge-classes}). Because the graph is simple,
 \(E_{vw}\) is either \(\{\{v,w\}\}\) or empty.
 
 \begin{figure}[ht]
   \centering
   \begin{tikzpicture}[line cap=round, line join=round]
-    \draw[very thick, oi-vermillion] (-1,2) -- (0,1) -- (-1,0);
-    \draw[very thick, oi-blue] (4,1) -- (5,2);
-    \draw[very thick, oi-blue] (4,1) -- (5,0);
-    \draw[very thick, oi-green] (0,1) -- (4,1);
-    \draw[very thick, black!65] (1.8,3) -- (2.8,3);
-    \node[circle, draw=black, fill=oi-purple, minimum size=8mm] at (0,1) {$v$};
-    \node[circle, draw=black, fill=oi-purple, minimum size=8mm] at (4,1) {$w$};
-    \node[circle, draw=black, fill=white, minimum size=7mm] at (-1,2) {};
-    \node[circle, draw=black, fill=white, minimum size=7mm] at (-1,0) {};
-    \node[circle, draw=black, fill=white, minimum size=7mm] at (5,2) {};
-    \node[circle, draw=black, fill=white, minimum size=7mm] at (5,0) {};
-    \node[circle, draw=black!65, fill=white, minimum size=7mm] at (1.8,3) {};
-    \node[circle, draw=black!65, fill=white, minimum size=7mm] at (2.8,3) {};
-    \node[font=\small, align=left, anchor=north west] at (-1.0,-0.45)
-      {\textcolor{oi-vermillion}{$E_v$: incident with $v$ only}\\
-       \textcolor{oi-blue}{$E_w$: incident with $w$ only}\\
-       \textcolor{oi-green}{$E_{vw}$: incident with both}\\
-       \textcolor{black!65}{$E_0$: incident with neither}};
+    \node[vtx, fill=black!15] (v) at (0,0) {$v$};
+    \node[vtx, fill=black!15] (w) at (3,0) {$w$};
+    \node[plain] (v1) at (-1.2,0.8) {};
+    \node[plain] (v2) at (-1.2,-0.8) {};
+    \node[plain] (w1) at (4.2,0.8) {};
+    \node[plain] (w2) at (4.2,-0.8) {};
+    \node[plain] (o1) at (0.8,1.3) {};
+    \node[plain] (o2) at (2.2,1.3) {};
+    \draw[edge, oi-vermillion, very thick] (v) -- (v1) (v) -- (v2);
+    \draw[edge, oi-blue, very thick, dashed] (w) -- (w1) (w) -- (w2);
+    \draw[edge, oi-green, line width=2.4pt] (v) -- (w);
+    \draw[black!60, line width=2pt, dash pattern=on 0pt off 3.5pt]
+      (o1) -- (o2);
+    \node[font=\small, text=oi-vermillion] at (-1.55,0) {$E_v$};
+    \node[font=\small, text=oi-blue] at (4.55,0) {$E_w$};
+    \node[font=\small, text=oi-green!70!black] at (1.5,-0.35) {$E_{vw}$};
+    \node[font=\small, text=black!60] at (1.5,1.75) {$E_0$};
   \end{tikzpicture}
-  \caption{The four colours identify the four disjoint edge classes in the edge-potential comparison for the vertices \(v\) and \(w\).}
+  \caption{The four edge classes in the comparison of \(\Phi(f')\) with
+  \(\Phi(f)\) for the exchanged vertices \(v\) and \(w\): edges incident with
+  \(v\) only (\(E_v\), solid), with \(w\) only (\(E_w\), dashed), with both
+  (\(E_{vw}\), heavy), and with neither (\(E_0\), dotted). Edges in \(E_0\) and
+  \(E_{vw}\) contribute equally to \(\Phi(f)\) and \(\Phi(f')\), so only \(E_v\)
+  and \(E_w\) enter \cref{eq:swap-identity}.}
   \label{fig:edge-classes}
 \end{figure}
 
