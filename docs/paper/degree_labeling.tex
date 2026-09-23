@@ -110,8 +110,9 @@ the sum of the weights \(2^i\) of the labels \(i\) carried by the neighbours of
 five-vertex skeleton that obeys both rules. The second rule thus requires that, among vertices of equal degree, the
 vertex with the larger label have a row value no larger than that of the
 other vertex. The problem goes back to a post by T.I. dated 29 May 2024, cited
-in \cite{smooth-pudding-2024}, which labels vertices by \(1,\ldots,n\); by
-\cref{rem:conventions}, this convention changes neither rule.
+in \cite{smooth-pudding-2024}. The enumeration of \cite{smooth-pudding-2024}
+labels vertices by \(1,\ldots,n\); by \cref{rem:conventions}, this convention
+changes neither rule.
 
 Pruning of this kind is sound only if it discards no graph: every graph has to
 admit at least one labelling obeying both rules, since a graph with no such
@@ -241,8 +242,9 @@ Suppose the alternative convention labels vertices by
   2^k=2^{i+1}=2\,2^i.
 \]
 Thus every neighbour sum in the \(\{1,\ldots,n\}\) convention is twice the
-corresponding sum in the \(I_n\) convention. Since this is the same positive
-factor for every vertex, both rules are unchanged.
+corresponding sum in the \(I_n\) convention. The shift \(k=i+1\) preserves the
+order of the labels, and the factor \(2\) is common to all vertices, so neither
+rule changes.
 \end{remark}
 
 \section{Proof of Theorem~\ref{thm:strict-weights}}\label{sec:proof}
@@ -480,8 +482,8 @@ The class counts agree with those reported in \cite{smooth-pudding-2024}.
 
 \Cref{thm:strict-weights,cor:powers-of-two}, with their definitions and proofs,
 have been formalised and mechanically checked in Lean~4, a proof assistant. The Lean development
-represents the finite vertex set as a finite type (a set equipped with a finite
-enumeration), represents labels by a bijection to \(I_n\), and represents the edge potential by a finite sum over the edge set.
+represents the finite vertex set as a finite type (a type with finitely many
+elements), represents a labelling as a bijection to \(I_n\), and represents the edge potential by a finite sum over the edge set.
 It therefore checks the finite-minimisation and label-exchange arguments. Its proof
 dependencies are three foundational principles: propositional extensionality,
 which identifies logically equivalent propositions; choice, which selects an
