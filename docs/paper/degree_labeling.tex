@@ -6,7 +6,6 @@
 \crefname{theorem}{Theorem}{Theorems}
 \crefname{corollary}{Corollary}{Corollaries}
 \crefname{figure}{Figure}{Figures}
-\crefname{equation}{Equation}{Equations}
 \crefname{remark}{Remark}{Remarks}
 \crefname{example}{Example}{Examples}
 \crefname{section}{Section}{Sections}
@@ -104,12 +103,12 @@ labelled \(j\), and it keeps only matrices whose labelling obeys two rules.
     integer receives a smaller label.
 \end{enumerate}
 For a labelling \(f\) and the set \(N(v)\) of neighbours of \(v\), the row
-integer of \(v\) is
+value of \(v\) is
 \[
   \sum_{u\in N(v)}2^{f(u)},
 \]
 the sum of the weights \(2^i\) of the labels \(i\) carried by the neighbours of
-\(v\); \cref{fig:motivation} shows these row integers for a labelled
+\(v\); \cref{fig:motivation} shows these row values for a labelled
 five-vertex skeleton that obeys both rules. The second rule thus requires that, among vertices of equal degree, the
 vertex with the larger label have a neighbour sum no larger than that of the
 other vertex. The problem goes back to a post by T.I. dated 29 May 2024, cited
@@ -187,13 +186,12 @@ For each integer \(r\), the degree-\(r\) class is
 \(\{v\in V:d(v)=r\}\).
 
 A labelling is a bijection \(f:V\longrightarrow I_n\).
-The target is the ordered \(n\)-element set of labels. A labelling \(f\) respects
-the degree order if
+The target is the ordered \(n\)-element set of labels. A labelling \(f\) is
+degree-respecting if it satisfies the degree condition
 \begin{equation}
   d(v)<d(w)\quad\Longrightarrow\quad f(w)<f(v).
 \label{eq:degree-order}
 \end{equation}
-We call a labelling satisfying \cref{eq:degree-order} degree-respecting.
 
 Let \(c:I_n\to\R\) be strictly increasing. Thus
 \begin{equation}
@@ -204,7 +202,7 @@ For a labelling \(f\), write the weighted neighbour sum at \(v\) as
 \[
   \sum_{u\in N(v)}c(f(u)).
 \]
-We say that \(f\) respects the equal-degree neighbour-sum order for \(c\) if
+We say that \(f\) satisfies the equal-degree neighbour-sum condition for \(c\) if
 \begin{equation}
   d(v)=d(w)\ \text{and}\ f(w)<f(v)
   \quad\Longrightarrow\quad
@@ -215,13 +213,13 @@ We say that \(f\) respects the equal-degree neighbour-sum order for \(c\) if
 \begin{theorem}[Strictly increasing weights]\label{thm:strict-weights}
 For every finite simple graph \(G=(V,E)\), with \(n=|V|\), and every strictly
 increasing function \(c:I_n\to\R\), there exists a labelling \(f\) satisfying
-the degree condition \cref{eq:degree-order} and the equal-degree neighbour-sum
-condition \cref{eq:equal-degree-order}.
+the degree condition \eqref{eq:degree-order} and the equal-degree neighbour-sum
+condition \eqref{eq:equal-degree-order}.
 \end{theorem}
 
 \begin{corollary}[Powers of two]\label{cor:powers-of-two}
 For every finite simple graph \(G=(V,E)\), with \(n=|V|\), there exists a
-labelling \(f\) satisfying the degree condition \cref{eq:degree-order} and, for
+labelling \(f\) satisfying the degree condition \eqref{eq:degree-order} and, for
 all \(v,w\in V\),
 \[
   d(v)=d(w)\ \text{and}\ f(w)<f(v)
@@ -246,13 +244,13 @@ Suppose the alternative convention labels vertices by
 \]
 Thus every neighbour sum in the \(\{1,\ldots,n\}\) convention is twice the
 corresponding sum in the \(I_n\) convention. Since this is the same positive
-factor for every vertex, both ordering conditions are unchanged.
+factor for every vertex, both conditions are unchanged.
 \end{remark}
 
 \section{Proof of Theorem~\ref{thm:strict-weights}}\label{sec:proof}
 
 Let \(\mathcal A\) be the set of all labellings that respect
-\cref{eq:degree-order}. This set is nonempty. Order the vertices by
+\eqref{eq:degree-order}. This set is nonempty. Order the vertices by
 non-increasing degree, choose any order inside each degree class, and assign
 the labels in \(I_n\) in that order. The set \(\mathcal A\) is finite
 because it is a subset of the finite set of all bijective labellings.
@@ -266,7 +264,7 @@ The finite nonempty set of real values \(\{\Phi(g):g\in\mathcal A\}\) has a
 minimum. Choose \(f\in\mathcal A\) with minimal edge potential.
 
 Take \(v,w\in V\) with \(d(v)=d(w)\) and \(f(w)<f(v)\). Strict increase in
-\cref{eq:strict-weights} gives \(c(f(w))<c(f(v))\). Let \(f'\) be obtained from
+\eqref{eq:strict-weights} gives \(c(f(w))<c(f(v))\). Let \(f'\) be obtained from
 \(f\) by exchanging the labels of \(v\) and \(w\). Since
 \(d(v)=d(w)\), the exchanged labelling still belongs to \(\mathcal A\).
 
@@ -302,7 +300,7 @@ edges incident with neither \(v\) nor \(w\) (\(E_0\)), with \(v\) only
   \(v\) only (\(E_v\), solid), with \(w\) only (\(E_w\), dashed), with both
   (\(E_{vw}\), heavy), and with neither (\(E_0\), dotted). Edges in \(E_0\) and
   \(E_{vw}\) contribute equally to \(\Phi(f)\) and \(\Phi(f')\), so only \(E_v\)
-  and \(E_w\) enter \cref{eq:swap-identity}.}
+  and \(E_w\) enter \eqref{eq:swap-identity}.}
   \label{fig:edge-classes}
 \end{figure}
 
@@ -325,7 +323,7 @@ from \(E_{vw}\), give
   \label{eq:swap-identity}
 \end{equation}
 Minimality of \(f\) gives \(\Phi(f')-\Phi(f)\geq0\). Since
-\(c(f(v))-c(f(w))>0\), \cref{eq:swap-identity} implies
+\(c(f(v))-c(f(w))>0\), \eqref{eq:swap-identity} implies
 \begin{equation}
   \sum_{u\in N(v)\setminus\{w\}}c(f(u))
   \leq
@@ -356,22 +354,22 @@ If \(v\not\sim w\), then
   =\sum_{u\in N(w)}c(f(u)).
 \]
 Thus the required inequality holds in the non-adjacent case. Therefore \(f\) satisfies
-\cref{eq:equal-degree-order}, which proves \cref{thm:strict-weights}.
+\eqref{eq:equal-degree-order}, which proves \cref{thm:strict-weights}.
 
 \begin{example}\label{ex:swap}
 For the labelling in \cref{fig:motivation}, take \(c(i)=2^i\). The degree
-condition \cref{eq:degree-order} holds, and the only degree class with more
+condition \eqref{eq:degree-order} holds, and the only degree class with more
 than one vertex is the degree-\(1\) class, with labels \(2,3,4\) and neighbour
 sums \(2,1,1\). These sums do not increase with the label, so
-\cref{eq:equal-degree-order} holds as well. The labelling is not the only one:
+\eqref{eq:equal-degree-order} holds as well. The labelling is not the only one:
 exchanging the labels \(3\) and \(4\) of the two leaves at the degree-\(3\)
 vertex gives a second labelling satisfying both conditions. There are no
-others: \cref{eq:degree-order} forces the labels \(0\) and \(1\) on the
+others: \eqref{eq:degree-order} forces the labels \(0\) and \(1\) on the
 vertices of degree \(3\) and \(2\), and the leaf adjacent to the vertex
 labelled \(1\) must carry the label \(2\).
 
 \Cref{fig:swap} starts instead from a degree-respecting labelling that violates
-\cref{eq:equal-degree-order} and shows that exchanging the labels of the
+\eqref{eq:equal-degree-order} and shows that exchanging the labels of the
 offending pair, the move compared in the proof above, removes the violation.
 \end{example}
 
@@ -411,22 +409,21 @@ offending pair, the move compared in the proof above, removes the violation.
       {$2\leftrightarrow3$} (5.8,-0.4);
   \end{tikzpicture}
   \caption{Left: a degree-respecting labelling of the graph of
-  \cref{fig:motivation}. The table lists the labels \(f\) of the
-  degree-\(1\) vertices and, below them, their neighbour sums
-  \(\sum_{u\in N(\cdot)}2^{f(u)}\); the leaf labelled \(3\) has sum \(2\),
+  \cref{fig:motivation}. The table lists the labels of the
+  degree-\(1\) vertices and, below them, their neighbour sums for
+  \(c(i)=2^i\); the leaf labelled \(3\) has sum \(2\),
   larger than the sum \(1\) of the leaf labelled \(2\), so
-  \cref{eq:equal-degree-order} fails for the dashed pair. Right: after the two
+  \eqref{eq:equal-degree-order} fails for the dashed pair. Right: after the two
   labels are exchanged, giving the labelling of \cref{fig:motivation}, the sums
   \(2,1,1\) do not increase with the label, and the edge potential
-  \(\sum_{\{x,y\}\in E}2^{f(x)+f(y)}\) (see \cref{eq:potential}) drops from
-  \(38\) to \(34\).}
+  \(\Phi\) of \eqref{eq:potential} with \(c(i)=2^i\) drops from \(38\) to \(34\).}
   \label{fig:swap}
 \end{figure}
 
 \section{Remarks}\label{sec:remarks}
 
 \Cref{thm:strict-weights,cor:powers-of-two} assert existence, not uniqueness.
-The minimiser of the edge potential defined in \cref{eq:potential} is one labelling among
+The minimiser of the edge potential defined in \eqref{eq:potential} is one labelling among
 possibly several satisfying both conditions; the graph of \cref{ex:swap} has
 exactly two. The two rules therefore do not give a canonical form for graph
 isomorphism, and the candidates that survive the pruning still have to be
@@ -443,8 +440,8 @@ matrices of size \(n\), that is, of labelled graphs on \(I_n\); an unlabelled
 graph \(G\) on \(n\) vertices contributes \(n!/|\mathrm{Aut}(G)|\) distinct
 matrices. The columns count, in turn, all such matrices; the skeleton
 matrices, whose graph is connected with maximum degree at most \(4\); the
-skeleton matrices that also satisfy rule~1, that is, \cref{eq:degree-order};
-and those that satisfy rule~2 as well, that is, \cref{eq:equal-degree-order}
+skeleton matrices that also satisfy rule~1, that is, \eqref{eq:degree-order};
+and those that satisfy rule~2 as well, that is, \eqref{eq:equal-degree-order}
 with \(c(i)=2^i\). The last column counts isomorphism classes of skeletons.
 
 \begin{table}[ht]
