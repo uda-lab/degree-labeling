@@ -82,11 +82,13 @@ hydrocarbons with \(n\) carbon atoms therefore amounts to listing, up to
 isomorphism, the connected graphs on \(n\) vertices with maximum degree at
 most \(4\).
 
-The enumeration generates such graphs as adjacency matrices. With the label set
+The enumeration generates such graphs as adjacency matrices. We describe it
+with the label set
 \[
-  I_n=\{0,1,\ldots,n-1\},
+  I_n=\{0,1,\ldots,n-1\}
 \]
-a bijective labelling of the vertices by \(I_n\) turns a graph into a symmetric
+in place of the labels \(1,\ldots,n\) used in \cite{smooth-pudding-2024}; by
+\cref{rem:conventions}, this changes neither of the rules below. A bijective labelling of the vertices by \(I_n\) turns a graph into a symmetric
 \(0/1\) matrix with zero diagonal, and different labellings of one graph
 generally give different matrices. Listing the adjacency matrices of all such
 graphs under all labellings therefore produces each graph many times, and every
@@ -110,9 +112,7 @@ the sum of the weights \(2^i\) of the labels \(i\) carried by the neighbours of
 five-vertex skeleton that obeys both rules. The second rule thus requires that, among vertices of equal degree, the
 vertex with the larger label have a row value no larger than that of the
 other vertex. The problem goes back to a post by T.I. dated 29 May 2024, cited
-in \cite{smooth-pudding-2024}. The enumeration of \cite{smooth-pudding-2024}
-labels vertices by \(1,\ldots,n\); by \cref{rem:conventions}, this convention
-changes neither rule.
+in \cite{smooth-pudding-2024}.
 
 Pruning of this kind is sound only if it discards no graph: every graph has to
 admit at least one labelling obeying both rules, since a graph with no such
@@ -423,7 +423,7 @@ offending pair, the move compared in the proof above, removes the violation.
 \section{Remarks}\label{sec:remarks}
 
 \Cref{thm:strict-weights,cor:powers-of-two} assert existence, not uniqueness.
-The minimiser of the edge potential defined in \eqref{eq:potential} is one labelling among
+A minimiser of the edge potential defined in \eqref{eq:potential} is one labelling among
 possibly several satisfying both conditions; the graph of \cref{ex:swap} has
 exactly two. The two rules therefore do not give a canonical form for graph
 isomorphism, and the candidates that survive the pruning still have to be
@@ -435,7 +435,7 @@ such that only candidates in the same class can be isomorphic. That filtering
 step is separate from the pruning by the two rules studied here.
 
 \Cref{tab:counts} shows the effect of the two rules of the introduction for
-\(n\leq7\). Except in the last column, every entry is a number of adjacency
+\(n\leq7\). Except in the first and last columns, every entry is a number of adjacency
 matrices of size \(n\), that is, of labelled graphs on \(I_n\); an unlabelled
 graph \(G\) on \(n\) vertices contributes \(n!/|\mathrm{Aut}(G)|\) distinct
 matrices. The columns count, in turn, all such matrices; the skeleton
@@ -481,14 +481,14 @@ matrix, it confirms that each class keeps at least one matrix under both rules.
 The class counts agree with those reported in \cite{smooth-pudding-2024}.
 
 \Cref{thm:strict-weights,cor:powers-of-two}, with their definitions and proofs,
-have been formalised and mechanically checked in Lean~4, a proof assistant. The Lean development
-represents the finite vertex set as a finite type (a type with finitely many
-elements), represents a labelling as a bijection to \(I_n\), and represents the edge potential by a finite sum over the edge set.
-It therefore checks the finite-minimisation and label-exchange arguments. Its proof
-dependencies are three foundational principles: propositional extensionality,
+have been formalised and mechanically checked in Lean~4, a proof assistant.
+The Lean development represents the finite vertex set as a finite type (a type
+with finitely many elements), represents a labelling as a bijection to
+\(I_n\), and represents the edge potential by a finite sum over the edge set.
+Its proof dependencies are three foundational principles: propositional extensionality,
 which identifies logically equivalent propositions; choice, which selects an
-element from a nonempty collection; and quotient soundness, which supplies
-equality for equivalent representatives. Their Lean names are
+element from a nonempty collection; and quotient soundness, which makes
+related elements equal in the quotient. Their Lean names are
 \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; these are
 dependencies of the formal proof, not hypotheses on the graph or on the weights.
 
