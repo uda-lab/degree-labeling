@@ -55,31 +55,66 @@ minimizing the sum over edges of the products of the endpoint weights.
 
 \section{Introduction}
 
-The motivating setting is the enumeration of hydrocarbon graphs, where vertices
-represent carbon atoms, hydrogen atoms are omitted, and edges represent single
-carbon--carbon bonds. For a graph with vertex set \(V\) and \(n=|V|\) vertices,
-the convention with labels \(1,\ldots,n\) uses a bijection
-\(V\to\{1,\ldots,n\}\); here we use the ordered label set
-\[
-  I_n=\{0,1,\ldots,n-1\}.
-\]
-For the labels in \(I_n\), assign weight \(2^i\) to label \(i\). The weighted
-neighbour sum of a vertex is the sum of the weights assigned to its neighbours.
-We seek a labelling that gives smaller labels to vertices of larger degree and,
-among vertices of equal degree, gives the vertex with the larger label the
-smaller or equal weighted neighbour sum.
-Smooth Pudding describes this labelling question in a 2024 post
-\cite{smooth-pudding-2024} and attributes it to an earlier post dated 29 May
-2024.
-The result applies to every finite simple graph and allows the powers of two to
-be replaced by any strictly increasing real weights. Theorem~\ref{thm:strict-weights} establishes
-this statement, with the powers-of-two case as
-Corollary~\ref{cor:powers-of-two}.
+The question studied here arose in an exhaustive enumeration of hydrocarbons
+with only single bonds \cite{smooth-pudding-2024}. Up to stereoisomerism,
+such a molecule is determined by its carbon skeleton: the finite simple graph whose vertices are
+the carbon atoms and whose edges are the carbon--carbon bonds. The skeleton is
+connected, every vertex has degree at most \(4\), and hydrogen atoms fill the
+remaining valences, so they need not be recorded. Enumerating these
+hydrocarbons with \(n\) carbon atoms therefore amounts to listing, up to
+isomorphism, the connected graphs on \(n\) vertices with maximum degree at
+most \(4\).
 
-Morgan's method for assigning labels to chemical structures provides related
-context \cite{morgan-1965}. The present paper studies a different labelling: it
-orders vertices first by degree and then, within each degree class, by weighted
-neighbour sums.
+The enumeration generates such graphs as adjacency matrices. With the label set
+\[
+  I_n=\{0,1,\ldots,n-1\},
+\]
+a bijective labelling of the vertices by \(I_n\) turns a graph into a symmetric
+\(0/1\) matrix with zero diagonal, and different labellings of one graph
+generally give different matrices. Listing the adjacency matrices of all such
+graphs under all labellings therefore produces each graph many times, and every
+duplicate has to be removed later by an isomorphism test. To reduce this
+redundancy, the enumeration prunes while a matrix is being generated. It reads
+the row of a vertex \(v\) as the \(n\)-bit integer whose bit in position \(j\),
+of weight \(2^j\), is \(1\) exactly when \(v\) is adjacent to the vertex
+labelled \(j\), and it keeps only matrices whose labelling obeys two rules.
+\begin{enumerate}
+  \item A vertex of larger degree receives a smaller label.
+  \item Among vertices of equal degree, a vertex whose row is the larger
+    integer receives a smaller label.
+\end{enumerate}
+For a labelling \(f\) and the set \(N(v)\) of neighbours of \(v\), the row
+integer of \(v\) is
+\[
+  \sum_{u\in N(v)}2^{f(u)},
+\]
+the sum of the weights \(2^i\) of the labels \(i\) carried by the neighbours of
+\(v\). The second rule thus requires that, among vertices of equal degree, the
+vertex with the larger label have a neighbour sum no larger than that of the
+other vertex. Smooth Pudding attributes the problem to a post dated 29 May 2024, which
+labels vertices by \(1,\ldots,n\); by Remark~\ref{rem:conventions}, this
+convention changes neither rule.
+
+Pruning of this kind is sound only if it discards no graph: every graph has to
+admit at least one labelling obeying both rules, since a graph with no such
+labelling would be missing from the output. Smooth Pudding notes that
+this existence had not been proved. Corollary~\ref{cor:powers-of-two} proves it, in
+greater generality than the enumeration requires. The hydrocarbon model restricts attention to connected
+graphs of maximum degree at most \(4\), but the proof uses neither
+restriction: the corollary holds for every finite simple graph.
+Theorem~\ref{thm:strict-weights} further replaces the weights \(2^i\) by the
+values \(c(i)\) of an arbitrary strictly increasing function \(c:I_n\to\R\).
+
+The result is an existence statement. It does not assert uniqueness, and the
+two rules do not give a canonical form for graph isomorphism: several labellings
+of one graph may obey both, so the candidates that survive the pruning still
+have to be compared. In \cite{smooth-pudding-2024}, Morgan's method
+reduces the number of these comparisons. Morgan's algorithm \cite{morgan-1965} assigns to each
+atom of a chemical structure an invariant computed from iterated sums over
+neighbours. The enumeration uses a variant of it to sort the surviving
+candidates into classes such that only candidates in the same class can be
+isomorphic. That filtering step is separate from the degree and binary-row
+pruning studied here.
 
 \section{Preliminaries}
 
@@ -141,7 +176,7 @@ all \(v,w\in V\),
 \]
 \end{corollary}
 
-\begin{remark}[The two labelling conventions]
+\begin{remark}[The two labelling conventions]\label{rem:conventions}
 Suppose the alternative convention labels vertices by
 \(\{1,\ldots,n\}\) and assigns weight \(2^k\) to label \(k\). For
 \(i=k-1\in I_n\), we have
