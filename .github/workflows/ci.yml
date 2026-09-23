@@ -60,6 +60,9 @@ jobs:
         run: bash scripts/check-no-custom-axiom.sh
       - name: Guard self-tests (lexer, Lean-build hook)
         run: bash scripts/test-guards.sh && bash .claude/hooks/test-lean-guard.sh
+      # Table 1 of the paper: exact counts and the no-class-lost check, n <= 6 (seconds).
+      - name: Pruning counts (docs/paper/pruning_counts.py)
+        run: python3 docs/paper/pruning_counts.py --max-n 6 --check
 
       # Installs elan from lean-toolchain, fetches mathlib oleans, runs `lake build`.
       - name: Build with mathlib cache
