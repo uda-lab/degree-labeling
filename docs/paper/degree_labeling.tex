@@ -34,6 +34,7 @@
 \newtheorem{remark}{Remark}
 
 \newcommand{\R}{\mathbb{R}}
+\numberwithin{equation}{section}
 
 \title{Degree-respecting labellings with ordered neighbour sums}
 \author{T.~Ishikawa}
@@ -192,29 +193,29 @@ For each integer \(r\), the degree-\(r\) class is
 A labelling is a bijection \(f:V\longrightarrow I_n\).
 The target is the ordered \(n\)-element set of labels. A labelling \(f\) respects
 the degree order if
-\[
+\begin{equation}
   d(v)<d(w)\quad\Longrightarrow\quad f(w)<f(v).
-\tag{2.1}\label{eq:degree-order}
-\]
+\label{eq:degree-order}
+\end{equation}
 We call a labelling satisfying \cref{eq:degree-order} degree-respecting.
 
 Let \(c:I_n\to\R\) be strictly increasing. Thus
-\[
+\begin{equation}
   c(0)<c(1)<\cdots<c(n-1).
-  \tag{2.2}\label{eq:strict-weights}
-\]
+  \label{eq:strict-weights}
+\end{equation}
 For a labelling \(f\), write the weighted neighbour sum at \(v\) as
-\[
+\begin{equation}
   \sum_{u\in N(v)}c(f(u)).
-  \tag{2.3}\label{eq:neighbour-sum}
-\]
+  \label{eq:neighbour-sum}
+\end{equation}
 We say that \(f\) respects the equal-degree neighbour-sum order for \(c\) if
-\[
+\begin{equation}
   d(v)=d(w)\ \text{and}\ f(w)<f(v)
   \quad\Longrightarrow\quad
   \sum_{u\in N(v)}c(f(u))\leq\sum_{u\in N(w)}c(f(u)).
-  \tag{2.4}\label{eq:equal-degree-order}
-\]
+  \label{eq:equal-degree-order}
+\end{equation}
 
 \section{Main results}
 
@@ -325,10 +326,10 @@ the labels in \(I_n\) in that order. The set \(\mathcal A\) is finite
 because it is a subset of the finite set of all bijective labellings.
 
 For \(g\in\mathcal A\), define the edge potential
-\[
+\begin{equation}
   \Phi(g)=\sum_{\{x,y\}\in E}c(g(x))c(g(y)).
-  \tag{4.1}\label{eq:potential}
-\]
+  \label{eq:potential}
+\end{equation}
 The finite nonempty set of real values \(\{\Phi(g):g\in\mathcal A\}\) has a
 minimum. Choose \(f\in\mathcal A\) with minimal edge potential.
 
@@ -376,29 +377,29 @@ edges incident with neither \(v\) nor \(w\) (\(E_0\)), with \(v\) only
 Edges in \(E_0\) have the same contribution before and after the exchange. The
 contributions from \(E_v\) and \(E_w\), together with the unchanged contribution
 from \(E_{vw}\), give
-\[
+\begin{equation}
   \begin{aligned}
-  \Phi(f')-\Phi(f)
-    &={}\bigl(c(f(w))-c(f(v))\bigr)
+  &\Phi(f')-\Phi(f)\\
+    &\quad={}\bigl(c(f(w))-c(f(v))\bigr)
       \sum_{u\in N(v)\setminus\{w\}}c(f(u))\\
-    &\quad+\bigl(c(f(v))-c(f(w))\bigr)
+    &\qquad+\bigl(c(f(v))-c(f(w))\bigr)
       \sum_{u\in N(w)\setminus\{v\}}c(f(u))\\
-    &=\bigl(c(f(v))-c(f(w))\bigr)
+    &\quad=\bigl(c(f(v))-c(f(w))\bigr)
       \left(
         \sum_{u\in N(w)\setminus\{v\}}c(f(u))
         -\sum_{u\in N(v)\setminus\{w\}}c(f(u))
       \right).
   \end{aligned}
-  \tag{4.4}\label{eq:swap-identity}
-\]
+  \label{eq:swap-identity}
+\end{equation}
 Minimality of \(f\) gives \(\Phi(f')-\Phi(f)\geq0\). Since
 \(c(f(v))-c(f(w))>0\), \cref{eq:swap-identity} implies
-\[
+\begin{equation}
   \sum_{u\in N(v)\setminus\{w\}}c(f(u))
   \leq
   \sum_{u\in N(w)\setminus\{v\}}c(f(u)).
-  \tag{4.5}\label{eq:neighbour-sums-except}
-\]
+  \label{eq:neighbour-sums-except}
+\end{equation}
 
 We distinguish whether \(v\) and \(w\) are adjacent.
 
@@ -428,10 +429,10 @@ Thus the required inequality holds in the non-adjacent case. Therefore \(f\) sat
 \section{Proof of Corollary~\ref{cor:powers-of-two}}
 
 Apply \cref{thm:strict-weights} to the function
-\[
+\begin{equation}
   c(i)=2^i\qquad(i\in I_n).
-  \tag{5.1}\label{eq:powers-function}
-\]
+  \label{eq:powers-function}
+\end{equation}
 This function is strictly increasing. The resulting inequalities are exactly
 the degree condition and the displayed inequality in the corollary.
 
