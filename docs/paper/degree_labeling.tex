@@ -115,9 +115,8 @@ five-vertex skeleton that obeys both rules. The second rule thus requires that, 
 vertex with the larger label have a row value no larger than that of the
 other vertex.
 
-Pruning of this kind is sound only if it discards no skeleton: every skeleton has to
-admit at least one labelling obeying both rules, since a skeleton with no such
-labelling would be missing from the output. This existence had not been proved
+The pruning is sound only if every skeleton admits at least one labelling
+obeying both rules; otherwise that skeleton would be missing from the output. This existence had not been proved
 when \cite{smooth-pudding-2024} was written. \Cref{cor:powers-of-two} below
 proves it, in greater generality than the enumeration requires: the proof uses
 neither connectedness nor the degree bound, and
@@ -249,10 +248,9 @@ rule changes.
 \section{Proof of Theorem~\ref{thm:strict-weights}}\label{sec:proof}
 
 Let \(\mathcal A\) be the set of all labellings that respect
-\eqref{eq:degree-order}. This set is nonempty. Order the vertices by
-non-increasing degree, choose any order inside each degree class, and assign
-the labels in \(I_n\) in that order. The set \(\mathcal A\) is finite
-because it is a subset of the finite set of all labellings.
+\eqref{eq:degree-order}. The set \(\mathcal A\) is finite, and it is nonempty:
+order the vertices by non-increasing degree, choose any order inside each
+degree class, and assign the labels in \(I_n\) in that order.
 
 For \(g\in\mathcal A\), define the edge potential
 \begin{equation}
@@ -297,9 +295,7 @@ edges incident with neither \(v\) nor \(w\) (\(E_0\)), with \(v\) only
   \caption{The four edge classes in the comparison of \(\Phi(f')\) with
   \(\Phi(f)\) for the exchanged vertices \(v\) and \(w\): edges incident with
   \(v\) only (\(E_v\), solid), with \(w\) only (\(E_w\), dashed), with both
-  (\(E_{vw}\), heavy), and with neither (\(E_0\), dotted). Edges in \(E_0\) and
-  \(E_{vw}\) contribute equally to \(\Phi(f)\) and \(\Phi(f')\), so only \(E_v\)
-  and \(E_w\) enter \eqref{eq:swap-identity}.}
+  (\(E_{vw}\), heavy), and with neither (\(E_0\), dotted).}
   \label{fig:edge-classes}
 \end{figure}
 
@@ -330,8 +326,6 @@ Minimality of \(f\) gives \(\Phi(f')-\Phi(f)\geq0\). Since
   \label{eq:neighbour-sums-except}
 \end{equation}
 
-We distinguish whether \(v\) and \(w\) are adjacent.
-
 \paragraph{Adjacent case.}
 If \(v\sim w\), then
 \[
@@ -342,7 +336,6 @@ If \(v\sim w\), then
     &=\sum_{u\in N(w)}c(f(u)).
   \end{aligned}
 \]
-Thus the required inequality holds in the adjacent case.
 
 \paragraph{Non-adjacent case.}
 If \(v\not\sim w\), then
@@ -352,8 +345,7 @@ If \(v\not\sim w\), then
   \leq\sum_{u\in N(w)\setminus\{v\}}c(f(u))
   =\sum_{u\in N(w)}c(f(u)).
 \]
-Thus the required inequality holds in the non-adjacent case. Therefore \(f\) satisfies
-\eqref{eq:equal-degree-order}, which proves \cref{thm:strict-weights}.
+In both cases \(f\) satisfies \eqref{eq:equal-degree-order}, which proves \cref{thm:strict-weights}.
 
 \begin{example}\label{ex:swap}
 For the labelling in \cref{fig:motivation}, take \(c(i)=2^i\). The degree
@@ -467,15 +459,15 @@ with \(c(i)=2^i\). The last column counts isomorphism classes of skeletons.
 For \(n=7\), rule~1 reduces the \(859\,130\) skeleton matrices to \(10\,544\), by
 a factor of about \(81\), and rule~2 reduces these to \(566\), by a further
 factor of about \(19\). The \(353\) isomorphism classes then have about \(1.6\)
-surviving matrices on average, against about \(2434\) before pruning. No class is
-lost, as \cref{cor:powers-of-two} guarantees.
+surviving matrices on average, against about \(2434\) before pruning.
 
 All counts are exact and come from an exhaustive enumeration of the
 \(2^{n(n-1)/2}\) matrices. Isomorphism classes are counted by a canonical form,
 the lexicographically largest sequence of row values over all relabellings that
 keep the degrees non-increasing; two matrices are isomorphic exactly when their
 canonical forms coincide. Applied to every skeleton
-matrix, it confirms that each class keeps at least one matrix under both rules.
+matrix, it confirms that each class keeps at least one matrix under both rules, as
+\cref{cor:powers-of-two} guarantees.
 The class counts agree with those reported in \cite{smooth-pudding-2024}.
 
 \Cref{thm:strict-weights,cor:powers-of-two}, with their definitions and proofs,
