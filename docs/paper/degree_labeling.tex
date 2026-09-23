@@ -73,7 +73,8 @@ the products of the endpoint weights.
 
 The question studied here arose in an exhaustive enumeration of hydrocarbons
 with only single bonds, described by one of the authors (T.I.) in a blog post
-\cite{smooth-pudding-2024}. Up to stereoisomerism,
+\cite{smooth-pudding-2024}; the problem goes back to a post by T.I. dated
+29 May 2024, cited there. Up to stereoisomerism,
 such a molecule is determined by its carbon skeleton: the finite simple graph whose vertices are
 the carbon atoms and whose edges are the carbon--carbon bonds. The skeleton is
 connected, every vertex has degree at most \(4\), and hydrogen atoms fill the
@@ -112,8 +113,7 @@ the sum of the weights \(2^i\) of the labels \(i\) carried by the neighbours of
 \(v\); \cref{fig:motivation} shows these row values for a labelled
 five-vertex skeleton that obeys both rules. The second rule thus requires that, among vertices of equal degree, the
 vertex with the larger label have a row value no larger than that of the
-other vertex. The problem goes back to a post by T.I. dated 29 May 2024, cited
-in \cite{smooth-pudding-2024}.
+other vertex.
 
 Pruning of this kind is sound only if it discards no skeleton: every skeleton has to
 admit at least one labelling obeying both rules, since a skeleton with no such
@@ -167,9 +167,7 @@ after each rule, and describes a check of the proofs in Lean~4.
   \caption{Left: the carbon skeleton of 2-methylbutane with a labelling by
   \(I_5\); dark, medium and light shading mark degree \(3\), \(2\) and \(1\). Right: its adjacency
   matrix, rows and columns in label order; the number above column \(j\)
-  is its weight \(2^j\), so the row value is the sum of the weights over the \(1\)s of the
-  row, which is \(\sum_{u\in N(v)}2^{f(u)}\) for the vertex \(v\) with that
-  label. The columns \(d\) and row give the degree and the row value of each
+  is its weight \(2^j\). The columns \(d\) and row give the degree and the row value of each
   vertex. Degrees do not increase down the rows, and the brace shows that the
   row values \(2\geq1\geq1\) of the degree-\(1\) class do not increase either.}
   \label{fig:motivation}
@@ -185,8 +183,7 @@ be its neighbourhood. We write \(u\sim v\) when \(u\) and \(v\) are adjacent.
 For each integer \(r\), the degree-\(r\) class is
 \(\{v\in V:d(v)=r\}\).
 
-A labelling is a bijection \(f:V\longrightarrow I_n\).
-The target is the ordered \(n\)-element set of labels. A labelling \(f\) is
+A labelling is a bijection \(f:V\longrightarrow I_n\). A labelling \(f\) is
 degree-respecting if it satisfies, for all \(v,w\in V\), the degree condition
 \begin{equation}
   d(v)<d(w)\quad\Longrightarrow\quad f(w)<f(v).
@@ -426,8 +423,7 @@ offending pair, the exchange used in the proof above, removes the violation.
 
 \Cref{thm:strict-weights,cor:powers-of-two} assert existence, not uniqueness.
 A minimiser of the edge potential defined in \eqref{eq:potential} is one labelling among
-possibly several satisfying both conditions; the graph of \cref{ex:swap} has
-exactly two. The two rules do not give a canonical form for graph isomorphism
+possibly several satisfying both conditions (\cref{ex:swap}). The two rules do not give a canonical form for graph isomorphism
 either: for \(5\leq n\leq7\) some isomorphism classes keep more than one matrix
 (\cref{tab:counts}), so the candidates that survive the pruning still have to
 be compared. The enumeration of \cite{smooth-pudding-2024} reduces these
