@@ -18,7 +18,7 @@ NAME=degree_labeling
 PAPER="$ROOT/docs/paper"
 OUT="$ROOT/build/arxiv"
 
-for tool in latexmk pdflatex bibtex tar; do
+for tool in latexmk pdflatex bibtex tar python3; do
   command -v "$tool" >/dev/null 2>&1 || { echo "arxiv-bundle: missing $tool" >&2; exit 1; }
 done
 
@@ -58,7 +58,14 @@ fi
 echo "arxiv-bundle: bundle compiles with pdflatex x$passes, no BibTeX"
 cp "$work/verify/$NAME.pdf" "$OUT/$NAME.pdf"
 
-# 4. Package.
-tar -czf "$OUT/$NAME.tar.gz" -C "$OUT/src" "$NAME.tex" "$NAME.bbl"
+# 4. Package. COPYFILE_DISABLE=1 stops macOS bsdtar from adding AppleDouble `._*`
+#    entries (GNU tar ignores it). bsdtar's own listing hides those entries, so the
+#    member list is checked with Python's tarfile instead.
+COPYFILE_DISABLE=1 tar -czf "$OUT/$NAME.tar.gz" -C "$OUT/src" "$NAME.tex" "$NAME.bbl"
+members="$(python3 -I -c 'import sys, tarfile; print("\n".join(tarfile.open(sys.argv[1]).getnames()))' "$OUT/$NAME.tar.gz")"
+if [ "$members" != "$(printf '%s\n%s' "$NAME.tex" "$NAME.bbl")" ]; then
+  printf 'arxiv-bundle: unexpected members in the bundle:\n%s\n' "$members" >&2
+  exit 1
+fi
 echo "arxiv-bundle: $OUT/$NAME.tar.gz"
-tar -tzf "$OUT/$NAME.tar.gz"
+printf '%s\n' "$members"
