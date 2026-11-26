@@ -9,7 +9,8 @@ using \(2^{f(u)}\) for the label \(f(u)\) of a neighbour \(u\).
 ## Paper
 
 Toshio Ishikawa and Tomoki Uda, *Degree-respecting labellings with ordered
-neighbour sums*, [arXiv:2611.34269](https://arxiv.org/abs/2611.34269) [math.CO], 2026.
+neighbour sums*,
+[arXiv:2611.34269](https://arxiv.org/abs/2611.34269) [math.CO], 2026.
 
 ~~~bibtex
 @misc{ishikawa-uda-2026,
@@ -61,6 +62,7 @@ pinned there.
 - DegreeLabeling.lean is the library root.
 - scripts/ contains the gate and its supporting checks.
 - docs/math/degree_labeling.md contains the mathematical exposition.
+- docs/paper/ contains the source of the paper.
 - docs/references.bib contains the bibliography.
 - .claude/skills/ and .claude/hooks/ contain the repository workflow guidance.
 
