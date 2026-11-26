@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: >-
+  If you use this formalisation, please cite the accompanying paper
+  given under preferred-citation.
+type: software
+title: "degree-labeling: Lean 4 formalisation of degree-respecting labellings"
+authors:
+  - name: uda-lab
+repository-code: "https://github.com/uda-lab/degree-labeling"
+license: Apache-2.0
+preferred-citation:
+  type: generic
+  title: "Degree-respecting labellings with ordered neighbour sums"
+  authors:
+    - family-names: Ishikawa
+      given-names: Toshio
+    - family-names: Uda
+      given-names: Tomoki
+  year: 2026
+  month: 11
+  url: "https://arxiv.org/abs/2611.34269"
+  identifiers:
+    - type: other
+      value: "arXiv:2611.34269"
+      description: arXiv preprint (math.CO)
+  notes: "arXiv preprint arXiv:2611.34269 [math.CO]"
