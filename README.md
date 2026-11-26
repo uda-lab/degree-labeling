@@ -6,6 +6,26 @@ degree and, within each degree class, order weighted neighbour sums for every
 strictly increasing real weight function. It also proves the powers-of-two case,
 using \(2^{f(u)}\) for the label \(f(u)\) of a neighbour \(u\).
 
+## Paper
+
+Toshio Ishikawa and Tomoki Uda, *Degree-respecting labellings with ordered
+neighbour sums*, [arXiv:2611.34269](https://arxiv.org/abs/2611.34269) [math.CO], 2026.
+
+~~~bibtex
+@misc{ishikawa-uda-2026,
+  author        = {Ishikawa, Toshio and Uda, Tomoki},
+  title         = {Degree-respecting labellings with ordered neighbour sums},
+  year          = {2026},
+  eprint        = {2611.34269},
+  archivePrefix = {arXiv},
+  primaryClass  = {math.CO},
+  url           = {https://arxiv.org/abs/2611.34269}
+}
+~~~
+
+The source of the paper is in docs/paper/; citation metadata is in
+[CITATION.cff](CITATION.cff).
+
 ## Public results
 
 | Mathematical statement | Lean declaration |
